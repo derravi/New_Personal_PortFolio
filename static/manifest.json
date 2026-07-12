@@ -1,0 +1,12 @@
+{
+  "name": "Ravi Der - Portfolio",
+  "short_name": "Ravi Der",
+  "description": "AI/ML & Python developer portfolio — projects, blog, and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#00f3ff",
+  "icons": [
+    { "src": "/static/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

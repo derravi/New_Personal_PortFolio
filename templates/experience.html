@@ -1,0 +1,1094 @@
+{% extends 'base.html' %}
+
+{% block title %}Experience - Ravi Der{% endblock %}
+
+{% block extra_css %}
+<style>
+:root {
+    --primary: #00f3ff;
+    --secondary: #7b00ff;
+    --dark: #0a0a1a;
+    --darker: #050510;
+    --light: #e2f1f8;
+    --accent: #ff00c8;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Exo 2', sans-serif;
+    background-color: var(--darker);
+    color: var(--light);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+}
+
+.section {
+    min-height: 100vh;
+    padding-top: 20px;
+    position: relative;
+}
+
+/* Experience Section */
+#experience {
+    background-color: rgba(10, 10, 26, 0.7);
+    padding: 40px 0;
+}
+
+/* Section Headers */
+.section-header {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 0 15px;
+}
+
+.section-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.section-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+    line-height: 1.2;
+}
+
+.section-subtitle p {
+    font-size: 1.2rem;
+    color: rgba(226, 241, 248, 0.7);
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+/* Timeline Styles */
+.timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background: linear-gradient(180deg, var(--primary), var(--secondary));
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+    border-radius: 2px;
+    z-index: 1;
+}
+
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--primary);
+    border: 4px solid var(--darker);
+    top: 15px;
+    border-radius: 50%;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.timeline-item:hover::after {
+    background: var(--accent);
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(255, 0, 200, 0.6);
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    left: 50%;
+}
+
+.left::after {
+    right: -10px;
+}
+
+.right::after {
+    left: -10px;
+}
+
+.timeline-content {
+    padding: 25px 30px;
+    background: rgba(10, 10, 26, 0.7);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 243, 255, 0.1);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(0, 243, 255, 0.05),
+        transparent);
+    transition: left 0.6s ease;
+}
+
+.timeline-content:hover::before {
+    left: 100%;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 25px rgba(0, 243, 255, 0.2);
+}
+
+.timeline-date {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+}
+
+/* Logo & Header Styles */
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.timeline-header-text {
+    flex: 1;
+}
+
+.company-logo {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 6px;
+    max-width: 55px;
+    height: auto;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    object-fit: contain;
+}
+
+.company-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 243, 255, 0.2);
+}
+
+.timeline-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 5px;
+    line-height: 1.3;
+}
+
+.timeline-company {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgba(226, 241, 248, 0.9);
+    margin-bottom: 0;
+}
+
+.timeline-description {
+    color: rgba(226, 241, 248, 0.8);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.timeline-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-badge {
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--primary);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.skill-badge:hover {
+    background: rgba(0, 243, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Stats Section - Horizontal Single Row */
+.stats-section {
+    margin-top: 80px;
+    padding: 0 15px;
+    width: 100%;
+}
+
+.stats-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+    flex-wrap: nowrap;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(10, 10, 26, 0.6);
+    border: 1px solid rgba(0, 243, 255, 0.1);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.stat-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 243, 255, 0.15);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--darker);
+    font-size: 1.5rem;
+    margin: 0 auto 20px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover .stat-icon {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.stat-label {
+    color: rgba(226, 241, 248, 0.7);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (min-width: 1200px) {
+    .section-title {
+        font-size: 3rem;
+    }
+    .timeline-content {
+        padding: 30px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .section-title {
+        font-size: 2.6rem;
+    }
+    .timeline-content {
+        padding: 25px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .section {
+        padding-top: 16px;
+        min-height: auto;
+    }
+    .section-title {
+        font-size: 2.4rem;
+    }
+    .section-subtitle p {
+        font-size: 1.1rem;
+    }
+    .timeline-content {
+        padding: 25px;
+    }
+    .timeline-title {
+        font-size: 1.3rem;
+    }
+    .timeline-company {
+        font-size: 1rem;
+    }
+    .timeline-description {
+        font-size: 0.95rem;
+    }
+    .stat-card {
+        padding: 25px 15px;
+    }
+    .stat-number {
+        font-size: 2.2rem;
+    }
+    .stat-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 1.3rem;
+    }
+    .stats-row {
+        gap: 15px;
+    }
+    .company-logo {
+        max-width: 50px;
+        padding: 5px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .section {
+        padding-top: 14px;
+        min-height: auto;
+    }
+    .section-header {
+        margin-bottom: 40px;
+    }
+    .section-title {
+        font-size: 2.2rem;
+    }
+    .section-subtitle p {
+        font-size: 1.1rem;
+    }
+    .section-icon {
+        font-size: 2.5rem;
+    }
+    .timeline::after {
+        left: 31px;
+    }
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+    .timeline-item::after {
+        left: 21px;
+    }
+    .right {
+        left: 0%;
+    }
+    .timeline-content {
+        padding: 20px;
+    }
+    .timeline-title {
+        font-size: 1.2rem;
+    }
+    .timeline-company {
+        font-size: 1rem;
+    }
+    .timeline-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    .stats-section {
+        margin-top: 60px;
+    }
+    .stats-row {
+        gap: 12px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+    }
+    .stat-card {
+        flex: 0 0 auto;
+        width: calc(33.33% - 10px);
+        min-width: 140px;
+        padding: 20px 15px;
+    }
+    .stat-number {
+        font-size: 2rem;
+    }
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    .company-logo {
+        max-width: 45px;
+        padding: 4px;
+    }
+}
+
+@media (max-width: 575px) {
+    .section {
+        padding-top: 12px;
+        min-height: auto;
+    }
+    .section-header {
+        margin-bottom: 30px;
+        padding: 0 10px;
+    }
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+    .section-subtitle p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    .timeline::after {
+        left: 15px;
+    }
+    .timeline-item {
+        width: 100%;
+        padding-left: 45px;
+        padding-right: 15px;
+        margin-bottom: 25px;
+    }
+    .timeline-item::after {
+        left: 5px;
+        width: 16px;
+        height: 16px;
+        top: 20px;
+    }
+    .right {
+        left: 0%;
+    }
+    .timeline-content {
+        padding: 20px 15px;
+        border-radius: 12px;
+    }
+    .timeline-date {
+        font-size: 0.8rem;
+        padding: 3px 10px;
+    }
+    .timeline-title {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    .timeline-company {
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+    .timeline-description {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 12px;
+    }
+    .timeline-skills {
+        gap: 6px;
+    }
+    .skill-badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+    .stats-section {
+        margin-top: 40px;
+        padding: 0 10px;
+    }
+    .stats-row {
+        gap: 12px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+    .stats-row::-webkit-scrollbar {
+        height: 3px;
+    }
+    .stats-row::-webkit-scrollbar-track {
+        background: rgba(0, 243, 255, 0.1);
+        border-radius: 10px;
+    }
+    .stats-row::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
+    }
+    .stat-card {
+        flex: 0 0 auto;
+        width: 140px;
+        padding: 20px 12px;
+        margin-bottom: 0;
+        border-radius: 12px;
+    }
+    .stat-number {
+        font-size: 1.8rem;
+    }
+    .stat-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    .container {
+        padding: 0 15px;
+    }
+    .company-logo {
+        max-width: 40px;
+        padding: 4px;
+    }
+    .timeline-header {
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 375px) {
+    .section-title {
+        font-size: 1.6rem;
+    }
+    .timeline-item {
+        padding-left: 40px;
+        padding-right: 10px;
+    }
+    .timeline-content {
+        padding: 15px 12px;
+    }
+    .timeline-title {
+        font-size: 1rem;
+    }
+    .timeline-company {
+        font-size: 0.9rem;
+    }
+    .stat-card {
+        width: 130px;
+        padding: 15px 10px;
+    }
+    .stat-number {
+        font-size: 1.6rem;
+    }
+    .company-logo {
+        max-width: 35px;
+        padding: 3px;
+    }
+}
+
+@media (max-height: 500px) and (max-width: 768px) {
+    .section {
+        padding-top: 10px;
+        min-height: auto;
+    }
+    .timeline-item {
+        padding: 8px 35px;
+    }
+    .timeline-content {
+        padding: 15px;
+    }
+    .stats-section {
+        margin-top: 30px;
+    }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .timeline::after {
+        width: 3px;
+    }
+    .timeline-item::after {
+        border-width: 3px;
+    }
+}
+
+@media print {
+    .timeline-content:hover,
+    .stat-card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    .timeline-item::after {
+        background: #000 !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .timeline-content,
+    .stat-card,
+    .timeline-item::after {
+        transition: none !important;
+    }
+    .timeline-content::before {
+        display: none;
+    }
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .timeline-content,
+    .stat-card {
+        background: rgba(0, 0, 0, 0.4);
+    }
+}
+
+@media (hover: none) {
+    .timeline-content:hover {
+        transform: none;
+        box-shadow: 0 5px 15px rgba(0, 243, 255, 0.1);
+    }
+    .skill-badge:hover {
+        transform: none;
+    }
+    .stat-card:hover {
+        transform: none;
+    }
+    .timeline-item:hover::after {
+        transform: none;
+        background: var(--primary);
+    }
+    .company-logo:hover {
+        transform: none;
+    }
+}
+
+/* Increase logo size */
+.company-logo {
+    max-width: 150px;      /* Increase from 55px to desired size */
+    padding: 1px;         /* Slightly more padding for visual balance */
+    border-radius: 5px;  /* Optional: slightly larger rounding */
+}
+
+/* For tablets, keep slightly smaller but still larger than before */
+@media (min-width: 768px) and (max-width: 991px) {
+    .company-logo {
+        max-width: 100px;
+        padding: 1px;
+    }
+}
+
+/* For mobile devices, adjust proportionally */
+@media (max-width: 575px) {
+    .company-logo {
+        max-width: 100px;   /* Still larger than the original 40px, adjust as needed */
+        padding: 2px;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Experience Section -->
+<section id="experience" class="section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="section-subtitle">
+                <p>My journey through the tech industry and professional growth</p>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline">
+            
+            <!-- Current Position: IBM CSRBOX -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">July - 2025</div>
+                    <div class="timeline-header">
+                        <div class="timeline-header-text">
+                            <h3 class="timeline-title">AI/ML Developer - TeroTam</h3>
+                            <h4 class="timeline-company">Internship</h4>
+                        </div>
+                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/terotam.png" alt="Terotam" class="company-logo">
+                    </div>
+                    <p class="timeline-description">
+                        I am starting a new position in TeroTam as a AI/ML Developer Intern. 
+                    </p>
+                    <div class="timeline-skills">
+                        <span class="skill-badge">Ai/ML</span>
+                        <span class="skill-badge">Python</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Developers Arena Position -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">Nov 2025 - Dec 2025</div>
+                    <div class="timeline-header">
+                        <div class="timeline-header-text">
+                            <h3 class="timeline-title">Data Scientist</h3>
+                            <h4 class="timeline-company">The Developers Arena | Online </h4>
+                        </div>
+                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/The%20Developers%20arena%20logo.png" alt="The Developers Arena" class="company-logo">
+                    </div>
+                    <p class="timeline-description">
+                        Contributed to <strong>Data Scientist</strong> initiatives involving data collection, cleaning, preprocessing, and analysis of structured datasets. Leveraged <strong>Python</strong>, <strong>Pandas</strong>, and <strong>NumPy</strong> to perform statistical analysis, data transformation, and <strong>Exploratory Data Analysis (EDA)</strong>. Developed insightful visualizations and reports, applied fundamental <strong>Machine Learning</strong> concepts, and supported data-driven decision-making through effective analytical and problem-solving approaches.
+                    </p>
+                    <div class="timeline-skills">
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">Pandas</span>
+                        <span class="skill-badge">Numpy</span>
+                        <span class="skill-badge">Matplotlib</span>
+                        <span class="skill-badge">Seaborn</span>
+                        <span class="skill-badge">EDA</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Position: IBM CSRBOX -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">July - 2025</div>
+                    <div class="timeline-header">
+                        <div class="timeline-header-text">
+                            <h3 class="timeline-title">Ai Intern - IBM CSRBOX</h3>
+                            <h4 class="timeline-company">Online - Internship</h4>
+                        </div>
+                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/ibm%20logo.jpg" alt="IBM Logo" class="company-logo">
+                    </div>
+                    <p class="timeline-description">
+                        Thrilled to share that I've successfully completed the IBM SkillsBuild AI 5 Weeks Summer Certification – July 2025! Gained hands-on experience in AI, ML, DL & AI Agents, and built "Kisan Saathi AI", an AI agent empowering Indian farmers with crop insights, market access & smart farming solutions — aligned with SDG: No Poverty.
+                    </p>
+                    <div class="timeline-skills">
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">Ai/ML</span>
+                        <span class="skill-badge">Basics of AI Agent</span>
+                        <span class="skill-badge">Team-Work</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Imbuesoft LLP Position -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">Jan 2025 – July 2025</div>
+                    <div class="timeline-header">
+                        <div class="timeline-header-text">
+                            <h3 class="timeline-title">AI/ML Developer Intern</h3>
+                            <h4 class="timeline-company">Imbuesoft LLP | Rajkot</h4>
+                        </div>
+                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/imbuesoft%20llp%20internship%20logo.jpg" alt="Imbuesoft LLP Logo" class="company-logo">
+                    </div>
+                    <p class="timeline-description">
+                        Worked with <strong>Large Language Models (LLMs)</strong> using <strong>Ollama</strong> for local AI inference, summarization, and conversational AI applications. Applied core <strong>Machine Learning</strong> concepts including data preprocessing, feature engineering, model training, and evaluation. Developed AI-powered data pipelines and web scraping systems using <strong>BeautifulSoup</strong> and <strong>Scrapy</strong>. Built backend services and APIs using <strong>Python</strong>, <strong>FastAPI</strong>, and <strong>Django</strong>.
+                    </p>
+                    <div class="timeline-skills">
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">FastAPI</span>
+                        <span class="skill-badge">Django</span>
+                        <span class="skill-badge">LLMs</span>
+                        <span class="skill-badge">Ollama</span>
+                        <span class="skill-badge">Machine Learning</span>
+                        <span class="skill-badge">BeautifulSoup</span>
+                        <span class="skill-badge">Scrapy</span>
+                        <span class="skill-badge">API Development</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previous Position: Bharat Intern -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">Nov - 2023</div>
+                    <div class="timeline-header">
+                        <div class="timeline-header-text">
+                            <h3 class="timeline-title">Web Developer Internship</h3>
+                            <h4 class="timeline-company">Bharat Intern - Online</h4>
+                        </div>
+                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/bharat%20intern%20internship.png" alt="Bharat Intern Logo" class="company-logo">
+                    </div>
+                    <p class="timeline-description">
+                        Excited to share that I've successfully completed my Web Developer Internship at Bharat Intern 🎉🌐 — where I designed and developed projects like a Netflix Clone and a Personal Portfolio Website using HTML & CSS, showcasing my front-end skills and passion for clean, user-friendly design.
+                    </p>
+                    <div class="timeline-skills">
+                        <span class="skill-badge">HTML</span>
+                        <span class="skill-badge">CSS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section - Single Horizontal Row with 5 Cards -->
+        <div class="stats-section">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Internships</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number">9+</div>
+                    <div class="stat-label">Months Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Technologies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <div class="stat-number">70+</div>
+                    <div class="stat-label">Git Repo</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Enhanced smooth scrolling with offset for fixed navbar
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const target = document.querySelector(targetId);
+        if (target) {
+            const offsetTop = target.offsetTop - 80; // Adjust for fixed navbar
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
+
+            // Update URL without page reload
+            history.pushState(null, null, targetId);
+        }
+    });
+});
+
+// Update active nav link on scroll with threshold
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const scrollPos = window.pageYOffset + 100;
+
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+
+        if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+});
+
+// Handle page load with hash in URL
+window.addEventListener('load', function() {
+    if (window.location.hash) {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+            setTimeout(() => {
+                const offsetTop = target.offsetTop - 80;
+                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+            }, 100);
+        }
+    }
+});
+
+// Add hover effects to timeline items only for non-touch devices
+document.addEventListener('DOMContentLoaded', function() {
+    const timelineItems = document.querySelectorAll('.timeline-content');
+
+    if (window.matchMedia("(hover: hover)").matches) {
+        timelineItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    }
+
+    // Animate stat numbers on scroll
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const statObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const statNumber = entry.target;
+                const finalValue = statNumber.getAttribute('data-final') || statNumber.textContent;
+                statNumber.textContent = '0';
+                statNumber.setAttribute('data-final', finalValue);
+
+                setTimeout(() => {
+                    animateCounter(statNumber, parseInt(finalValue));
+                }, 300);
+            }
+        });
+    }, {
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Set initial data and observe stat numbers
+    statNumbers.forEach(statNumber => {
+        const finalValue = statNumber.textContent;
+        statNumber.setAttribute('data-final', finalValue);
+        statNumber.textContent = '0';
+        statObserver.observe(statNumber);
+    });
+
+    // Counter animation function
+    function animateCounter(element, target) {
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current);
+        }, 16);
+    }
+
+    // Add click effects to stat cards for touch devices
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.transform = 'translateY(-8px) scale(1.05)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(-5px) scale(1)';
+            }, 150);
+        });
+    });
+
+    // Animate timeline items on scroll
+    const timelineObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateX(0)';
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Set initial states for timeline items
+    const timelineContents = document.querySelectorAll('.timeline-content');
+    timelineContents.forEach((content, index) => {
+        content.style.opacity = '0';
+        content.style.transition = 'all 0.6s ease';
+
+        if (content.closest('.left')) {
+            content.style.transform = 'translateX(-50px)';
+        } else {
+            content.style.transform = 'translateX(50px)';
+        }
+
+        timelineObserver.observe(content);
+    });
+});
+
+// Touch device optimizations
+if ('ontouchstart' in window) {
+    // Add touch feedback for timeline items
+    const timelineItems = document.querySelectorAll('.timeline-content');
+    timelineItems.forEach(item => {
+        item.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+        });
+
+        item.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+
+    // Make stat cards more touch-friendly
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+        card.style.cursor = 'pointer';
+    });
+}
+</script>
+{% endblock %}

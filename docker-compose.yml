@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  portfolio:
+    build: .
+    image: ravi-portfolio:latest
+    container_name: ravi-portfolio
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    volumes:
+      - portfolio_data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  portfolio_data:

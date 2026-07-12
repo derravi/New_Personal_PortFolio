@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}Skill Assessment Quiz - Ravi Der{% endblock %}
+
+{% block extra_css %}
+<style>
+.quiz-wrap { max-width: 700px; margin: 0 auto; }
+.quiz-card { padding: 26px; margin-bottom: 18px; }
+.quiz-question { font-size: 1.05rem; margin-bottom: 16px; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-option {
+    padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.04); cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem;
+}
+.quiz-option:hover { border-color: var(--primary); }
+.quiz-option.selected { border-color: var(--primary); background: rgba(0,243,255,0.12); }
+.quiz-progress { height: 6px; border-radius: 4px; background: rgba(255,255,255,0.1); overflow: hidden; margin-bottom: 26px; }
+.quiz-progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 0.3s ease; }
+.quiz-result { text-align: center; padding: 40px 20px; }
+.quiz-result .score { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container quiz-wrap">
+        <h2 class="section-title" style="font-size:2.2rem;">Python / ML Skill Assessment</h2>
+        <p style="text-align:center; opacity:0.75; margin-bottom:30px;">
+            A quick 5-question quiz to test your Python & Machine Learning fundamentals.
+        </p>
+
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizProgress" style="width:0%;"></div></div>
+
+        <div id="quizIntro" class="glass-card quiz-card text-center">
+            <p style="margin-bottom:18px;">Ready when you are — no login required.</p>
+            <input type="text" id="quizName" placeholder="Your name (optional)" style="padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:var(--light); margin-bottom:16px; width:100%; max-width:280px;">
+            <br>
+            <button class="btn-futuristic" id="startQuizBtn"><span>Start Quiz</span> <i class="fas fa-play"></i></button>
+        </div>
+
+        <div id="quizBody" style="display:none;"></div>
+
+        <div id="quizResult" class="glass-card quiz-result" style="display:none;"></div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const QUIZ_QUESTIONS = [
+    { q: "What does 'PEP 8' refer to in Python?", options: ["A style guide", "A package manager", "A testing framework", "A web server"], answer: 0 },
+    { q: "Which library is most commonly used for dataframes in Python?", options: ["NumPy", "Pandas", "Flask", "Requests"], answer: 1 },
+    { q: "In supervised learning, what does the model learn from?", options: ["Unlabeled data only", "Labeled input/output pairs", "Random noise", "Only images"], answer: 1 },
+    { q: "Which metric is most useful for a highly imbalanced classification problem?", options: ["Accuracy", "Precision/Recall", "Mean Squared Error", "R-squared"], answer: 1 },
+    { q: "What is overfitting?", options: ["Model performs poorly on both train and test data", "Model performs well on train data but poorly on new data", "Model trains too fast", "Model uses too little data"], answer: 1 },
+];
+
+let currentQuestion = 0;
+let selectedAnswers = [];
+
+document.getElementById('startQuizBtn').addEventListener('click', function () {
+    document.getElementById('quizIntro').style.display = 'none';
+    document.getElementById('quizBody').style.display = 'block';
+    renderQuestion();
+});
+
+function renderQuestion() {
+    const body = document.getElementById('quizBody');
+    const item = QUIZ_QUESTIONS[currentQuestion];
+    document.getElementById('quizProgress').style.width = ((currentQuestion) / QUIZ_QUESTIONS.length * 100) + '%';
+
+    body.innerHTML = `
+        <div class="glass-card quiz-card">
+            <div class="quiz-question">Q${currentQuestion + 1}. ${item.q}</div>
+            <div class="quiz-options">
+                ${item.options.map((opt, i) => `<div class="quiz-option" data-index="${i}">${opt}</div>`).join('')}
+            </div>
+        </div>
+    `;
+
+    body.querySelectorAll('.quiz-option').forEach(function (el) {
+        el.addEventListener('click', function () {
+            const idx = parseInt(el.getAttribute('data-index'), 10);
+            selectedAnswers[currentQuestion] = idx;
+            setTimeout(function () {
+                currentQuestion++;
+                if (currentQuestion < QUIZ_QUESTIONS.length) {
+                    renderQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }, 180);
+        });
+    });
+}
+
+async function finishQuiz() {
+    document.getElementById('quizProgress').style.width = '100%';
+    document.getElementById('quizBody').style.display = 'none';
+
+    let score = 0;
+    QUIZ_QUESTIONS.forEach(function (q, i) {
+        if (selectedAnswers[i] === q.answer) score++;
+    });
+
+    const resultBox = document.getElementById('quizResult');
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = `<div class="score">${score}/${QUIZ_QUESTIONS.length}</div><p>Calculating your level...</p>`;
+
+    try {
+        const res = await fetch('/api/quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: document.getElementById('quizName').value.trim() || 'Anonymous',
+                score: score,
+                total: QUIZ_QUESTIONS.length,
+            }),
+        });
+        const data = await res.json();
+        resultBox.innerHTML = `
+            <div class="score">${data.score}/${data.total}</div>
+            <p style="font-size:1.1rem; margin-top:8px;">Level: <strong>${data.level}</strong> (${data.percentage}%)</p>
+            <a href="/quiz" class="btn-futuristic" style="margin-top:18px; display:inline-block;"><span>Retake Quiz</span></a>
+        `;
+    } catch (e) {
+        resultBox.innerHTML += `<p style="opacity:0.7;">(Could not save result — check your connection.)</p>`;
+    }
+}
+</script>
+{% endblock %}

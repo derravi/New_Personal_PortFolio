@@ -1,0 +1,1012 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Ravi Der{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #00f3ff;
+        --secondary: #7b00ff;
+        --dark: #0a0a1a;
+        --darker: #050510;
+        --light: #e2f1f8;
+        --accent: #ff00c8;
+        --gold: #ffd700;
+        --purple: #bf00ff;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Exo 2', sans-serif;
+        background-color: var(--darker);
+        color: var(--light);
+        overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+    }
+
+    .section {
+        min-height: 100vh;
+        position: relative;
+        padding: 20px 0;
+    }
+
+    /* Background Animation */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background:
+            radial-gradient(circle at 15% 50%, rgba(123, 0, 255, 0.1) 0%, transparent 20%),
+            radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.1) 0%, transparent 20%),
+            radial-gradient(circle at 50% 80%, rgba(255, 0, 200, 0.05) 0%, transparent 20%);
+        z-index: -1;
+    }
+
+    /* ===== HERO ===== */
+    #home {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, var(--darker) 0%, rgba(10, 10, 26, 0.9) 100%);
+        position: relative;
+        overflow: hidden;
+        padding: 80px 0;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 900;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+        background-size: 300% 300%;
+        animation: heroGradientShift 8s ease infinite;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+        line-height: 1.2;
+    }
+
+    @keyframes heroGradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .typewriter-container {
+        margin-bottom: 30px;
+        min-height: 70px;
+    }
+
+    .typewriter-text {
+        font-size: 1.5rem;
+        color: rgba(226, 241, 248, 0.9);
+        font-weight: 500;
+        border-right: 3px solid var(--primary);
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        animation: blinkCursor 0.75s step-end infinite;
+    }
+
+    @keyframes blinkCursor {
+        0%,
+        100% {
+            border-color: var(--primary);
+        }
+        50% {
+            border-color: transparent;
+        }
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+        color: rgba(226, 241, 248, 0.8);
+        line-height: 1.6;
+    }
+
+    .btn-futuristic {
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border: none;
+        color: var(--darker);
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 243, 255, 0.3);
+        text-decoration: none;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-futuristic::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-futuristic:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-futuristic:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0, 243, 255, 0.6);
+        color: var(--darker);
+    }
+
+    .profile-photo-container {
+        position: relative;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto;
+        border: 3px solid var(--primary);
+        box-shadow: 0 0 50px rgba(0, 243, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .profile-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .profile-photo-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 70px rgba(0, 243, 255, 0.5);
+    }
+
+    .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .floating-element {
+        position: absolute;
+        background: radial-gradient(circle, rgba(0, 243, 255, 0.15), transparent);
+        border-radius: 50%;
+        animation: float 20s infinite linear;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-30px) rotate(180deg);
+        }
+        100% {
+            transform: translateY(0) rotate(360deg);
+        }
+    }
+
+    /* ===== SECTION HEADER ===== */
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+    }
+
+    .section-icon i {
+        font-size: 3rem;
+        color: var(--primary);
+        text-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+    }
+
+    .section-title {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    .section-subtitle p {
+        color: var(--light);
+        opacity: 0.85;
+        font-size: 1rem;
+    }
+
+    /* ---- Section Divider Glow ---- */
+    .section-divider {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 12px;
+    }
+    .section-divider .line {
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+        border-radius: 2px;
+    }
+    .section-divider .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--primary);
+        box-shadow: 0 0 20px var(--primary);
+        animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.6);
+            opacity: 0.6;
+        }
+    }
+
+    /* ===== ABOUT CARDS ===== */
+    .bio-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(0, 243, 255, 0.2);
+        border-radius: 20px;
+        padding: 35px 40px;
+        box-shadow: 0 0 30px rgba(0, 243, 255, 0.08);
+        transition: all 0.4s ease;
+        backdrop-filter: blur(4px);
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    .bio-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at 30% 40%, rgba(0, 243, 255, 0.05), transparent 60%);
+        pointer-events: none;
+    }
+    .bio-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--primary);
+        box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+    }
+
+    .bio-card .bio-header {
+        position: relative;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+    .bio-card .bio-header .bio-icon {
+        font-size: 2rem;
+        color: var(--primary);
+        text-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+    }
+    .bio-card .bio-title {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        font-size: 1.6rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin: 0;
+    }
+    .bio-card .bio-glow {
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary), transparent);
+        border-radius: 2px;
+    }
+    .bio-card .bio-text {
+        line-height: 1.9;
+        font-size: 1.05rem;
+        opacity: 0.92;
+        position: relative;
+        z-index: 1;
+    }
+    .bio-card .bio-text b {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    /* ===== JOURNEY TIMELINE ===== */
+    .journey-timeline {
+        position: relative;
+        padding-left: 40px;
+        margin: 10px 0 20px;
+    }
+    .journey-timeline::before {
+        content: '';
+        position: absolute;
+        left: 12px;
+        top: 8px;
+        bottom: 8px;
+        width: 2px;
+        background: linear-gradient(180deg, var(--primary), var(--secondary), var(--accent));
+        border-radius: 2px;
+        opacity: 0.5;
+    }
+    .journey-item {
+        position: relative;
+        margin-bottom: 24px;
+        padding-left: 20px;
+    }
+    .journey-item::before {
+        content: '';
+        position: absolute;
+        left: -34px;
+        top: 6px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary);
+        box-shadow: 0 0 20px var(--primary);
+        border: 2px solid var(--darker);
+    }
+    .journey-item .journey-year {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--primary);
+        letter-spacing: 0.5px;
+        margin-bottom: 2px;
+    }
+    .journey-item .journey-desc {
+        font-size: 1rem;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+
+    /* ===== FEATURE CARDS ===== */
+    .features-grid {
+        margin-top: 20px;
+    }
+    .feature-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(0, 243, 255, 0.18);
+        border-radius: 18px;
+        padding: 30px 25px;
+        box-shadow: 0 0 30px rgba(0, 243, 255, 0.06);
+        transition: all 0.4s ease;
+        height: 100%;
+        backdrop-filter: blur(4px);
+        position: relative;
+        overflow: hidden;
+    }
+    .feature-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 18px;
+        border: 1px solid transparent;
+        transition: border-color 0.4s ease;
+        pointer-events: none;
+    }
+    .feature-card:hover::after {
+        border-color: var(--primary);
+    }
+    .feature-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(0, 243, 255, 0.4);
+        box-shadow: 0 0 50px rgba(0, 243, 255, 0.18);
+    }
+
+    .feature-icon {
+        font-size: 2.4rem;
+        color: var(--primary);
+        margin-bottom: 18px;
+        text-shadow: 0 0 25px rgba(0, 243, 255, 0.4);
+        display: inline-block;
+    }
+
+    .feature-title {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: var(--light);
+        margin-bottom: 12px;
+    }
+
+    .feature-text {
+        font-size: 0.98rem;
+        line-height: 1.7;
+        opacity: 0.88;
+        margin-bottom: 14px;
+    }
+
+    .feature-tags {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .feature-tag {
+        display: inline-block;
+        background: rgba(0, 243, 255, 0.08);
+        border: 1px solid rgba(0, 243, 255, 0.2);
+        border-radius: 30px;
+        padding: 5px 16px;
+        font-size: 0.8rem;
+        color: var(--primary);
+        transition: all 0.3s ease;
+        letter-spacing: 0.3px;
+    }
+    .feature-tag:hover {
+        background: rgba(0, 243, 255, 0.2);
+        color: var(--accent);
+        border-color: var(--accent);
+    }
+
+    /* ===== STATS — 5 IN ONE ROW ===== */
+    .stats-section {
+        margin-top: 40px;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(0, 243, 255, 0.15);
+        border-radius: 16px;
+        padding: 22px 12px;
+        text-align: center;
+        transition: all 0.4s ease;
+        height: 100%;
+        backdrop-filter: blur(4px);
+    }
+    .stat-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--primary);
+        box-shadow: 0 0 40px rgba(0, 243, 255, 0.15);
+        background: rgba(0, 243, 255, 0.04);
+    }
+
+    .stat-number {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        font-size: 2.2rem;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 4px;
+        line-height: 1.2;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--light);
+        opacity: 0.75;
+        letter-spacing: 0.3px;
+        font-weight: 500;
+    }
+
+    /* ===== RESPONSIVE ===== */
+
+    @media (min-width: 1200px) {
+        .hero-title {
+            font-size: 4.5rem;
+        }
+        .profile-photo-container {
+            width: 360px;
+            height: 360px;
+        }
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .hero-title {
+            font-size: 3.8rem;
+        }
+        .profile-photo-container {
+            width: 305px;
+            height: 305px;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+        .hero-title {
+            font-size: 3.2rem;
+            text-align: center;
+        }
+        .hero-subtitle {
+            font-size: 1.3rem;
+            text-align: center;
+        }
+        .typewriter-text {
+            font-size: 1.3rem;
+            white-space: normal;
+            border-right: none;
+        }
+        .typewriter-container {
+            min-height: auto;
+            text-align: center;
+        }
+        .profile-photo-container {
+            width: 260px;
+            height: 260px;
+            margin-top: 40px;
+        }
+        .hero-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .bio-card {
+            padding: 25px 20px;
+        }
+        .bio-card .bio-title {
+            font-size: 1.3rem;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .hero-title {
+            font-size: 2.5rem;
+            text-align: center;
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .typewriter-text {
+            font-size: 1.1rem;
+            white-space: normal;
+            border-right: none;
+            animation: none;
+        }
+        .typewriter-container {
+            min-height: auto;
+            text-align: center;
+        }
+        .profile-photo-container {
+            width: 210px;
+            height: 210px;
+            margin-top: 30px;
+        }
+        .hero-content {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+        }
+        .bio-card .bio-title {
+            font-size: 1.2rem;
+        }
+        .bio-card {
+            padding: 20px 16px;
+        }
+        .stat-number {
+            font-size: 1.7rem;
+        }
+        .stat-card {
+            padding: 16px 8px;
+        }
+        .feature-card {
+            padding: 20px 16px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        .typewriter-text {
+            font-size: 1rem;
+        }
+        .profile-photo-container {
+            width: 160px;
+            height: 160px;
+        }
+        .stat-number {
+            font-size: 1.4rem;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+        }
+        .section-title {
+            font-size: 1.4rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .floating-element,
+        .btn-futuristic::before,
+        .section-divider .dot {
+            animation: none !important;
+        }
+        .typewriter-text {
+            animation: none;
+            border-right: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ===== HOME / HERO ===== -->
+<section id="home" class="section">
+    <div class="floating-elements"></div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content">
+                <h1 class="hero-title">BUILDING. INTELLIGENCE. THROUGH CODE.</h1>
+                <div class="typewriter-container">
+                    <span class="typewriter-text" id="typewriter"></span>
+                </div>
+                <p class="hero-subtitle">I'm a curious developer passionate about AI, data, and innovation — creating smart, meaningful solutions that inspire progress and empower people.</p>
+                <a href="{{ url_for('projects') }}" class="btn btn-futuristic">View Projects</a>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image-container">
+                    <div class="profile-photo-container">
+                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Profile%20image.jpg" alt="Ravi Der" class="profile-photo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about" class="section">
+    <div class="container">
+
+        <!-- Section Header -->
+        <div class="section-header">
+            <h2 class="section-title">Discover the journey behind the code</h2>
+            <div class="section-divider">
+                <span class="line"></span>
+                <span class="dot"></span>
+                <span class="line"></span>
+            </div>
+            <div class="section-subtitle mt-3">
+                <p>Every line of code tells a story — here's mine.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+
+                <!-- ===== BIO ===== -->
+                <div class="bio-card">
+                    <div class="bio-header">
+                        <span class="bio-icon"><i class="fas fa-user-astronaut"></i></span>
+                        <h3 class="bio-title">About Me_</h3>
+                        <span class="bio-glow"></span>
+                    </div>
+                    <p class="bio-text">
+                        Hello! I'm <b>Ravi Der</b>. I recently completed my B.Tech in Information Technology and am currently pursuing an M.Tech in Artificial Intelligence, Machine Learning, and Data Science. I'm from Mandvi (District Bhavnagar). My father is a farmer, and my mother is a homemaker. I also have an elder brother and a grandfather.
+                    </p>
+                    <p class="bio-text mt-2">
+                        I have completed a total of <b>three internships</b>:
+                        <br>▶ 5-week IBM SkillsBuild AI Summer Internship as an <b>AI Intern</b>.
+                        <br>▶ 6-month internship at Imbuesoft LLP as a <b>Python Full Stack Developer</b>.
+                        <br>▶ 1-month online internship with Bharat Intern as a <b>Web Developer Intern</b>.
+                    </p>
+                </div>
+
+                <!-- ===== PROFESSIONAL JOURNEY ===== -->
+                <div class="bio-card">
+                    <div class="bio-header">
+                        <span class="bio-icon"><i class="fas fa-route"></i></span>
+                        <h3 class="bio-title">Professional Journey_</h3>
+                        <span class="bio-glow"></span>
+                    </div>
+                    <p class="bio-text">
+                        I am an AI & Data Science enthusiast with a strong foundation in <b>Python</b>, <b>Pandas</b>, <b>NumPy</b>, <b>Matplotlib</b>, and <b>Scikit-learn</b>, passionate about transforming data into actionable insights and intelligent solutions.
+                        <br><br>
+                        My focus lies in applying machine learning, data analytics, and AI-powered systems to address real-world challenges with measurable impact.
+                    </p>
+
+                    <div class="journey-timeline">
+                        <div class="journey-item">
+                            <div class="journey-year"><i class="fas fa-database me-1"></i> ML &amp; Data</div>
+                            <div class="journey-desc"><b>Models:</b> KNN, Decision Tree, Regression, Classification &mdash; <b>Tools:</b> Pandas, NumPy, Matplotlib for cleaning, visualization, and insight generation</div>
+                        </div>
+                        <div class="journey-item">
+                            <div class="journey-year"><i class="fas fa-code me-1"></i> Frameworks &amp; APIs</div>
+                            <div class="journey-desc"><b>FastAPI</b> and <b>Flask</b> for deploying data-driven applications &bull; <b>Data Visualization:</b> crafting clear, engaging analytical charts</div>
+                        </div>
+                        <div class="journey-item">
+                            <div class="journey-year"><i class="fas fa-leaf me-1"></i> Impact Projects</div>
+                            <div class="journey-desc">AI-powered platform for farmers to improve market access and price forecasting (aligned with UN SDG &mdash; <b>No Poverty</b>) &bull; Environmental analytics: AQI prediction and pattern visualization</div>
+                        </div>
+                        <div class="journey-item">
+                            <div class="journey-year"><i class="fas fa-rocket me-1"></i> Current Focus</div>
+                            <div class="journey-desc">Expanding expertise in <b>Deep Learning</b>, <b>Neural Networks</b>, and <b>NLP</b> to deliver innovative, efficient, and ethical AI solutions.</div>
+                        </div>
+                    </div>
+
+                    <p class="bio-text mt-2">
+                        📩 Always open to opportunities in <b>AI/ML</b>, <b>Data Analytics</b>, and <b>Python-based development roles</b>.
+                    </p>
+                </div>
+
+                <!-- ===== SKILLS GRID (4 cards) ===== -->
+                <div class="features-grid mt-4">
+                    <div class="row g-4">
+                        <!-- Card 1 -->
+                        <div class="col-md-6">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-code"></i></div>
+                                <h4 class="feature-title">What I Do</h4>
+                                <p class="feature-text">I'm a passionate developer focused on Artificial Intelligence and Machine Learning. I have a strong foundation in Python, AI, and ML, and I'm currently expanding my expertise in Deep Learning, Neural Networks, and Natural Language Processing. My goal is to build intelligent systems and data-driven applications that solve real-world problems and push the boundaries of technology.</p>
+                                <div class="feature-tags">
+                                    <span class="feature-tag">Python Developer</span>
+                                    <span class="feature-tag">AI/ML Developer</span>
+                                    <span class="feature-tag">Data Scientist</span>
+                                    <span class="feature-tag">Data Analyst</span>
+                                    <span class="feature-tag">Gen-AI Developer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="col-md-6">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                                <h4 class="feature-title">My Passion</h4>
+                                <p class="feature-text">I'm passionate about learning and building technology that creates real impact. From Python development to AI and Machine Learning, I aim to turn innovative ideas into intelligent, practical solutions that help people and communities grow.</p>
+                                <div class="feature-tags">
+                                    <span class="feature-tag">Exploring AI</span>
+                                    <span class="feature-tag">Building Solutions</span>
+                                    <span class="feature-tag">Creating Impact</span>
+                                    <span class="feature-tag">Python | AI | ML</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="col-md-6">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+                                <h4 class="feature-title">My Approach</h4>
+                                <p class="feature-text">Harnessing AI, machine learning, and deep learning to create intelligent solutions. I focus on turning complex problems into practical, efficient, and impactful applications.</p>
+                                <div class="feature-tags">
+                                    <span class="feature-tag">Creative Thinking</span>
+                                    <span class="feature-tag">Intelligent Design</span>
+                                    <span class="feature-tag">Data Inspired</span>
+                                    <span class="feature-tag">Future Ready</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="col-md-6">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fas fa-eye"></i></div>
+                                <h4 class="feature-title">My Vision</h4>
+                                <p class="feature-text">Harnessing AI, ML, and advanced technologies to create innovative solutions that transform ideas into impactful, real-world applications.</p>
+                                <div class="feature-tags">
+                                    <span class="feature-tag">Creativity</span>
+                                    <span class="feature-tag">Transformation</span>
+                                    <span class="feature-tag">Insight</span>
+                                    <span class="feature-tag">Progress</span>
+                                    <span class="feature-tag">Evolution</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== STATS — 5 IN ONE ROW ===== -->
+                <div class="stats-section">
+                    <div class="row g-4">
+                        <!-- col-6 on small (2 per row), col-md on medium+ (5 equal columns) -->
+                        <div class="col-6 col-md">
+                            <div class="stat-card">
+                                <div class="stat-number" data-count="1">1</div>
+                                <div class="stat-label">Years Experience</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md">
+                            <div class="stat-card">
+                                <div class="stat-number" data-count="20">20</div>
+                                <div class="stat-label">Total Projects</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md">
+                            <div class="stat-card">
+                                <div class="stat-number" data-count="3">3</div>
+                                <div class="stat-label">Internships</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md">
+                            <div class="stat-card">
+                                <div class="stat-number" data-count="10">10</div>
+                                <div class="stat-label">Achievements</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md">
+                            <div class="stat-card">
+                                <div class="stat-number" data-count="15">15</div>
+                                <div class="stat-label">Technologies</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // ========== TYPEWRITER ==========
+        const phrases = [
+            "AI/ML Developer",
+            "Data Scientist",
+            "Data Analytics",
+            "Innovation Creator"
+        ];
+        let phraseIndex = 0,
+            charIndex = 0,
+            isDeleting = false;
+        const tw = document.getElementById('typewriter');
+
+        function typeEffect() {
+            if (!tw) return;
+            const cur = phrases[phraseIndex];
+            if (isDeleting) {
+                tw.textContent = cur.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                tw.textContent = cur.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            if (!isDeleting && charIndex === cur.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, 2000);
+                return;
+            }
+            if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(typeEffect, 500);
+                return;
+            }
+            setTimeout(typeEffect, isDeleting ? 50 : 100);
+        }
+        if (tw) typeEffect();
+
+        // ========== FLOATING ELEMENTS ==========
+        const fc = document.querySelector('.floating-elements');
+        if (fc) {
+            for (let i = 0; i < 15; i++) {
+                const s = Math.random() * 100 + 30;
+                const el = document.createElement('div');
+                el.className = 'floating-element';
+                el.style.cssText =
+                    `width:${s}px;height:${s}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*15}s;animation-duration:${12+Math.random()*18}s;opacity:${Math.random()*0.2+0.05};background:radial-gradient(circle,rgba(0,243,255,${Math.random()*0.15+0.05}),rgba(123,0,255,0.05))`;
+                fc.appendChild(el);
+            }
+        }
+
+        // ========== PROFILE PHOTO 3D TILT ==========
+        const pp = document.querySelector('.profile-photo');
+        const pc = document.querySelector('.profile-photo-container');
+        if (window.matchMedia("(hover: hover)").matches && pc && pp) {
+            pc.addEventListener('mousemove', function(e) {
+                const r = this.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width - 0.5;
+                const y = (e.clientY - r.top) / r.height - 0.5;
+                pp.style.transform = `scale(1.05) rotateY(${x*15}deg) rotateX(${y*-15}deg)`;
+            });
+            pc.addEventListener('mouseleave', function() {
+                pp.style.transform = 'scale(1) rotateY(0) rotateX(0)';
+            });
+        }
+        if (pp) {
+            pp.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
+            });
+        }
+
+        // ========== SCROLL REVEAL + COUNTER ==========
+        const cards = document.querySelectorAll('.feature-card, .stat-card, .bio-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                    if (el.classList.contains('stat-card')) {
+                        const num = el.querySelector('.stat-number');
+                        if (num && !num.classList.contains('animated')) {
+                            num.classList.add('animated');
+                            animateCounter(num);
+                        }
+                    }
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        cards.forEach(c => {
+            c.style.opacity = '0';
+            c.style.transform = 'translateY(30px)';
+            c.style.transition = 'all 0.6s ease';
+            observer.observe(c);
+        });
+
+        function animateCounter(el) {
+            const target = parseInt(el.getAttribute('data-count'));
+            const dur = 2000;
+            const step = target / (dur / 16);
+            let cur = 0;
+            const t = setInterval(() => {
+                cur += step;
+                if (cur >= target) { cur = target;
+                    clearInterval(t); }
+                el.textContent = Math.floor(cur);
+            }, 16);
+        }
+
+        // ===== HOVER (non-touch) =====
+        if (window.matchMedia("(hover: hover)").matches) {
+            document.querySelectorAll('.feature-card').forEach(c => {
+                c.addEventListener('mouseenter', function() { this.style.transform = 'translateY(-12px) scale(1.02)'; });
+                c.addEventListener('mouseleave', function() { this.style.transform = 'translateY(-8px) scale(1)'; });
+            });
+        }
+
+        // ===== TOUCH OPTIMIZATIONS =====
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('.btn-futuristic, .feature-card, .bio-card, .stat-card').forEach(el => {
+                el.addEventListener('touchstart', function() { this.style.transform = 'scale(0.98)'; });
+                el.addEventListener('touchend', function() { this.style.transform = 'scale(1)'; });
+            });
+        }
+    });
+</script>
+{% endblock %}

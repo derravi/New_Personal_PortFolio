@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Resume - Ravi Der{% endblock %}
+
+{% block extra_css %}
+<style>
+.resume-wrap { max-width: 780px; margin: 0 auto; }
+.resume-header { text-align: center; margin-bottom: 30px; }
+.resume-header h1 { font-size: 2.4rem; margin-bottom: 4px; }
+.resume-actions { display: flex; gap: 12px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
+.resume-section { margin-bottom: 26px; }
+.resume-section h3 { font-size: 1.15rem; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px; }
+.resume-skill-row { display: flex; gap: 10px; margin-bottom: 8px; font-size: 0.9rem; }
+.resume-skill-row strong { min-width: 100px; color: var(--secondary); }
+@media print {
+    .sidebar, .top-header, footer, .resume-actions, .chatbot-fab, .chatbot-panel, .floating-quicknav { display: none !important; }
+    .main-content { margin-left: 0 !important; }
+    body { background: #fff; color: #111; }
+    .resume-section h3 { color: #333; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container resume-wrap">
+        <div class="resume-header">
+            <h1>Ravi Der</h1>
+            <p style="opacity:0.75;">AI / Machine Learning &amp; Python Developer</p>
+        </div>
+
+        <div class="resume-actions">
+            <a href="{{ url_for('export_resume_pdf') }}" class="btn-futuristic"><span>Download PDF</span> <i class="fas fa-file-pdf"></i></a>
+            <a href="{{ url_for('export_resume_docx') }}" class="btn-futuristic1"><span>Download Word</span> <i class="fas fa-file-word"></i></a>
+            <button onclick="window.print()" class="btn-futuristic1"><span>Print</span> <i class="fas fa-print"></i></button>
+        </div>
+
+        <div class="resume-section">
+            <h3>About</h3>
+            <p style="opacity:0.85;">B.Tech in Information Technology, currently pursuing an M.Tech in Artificial
+                Intelligence, Machine Learning and Data Science. Based in Mandvi, District Bhavnagar, India.
+                Builder of 20+ AI/ML, data analysis and Python/Django projects, with 3 completed internships.</p>
+        </div>
+
+        <div class="resume-section">
+            <h3>Core Skills</h3>
+            <div class="resume-skill-row"><strong>Backend</strong><span>Python, FastAPI, MySQL, REST APIs, JWT Auth</span></div>
+            <div class="resume-skill-row"><strong>AI / ML</strong><span>Scikit-Learn, Pandas, NumPy, Matplotlib, Feature Engineering</span></div>
+            <div class="resume-skill-row"><strong>Frontend</strong><span>HTML5, CSS3, JavaScript (ES6+), Bootstrap 5</span></div>
+            <div class="resume-skill-row"><strong>DevOps</strong><span>Git, GitHub Actions, CLI/Bash, Docker</span></div>
+        </div>
+
+        <div class="resume-section">
+            <h3>Selected Projects</h3>
+            {% for cat, items in by_category.items() %}
+            <p style="font-weight:600; margin: 14px 0 6px;">{{ category_labels.get(cat, cat) }}</p>
+            <ul style="opacity:0.85; font-size:0.9rem;">
+                {% for p in items %}
+                <li>{{ p.title }} — <span style="opacity:0.6;">{{ p.tags|join(', ') }}</span></li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        </div>
+
+        <div class="resume-section">
+            <h3>Contact</h3>
+            <p style="opacity:0.85;">Full details and live demos on the portfolio site. GitHub: github.com/derravi</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

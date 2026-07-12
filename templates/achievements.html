@@ -1,0 +1,1158 @@
+{% extends 'base.html' %}
+
+{% block title %}Achievements - Ravi Der{% endblock %}
+
+{% block extra_css %}
+<style>
+:root {
+    --primary: #00f3ff;
+    --secondary: #7b00ff;
+    --dark: #0a0a1a;
+    --darker: #050510;
+    --light: #e2f1f8;
+    --accent: #ff00c8;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Exo 2', sans-serif;
+    background-color: var(--darker);
+    color: var(--light);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+}
+
+.section {
+    min-height: 100vh;
+    padding-top: 20px;
+    position: relative;
+}
+
+/* Background Animation */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(123, 0, 255, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 50% 80%, rgba(255, 0, 200, 0.05) 0%, transparent 20%);
+    z-index: -1;
+}
+
+/* Section Headers */
+.section-header {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+}
+
+.section-subtitle p {
+    font-size: 1.1rem;
+    color: rgba(226, 241, 248, 0.7);
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+/* Achievements Section */
+#achievements {
+    background: linear-gradient(135deg, 
+        rgba(5, 5, 16, 0.9) 0%, 
+        rgba(10, 10, 26, 0.8) 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 40px 0;
+}
+
+.achievement-card {
+    background: rgba(10, 10, 26, 0.6);
+    border: 1px solid rgba(0, 243, 255, 0.15);
+    border-radius: 15px;
+    padding: 20px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    margin-bottom: 20px;
+}
+
+.achievement-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 243, 255, 0.08), 
+        transparent);
+    transition: left 0.6s ease;
+}
+
+.achievement-card:hover::before {
+    left: 100%;
+}
+
+.achievement-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 15px 35px rgba(0, 243, 255, 0.25);
+    transform: translateY(-8px) scale(1.02);
+}
+
+.achievement-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 15px;
+    filter: blur(20px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.achievement-card:hover .achievement-glow {
+    opacity: 0.1;
+}
+
+.achievement-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.achievement-badge {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.achievement-icon {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--darker);
+    font-size: 1.5rem;
+    border: 2px solid rgba(0, 243, 255, 0.3);
+}
+
+.badge-glow {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 16px;
+    filter: blur(12px);
+    opacity: 0.4;
+    z-index: -1;
+    transition: all 0.3s ease;
+}
+
+.achievement-card:hover .badge-glow {
+    opacity: 0.6;
+    filter: blur(15px);
+}
+
+.achievement-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex: 1;
+    min-width: 120px;
+}
+
+.achievement-date {
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    text-align: center;
+}
+
+.achievement-type {
+    background: rgba(123, 0, 255, 0.1);
+    color: var(--secondary);
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    border: 1px solid rgba(123, 0, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.achievement-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.achievement-issuer {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(226, 241, 248, 0.9);
+    margin-bottom: 12px;
+}
+
+.achievement-description {
+    color: rgba(226, 241, 248, 0.8);
+    line-height: 1.5;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.achievement-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.skill-tag {
+    background: rgba(255, 0, 200, 0.1);
+    color: var(--accent);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 0, 200, 0.2);
+    text-transform: lowercase;
+}
+
+.skill-tag::first-letter {
+    text-transform: uppercase;
+}
+
+.certificate-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--darker);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.certificate-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 243, 255, 0.4);
+    color: var(--darker);
+}
+
+.achievements-stats {
+    position: relative;
+    z-index: 2;
+    margin-top: 30px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(10, 10, 26, 0.6);
+    border: 1px solid rgba(0, 243, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    margin-bottom: 15px;
+}
+
+.stat-item:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 243, 255, 0.15);
+}
+
+.stat-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--darker);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 3px;
+}
+
+.stat-label {
+    color: rgba(226, 241, 248, 0.7);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Mobile-First Responsive Adjustments */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    .section {
+        padding-top: 16px;
+    }
+    
+    .section-header {
+        margin-bottom: 50px;
+    }
+    
+    .section-icon {
+        font-size: 2.8rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .achievement-card {
+        padding: 25px;
+        border-radius: 18px;
+    }
+    
+    .achievement-badge {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .achievement-icon {
+        font-size: 1.8rem;
+        border-radius: 15px;
+    }
+    
+    .achievement-title {
+        font-size: 1.3rem;
+    }
+    
+    .stat-item {
+        padding: 20px;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+    
+    .stat-number {
+        font-size: 1.8rem;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .section {
+        padding-top: 20px;
+    }
+    
+    .section-header {
+        margin-bottom: 60px;
+    }
+    
+    .section-icon {
+        font-size: 3rem;
+    }
+    
+    .section-title {
+        font-size: 2.8rem;
+    }
+    
+    .achievement-card {
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 0;
+    }
+    
+    .achievement-header {
+        flex-wrap: nowrap;
+    }
+    
+    .achievement-meta {
+        align-items: flex-end;
+    }
+    
+    .achievement-title {
+        font-size: 1.4rem;
+    }
+    
+    .achievement-description {
+        font-size: 1rem;
+    }
+    
+    .skill-tag {
+        font-size: 0.75rem;
+    }
+    
+    .certificate-link {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .stat-item {
+        flex-direction: row;
+        text-align: left;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .achievement-card:hover {
+        transform: translateY(-10px) scale(1.02);
+    }
+    
+    .achievement-glow {
+        filter: blur(30px);
+    }
+    
+    .badge-glow {
+        filter: blur(15px);
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .section-title {
+        font-size: 3rem;
+    }
+}
+
+/* Special adjustments for very small screens */
+@media (max-width: 400px) {
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .section-subtitle p {
+        font-size: 1rem;
+    }
+    
+    .achievement-card {
+        padding: 15px;
+    }
+    
+    .achievement-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .achievement-meta {
+        align-items: flex-start;
+        flex-direction: row;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .achievement-title {
+        font-size: 1.1rem;
+    }
+    
+    .achievement-issuer {
+        font-size: 0.95rem;
+    }
+    
+    .stat-item {
+        padding: 12px;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.3rem;
+    }
+}
+
+/* Touch-friendly improvements for mobile */
+@media (hover: none) and (pointer: coarse) {
+    .achievement-card:hover {
+        transform: none;
+        border-color: rgba(0, 243, 255, 0.15);
+        box-shadow: none;
+    }
+    
+    .achievement-card:active {
+        transform: translateY(-3px);
+        border-color: var(--primary);
+        box-shadow: 0 8px 20px rgba(0, 243, 255, 0.2);
+    }
+    
+    .stat-item:hover {
+        transform: none;
+        border-color: rgba(0, 243, 255, 0.1);
+        box-shadow: none;
+    }
+    
+    .stat-item:active {
+        transform: translateY(-2px);
+        border-color: var(--primary);
+        box-shadow: 0 5px 15px rgba(0, 243, 255, 0.15);
+    }
+}
+
+/* Improve readability on mobile */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .row {
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    
+    .col-xl-4, .col-lg-6, .col-md-6, .col-6 {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    
+    .achievements-stats .row {
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    
+    .achievements-stats .col-md-3, .achievements-stats .col-6 {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+/* Fix for section title spacing on mobile */
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+    .section-title {
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Achievements Section -->
+<section id="achievements" class="section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="section-title">Achievements & Certifications</h2>
+            <div class="section-subtitle">
+                <p>Recognitions that showcase excellence and dedication</p>
+            </div>
+        </div>
+        
+        
+
+        <h3 class="section-title">Internship</h3>
+        <div class="row g-3">
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">July - 2025</span>
+                            <span class="achievement-type">Internship</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">IBM CSRBOX</h3>
+                        <h4 class="achievement-issuer">AI Intern</h4>
+                        
+                        <p class="achievement-description">I Am completed 5 Week of the internship From the IMB as a AI Intern.</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">AI Agent(Basics)</span>
+                            <span class="skill-tag">Multi Agent(Basics)</span>
+                        </div>
+
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/IBM%20CSRBOX%20Ai%20Intern%20Internship%20Certifictes.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">June - 2025</span>
+                            <span class="achievement-type">Internship</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Imbuesoft LLP</h3>
+                        <h4 class="achievement-issuer">Python Developer</h4>
+                        
+                        <p class="achievement-description">I Am completed 6 Moth of the internship as a Python Developer.</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">RAG</span>
+                            <span class="skill-tag">Web Scraping</span>
+                        </div>
+
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/Imbuesoft%20LLP%20Internship%202025.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+            
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">Dec - 2023</span>
+                            <span class="achievement-type">Internship</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Bharat Intern</h3>
+                        <h4 class="achievement-issuer">Web Developer</h4>
+                        
+                        <p class="achievement-description">I Am completed 1 Moth of the internship from the Bharat intern as a Web Developer.</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">HTML</span>
+                            <span class="skill-tag">CSS</span>
+                        </div>
+
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/Bharat%20Intern%202023.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">Aug - 2025</span>
+                            <span class="achievement-type">Data Science Bootcamp</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Data Science Bootcamp</h3>
+                        <h4 class="achievement-issuer">CodingWise</h4>
+                        
+                        <p class="achievement-description">AProudly completed the 5-Day Python for Data Science Bootcamp by CodingWise, gaining hands-on experience in Python, NumPy, and Pandas to strengthen my foundation in Data Science and AI.</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">UI/UX</span>
+                            <span class="skill-tag">Innovation</span>
+                        </div>
+
+                        <div class="achievement-actions">
+                            <a href="#" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+        </div>
+        
+        <h3 class="section-title">Certifications</h3>
+        <div class="row g-3">
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">Mar - 2025</span>
+                            <span class="achievement-type">Certification</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Introduction To Python</h3>
+                        <h4 class="achievement-issuer">Infosys Springboard</h4>
+                        <p class="achievement-description">Successfully completed the 24-hour Advanced Python course from Infosys Springboard, enhancing my skills in writing efficient, scalable Python applications through hands-on coding and real-world problem-solving.</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">Python</span>
+                        </div>
+
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/Infosys%20Springbord%20Introduction%20to%20python%20march%202025.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">Feb - 2025</span>
+                            <span class="achievement-type">Certification</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Basics of Python</h3>
+                        <h4 class="achievement-issuer">Infosys Springboard</h4>
+                        <p class="achievement-description">Successfully completed the Basic Python Course on Infosys Springboard, building a strong foundation in Python fundamentals, programming concepts, and data handling techniques.</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">Basic Python</span>
+                        </div>
+
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/Infosys%20Spring%20bord%20Basics%20of%20python%20february%202025.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">Apr - 2025</span>
+                            <span class="achievement-type">Certification</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Introduction To MySQL</h3>
+                        <h4 class="achievement-issuer">Infosys Springboard</h4>
+                        <p class="achievement-description">Successfully completed the "Introduction to MySQL" course from Infosys Springboard, gaining hands-on knowledge of SQL queries, joins, and real-world database operations.</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">MySQL</span>
+                        </div>
+
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/Infosys%20Spring%20bord%20Basics%20of%20python%20february%202025.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">Jan - 2024</span>
+                            <span class="achievement-type">Certification</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Machine Learning</h3>
+                        <h4 class="achievement-issuer">AWS ML Certificate</h4>
+                        
+                        <p class="achievement-description">Successfully completed the AWS Academy Machine Learning Foundation Course, gaining essential knowledge in ML concepts and earning my AWS certification.</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">Basics of ML</span>
+                        </div>
+                        
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/AWS%20Machine%20learning%202024.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">Feb - 2023</span>
+                            <span class="achievement-type">Certification</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Abhigyan Event</h3>
+                        <h4 class="achievement-issuer">Atmiya University</h4>
+                        
+                        <p class="achievement-description">Excited to have volunteered at a 3 days of event, contributing to a meaningful cause and looking forward to more opportunities to make a positive impact</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">Leadership</span>
+                            <span class="skill-tag">Time Management</span>
+                        </div>
+                        
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/Abhigyan%20event%202023.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="achievement-card">
+                    <div class="achievement-header">
+                        <div class="achievement-badge">
+                            <div class="achievement-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="badge-glow"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span class="achievement-date">June - 2022</span>
+                            <span class="achievement-type">Certification</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-content">
+                        <h3 class="achievement-title">Design Thinking</h3>
+                        <h4 class="achievement-issuer">Atmiya University</h4>
+                        
+                        <p class="achievement-description">Successfully completed the Design Thinking Course and earned my certificate, enhancing my creative problem-solving and innovation skills!</p>
+
+                        <div class="achievement-skills">
+                            <span class="skill-tag">Problem Solving</span>
+                            <span class="skill-tag">Imagination</span>
+                        </div>
+
+                        <div class="achievement-actions">
+                            <a href="https://github.com/derravi/demo/blob/main/SDG%20Course%202021%20.jpg?raw=true" class="certificate-link" target="_blank">
+                                <span>View Certificate</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="achievement-glow"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Bar -->
+        <div class="achievements-stats">
+            <div class="row g-3">
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">10</div>
+                            <div class="stat-label">Total Achievements</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Achievements page specific animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate achievement cards on scroll
+    const achievementCards = document.querySelectorAll('.achievement-card');
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                
+                // Animate stat numbers
+                if (entry.target.classList.contains('stat-item')) {
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    if (statNumber) {
+                        animateCounter(statNumber);
+                    }
+                }
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Set initial states and observe
+    achievementCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'all 0.6s ease';
+        observer.observe(card);
+    });
+
+    // Observe stat items
+    const statItems = document.querySelectorAll('.stat-item');
+    statItems.forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(15px)';
+        item.style.transition = 'all 0.6s ease';
+        observer.observe(item);
+    });
+
+    // Counter animation function
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-count') || element.textContent);
+        const duration = 1500;
+        const step = target / (duration / 16);
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current);
+        }, 16);
+    }
+
+    // Add hover effects for devices that support hover
+    if (window.matchMedia("(hover: hover)").matches) {
+        achievementCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+        });
+    }
+    
+    // Add touch feedback for mobile devices
+    if (window.matchMedia("(hover: none)").matches) {
+        achievementCards.forEach(card => {
+            let isTouching = false;
+            
+            card.addEventListener('touchstart', function() {
+                isTouching = true;
+                this.style.transform = 'translateY(-5px)';
+                this.style.borderColor = 'var(--primary)';
+                this.style.boxShadow = '0 8px 20px rgba(0, 243, 255, 0.2)';
+            });
+            
+            card.addEventListener('touchend', function() {
+                isTouching = false;
+                setTimeout(() => {
+                    if (!isTouching) {
+                        this.style.transform = '';
+                        this.style.borderColor = '';
+                        this.style.boxShadow = '';
+                    }
+                }, 150);
+            });
+        });
+        
+        statItems.forEach(item => {
+            let isTouching = false;
+            
+            item.addEventListener('touchstart', function() {
+                isTouching = true;
+                this.style.transform = 'translateY(-2px)';
+                this.style.borderColor = 'var(--primary)';
+                this.style.boxShadow = '0 5px 15px rgba(0, 243, 255, 0.15)';
+            });
+            
+            item.addEventListener('touchend', function() {
+                isTouching = false;
+                setTimeout(() => {
+                    if (!isTouching) {
+                        this.style.transform = '';
+                        this.style.borderColor = '';
+                        this.style.boxShadow = '';
+                    }
+                }, 150);
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics Dashboard - Ravi Der{% endblock %}
+
+{% block extra_css %}
+<style>
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 30px; }
+.stat-box { padding: 20px; text-align: center; }
+.stat-box .num { font-size: 2rem; font-weight: 800; color: var(--primary); }
+.stat-box .label { font-size: 0.8rem; opacity: 0.7; margin-top: 4px; }
+.visits-table { width: 100%; font-size: 0.82rem; }
+.visits-table th, .visits-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title" style="text-align:left; font-size:2rem;">Analytics Dashboard</h2>
+        <p style="opacity:0.7; margin-bottom:26px; font-size:0.85rem;">Protected by admin token — data below is not visible to site visitors.</p>
+
+        <div class="stat-grid" id="statGrid">
+            <div class="stat-box glass-card"><div class="num" id="statVisits">—</div><div class="label">Total Page Visits</div></div>
+            <div class="stat-box glass-card"><div class="num" id="statAvg">—</div><div class="label">Avg Response Time (ms)</div></div>
+            <div class="stat-box glass-card"><div class="num" id="statSubs">—</div><div class="label">Newsletter Subscribers</div></div>
+            <div class="stat-box glass-card"><div class="num" id="statMsgs">—</div><div class="label">Contact Messages</div></div>
+            <div class="stat-box glass-card"><div class="num" id="statReviews">—</div><div class="label">Project Reviews</div></div>
+            <div class="stat-box glass-card"><div class="num" id="statQuiz">—</div><div class="label">Quiz Attempts</div></div>
+        </div>
+
+        <div class="glass-card p-4 mb-4">
+            <h5 style="margin-bottom:14px;">Top Pages</h5>
+            <canvas id="topPagesChart" height="120"></canvas>
+        </div>
+
+        <div class="glass-card p-4">
+            <h5 style="margin-bottom:14px;">Recent Requests</h5>
+            <div style="overflow-x:auto;">
+                <table class="visits-table">
+                    <thead><tr><th>Path</th><th>Method</th><th>Status</th><th>Duration (ms)</th><th>Time</th></tr></thead>
+                    <tbody id="visitsBody"><tr><td colspan="5">Loading…</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const ADMIN_TOKEN = {{ admin_token|tojson }};
+
+fetch('/api/analytics/summary?token=' + encodeURIComponent(ADMIN_TOKEN))
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById('statVisits').textContent = data.total_visits;
+        document.getElementById('statAvg').textContent = data.avg_response_ms;
+        document.getElementById('statSubs').textContent = data.newsletter_subscribers;
+        document.getElementById('statMsgs').textContent = data.contact_messages;
+        document.getElementById('statReviews').textContent = data.project_reviews;
+        document.getElementById('statQuiz').textContent = data.quiz_attempts;
+
+        const ctx = document.getElementById('topPagesChart');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.top_pages.map(p => p.path),
+                datasets: [{
+                    label: 'Visits',
+                    data: data.top_pages.map(p => p.c),
+                    backgroundColor: 'rgba(0, 243, 255, 0.5)',
+                    borderColor: 'rgba(0, 243, 255, 1)',
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                scales: {
+                    x: { ticks: { color: '#e2f1f8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    y: { ticks: { color: '#e2f1f8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                },
+                plugins: { legend: { labels: { color: '#e2f1f8' } } },
+            },
+        });
+
+        const tbody = document.getElementById('visitsBody');
+        tbody.innerHTML = data.recent_visits.map(v => `
+            <tr><td>${v.path}</td><td>${v.method}</td><td>${v.status_code}</td><td>${v.duration_ms}</td><td>${v.visited_at.slice(0,19).replace('T',' ')}</td></tr>
+        `).join('');
+    })
+    .catch(() => {
+        document.getElementById('visitsBody').innerHTML = '<tr><td colspan="5">Failed to load — check admin token.</td></tr>';
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,255 @@
+Image Names and Links
+
+Image Name: AI-Powered Credit Card Fraud Detection System.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/AI-Powered%20Credit%20Card%20Fraud%20Detection%20System.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Air Polution KNN Model.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Air%20Polution%20KNN%20Model.png
+
+------------------------------------------------------------------------
+
+Image Name: Auto Password Generator.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Auto%20Password%20Generator.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Automatic Password Generator Website using django.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Automatic%20Password%20Generator%20Website%20using%20django.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Blinkit Sales Data Analysis Project.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Blinkit%20Sales%20Data%20Analysis%20Project.png
+
+------------------------------------------------------------------------
+
+Image Name: COVID-19 Data Analytics Dashboard.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/COVID-19%20Data%20Analytics%20Dashboard.png
+
+------------------------------------------------------------------------
+
+Image Name: House Price Prediction using Linear Regression.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/House%20Price%20Prediction%20using%20Linear%20Regression.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Kisan Sathi Image.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Kisan%20Sathi%20Image.png
+
+------------------------------------------------------------------------
+
+Image Name: Live Weather Web Application – Built with Django.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Live%20Weather%20Web%20Application%20%E2%80%93%20Built%20with%20Django.png
+
+------------------------------------------------------------------------
+
+Image Name: Netflix Data Analysis & Visualization – End-to-End
+Insights.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Netflix%20Data%20Analysis%20%26%20Visualization%20%E2%80%93%20End-to-End%20Insights.png
+
+------------------------------------------------------------------------
+
+Image Name: Object Detection Projects.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Object%20Detection%20Projects.png
+
+------------------------------------------------------------------------
+
+Image Name: Password Generator using django.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Password%20Generator%20using%20django.png
+
+------------------------------------------------------------------------
+
+Image Name: Pizza Sales Clustering Analysis.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Pizza%20Sales%20Clustering%20Analysis.png
+
+------------------------------------------------------------------------
+
+Image Name: Principal Component Analysis (PCA) project on a loan
+dataset.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Principal%20Component%20Analysis%20%28PCA%29%20project%20on%20a%20loan%20dataset.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Profile image.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Profile%20image.jpg
+
+------------------------------------------------------------------------
+
+Image Name: QR Code Generator Project Using Django.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/QR%20Code%20Generator%20Project%20Using%20Django.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Real-Time Weather Web Application.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Real-Time%20Weather%20Web%20Application.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Student Exam Score Prediction.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Student%20Exam%20Score%20Prediction.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Student_prediction.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Student_prediction.png
+
+------------------------------------------------------------------------
+
+Image Name: The Developers arena logo.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/The%20Developers%20arena%20logo.png
+
+------------------------------------------------------------------------
+
+Image Name: Weither Insights ML Ai.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Weither%20Insights%20ML%20Ai.jpg
+
+------------------------------------------------------------------------
+
+Image Name: Windows_function.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Windows_function.jpg
+
+------------------------------------------------------------------------
+
+Image Name: age_caleculator_using_python.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/age_caleculator_using_python.png
+
+------------------------------------------------------------------------
+
+Image Name: bharat intern internship.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/bharat%20intern%20internship.png
+
+------------------------------------------------------------------------
+
+Image Name: buisness_before_ml.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/buisness_before_ml.png
+
+------------------------------------------------------------------------
+
+Image Name: cheet_sheet_pandas_numpy_matplotlib.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/cheet_sheet_pandas_numpy_matplotlib.png
+
+------------------------------------------------------------------------
+
+Image Name: feture_engineering.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/feture_engineering.png
+
+------------------------------------------------------------------------
+
+Image Name: hypothesis testing.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/hypothesis%20testing.jpg
+
+------------------------------------------------------------------------
+
+Image Name: ibm logo.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/ibm%20logo.jpg
+
+------------------------------------------------------------------------
+
+Image Name: imbalance datasets.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/imbalance%20datasets.jpg
+
+------------------------------------------------------------------------
+
+Image Name: imbuesoft llp internship logo.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/imbuesoft%20llp%20internship%20logo.jpg
+
+------------------------------------------------------------------------
+
+Image Name: mllifecycle.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/mllifecycle.png
+
+------------------------------------------------------------------------
+
+Image Name: patterns_of_python.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/patterns_of_python.png
+
+------------------------------------------------------------------------
+
+Image Name: precision vs recall.jpg
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/precision%20vs%20recall.jpg
+
+------------------------------------------------------------------------
+
+Image Name: terotam.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/terotam.png
+
+------------------------------------------------------------------------
+
+Image Name: todo list using the python django.png
+
+Link:
+https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/todo%20list%20using%20the%20python%20django.png
+
+------------------------------------------------------------------------

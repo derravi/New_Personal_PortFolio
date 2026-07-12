@@ -1,0 +1,564 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact — Ravi Der | Futuristic Interface{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ========== FONTS & RESET ========== */
+    @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #0af0ff;
+        --primary-dark: #00c2d4;
+        --secondary: #b77eff;
+        --accent: #ff66cc;
+        --bg-dark: #05070f;
+        --card-bg: rgba(8, 12, 25, 0.72);
+        --glass-border: rgba(10, 240, 255, 0.25);
+        --text-light: #f0f5ff;
+        --text-dim: #b6c8e5;
+        --success: #2effb0;
+        --error: #ff5777;
+        --shadow-sm: 0 12px 30px rgba(0, 0, 0, 0.4);
+        --transition: all 0.25s ease-out;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Exo 2', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-light);
+        line-height: 1.5;
+        overflow-x: hidden;
+    }
+
+    /* soft background glow (static) */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at 20% 40%, rgba(10, 240, 255, 0.08), transparent 60%),
+                    radial-gradient(ellipse at 85% 70%, rgba(183, 126, 255, 0.08), transparent 55%);
+        z-index: -2;
+        pointer-events: none;
+    }
+
+    /* minimalist particle backdrop (static, no animation) */
+    .static-particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.45;
+    }
+
+    /* ========== LAYOUT & SECTION ========== */
+    .contact-section {
+        min-height: 100vh;
+        padding: 100px 0 90px;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-icon {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 12px;
+        display: inline-block;
+    }
+
+    .section-title {
+        font-family: 'Orbitron', monospace;
+        font-size: 2.6rem;
+        font-weight: 800;
+        background: linear-gradient(145deg, #fff, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: -0.5px;
+        margin-bottom: 0;
+    }
+
+    .section-subtitle {
+        font-size: 1.05rem;
+        color: var(--text-dim);
+        max-width: 600px;
+        margin: 18px auto 0;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    /* ========== CARD – CLEAN, ELEGANT, GLASS ========== */
+    .glass-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(14px);
+        border-radius: 42px;
+        border: 1px solid var(--glass-border);
+        padding: 2.5rem 2rem;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .glass-card:hover {
+        border-color: rgba(10, 240, 255, 0.5);
+        box-shadow: 0 20px 38px -12px rgba(10, 240, 255, 0.2);
+        transform: translateY(-4px);
+    }
+
+    /* Form styling — minimal and airy */
+    .form-group {
+        margin-bottom: 1.6rem;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--primary);
+        letter-spacing: 0.3px;
+        margin-bottom: 8px;
+    }
+
+    .form-label i {
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        background: rgba(2, 6, 20, 0.7);
+        border: 1px solid rgba(10, 240, 255, 0.3);
+        border-radius: 28px;
+        padding: 12px 20px;
+        font-size: 1rem;
+        color: var(--text-light);
+        transition: var(--transition);
+        width: 100%;
+        font-family: 'Exo 2', monospace;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: rgba(5, 10, 25, 0.9);
+        box-shadow: 0 0 0 3px rgba(10, 240, 255, 0.2);
+    }
+
+    .form-control::placeholder {
+        color: #7c8fb0;
+        font-weight: 300;
+        font-size: 0.9rem;
+    }
+
+    textarea.form-control {
+        border-radius: 24px;
+        resize: vertical;
+    }
+
+    /* modern futuristic button */
+    .btn-send {
+        background: linear-gradient(100deg, var(--primary), var(--secondary));
+        border: none;
+        padding: 12px 40px;
+        border-radius: 40px;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #0a0e1c;
+        letter-spacing: 0.8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 6px 14px rgba(0, 243, 255, 0.25);
+        width: auto;
+        font-family: 'Orbitron', monospace;
+    }
+
+    .btn-send:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(10, 240, 255, 0.5);
+        background: linear-gradient(100deg, var(--primary-dark), var(--accent));
+        color: #000;
+    }
+
+    .btn-send:disabled {
+        opacity: 0.7;
+        transform: none;
+        cursor: not-allowed;
+    }
+
+    /* alert messages - smooth */
+    .custom-alert {
+        border-radius: 32px;
+        padding: 12px 20px;
+        margin-bottom: 24px;
+        font-size: 0.9rem;
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-left: 4px solid;
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    .alert-success-custom {
+        color: var(--success);
+        border-left-color: var(--success);
+    }
+
+    .alert-error-custom {
+        color: var(--error);
+        border-left-color: var(--error);
+    }
+
+    /* social icons — modern & minimal */
+    .social-links {
+        margin-top: 2.8rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+    }
+
+    .social-icon-circle {
+        width: 48px;
+        height: 48px;
+        background: rgba(10, 240, 255, 0.08);
+        border-radius: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: var(--text-light);
+        transition: var(--transition);
+        border: 1px solid rgba(10, 240, 255, 0.25);
+        text-decoration: none;
+    }
+
+    .social-icon-circle:hover {
+        background: var(--primary);
+        color: #0a0e1c;
+        transform: translateY(-3px);
+        border-color: transparent;
+        box-shadow: 0 0 12px var(--primary);
+    }
+
+    /* spinner inline */
+    .spinner-mini {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        border-radius: 50%;
+        border-top-color: #000;
+        animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* responsiveness */
+    @media (max-width: 768px) {
+        .contact-section {
+            padding: 80px 0 60px;
+        }
+        .section-title {
+            font-size: 2rem;
+        }
+        .glass-card {
+            padding: 1.8rem 1.2rem;
+            margin: 0 16px;
+        }
+        .btn-send {
+            width: 100%;
+            justify-content: center;
+        }
+        .social-icon-circle {
+            width: 42px;
+            height: 42px;
+            font-size: 1.2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .section-title {
+            font-size: 1.7rem;
+        }
+        .form-control {
+            padding: 10px 18px;
+        }
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<section class="contact-section">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <h1 class="section-title">Get in touch</h1>
+            <div class="section-subtitle">
+                <p>Have an idea, question, or just want to say hi? Send a message — I reply within 24h.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="glass-card">
+                    <!-- contact form starts here -->
+                    <form id="contactForm" novalidate>
+                        <div id="formGlobalMessage"></div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="name"><i class="fas fa-user-astronaut"></i> Full name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Alex Johnson" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="email"><i class="fas fa-envelope-open-text"></i> Email address</label>
+                                    <input type="email" class="form-control" id="email" placeholder="hello@domain.com" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="subject"><i class="fas fa-tag"></i> Subject</label>
+                                    <input type="text" class="form-control" id="subject" placeholder="Project inquiry / Speaking / Collaboration" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="message"><i class="fas fa-message"></i> Your message</label>
+                                    <textarea class="form-control" id="message" rows="5" placeholder="Tell me about your vision or question..." required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center mt-2">
+                                <button type="submit" class="btn-send" id="submitBtn">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span id="btnText">Send message</span>
+                                    <span id="btnSpinner" style="display: none;"><div class="spinner-mini"></div></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block extra_js %}
+<!-- static particle background canvas (simple dots) -->
+<canvas id="particleCanvas" class="static-particles"></canvas>
+
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script>
+    (function(){
+        // ========== STATIC PARTICLE BACKGROUND (light, modern) ==========
+        const canvas = document.getElementById('particleCanvas');
+        if(canvas){
+            let ctx = canvas.getContext('2d');
+            let particles = [];
+            const PARTICLE_COUNT = 60;
+
+            function resizeCanvas(){
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                drawParticles();
+            }
+
+            function drawParticles(){
+                if(!ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for(let p of particles){
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                }
+            }
+
+            function initParticles(){
+                particles = [];
+                for(let i=0; i<PARTICLE_COUNT; i++){
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 2.5 + 0.8,
+                        color: `rgba(10, 210, 255, ${Math.random() * 0.35 + 0.1})`
+                    });
+                }
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                initParticles();
+            });
+            resizeCanvas();
+            initParticles();
+        }
+
+        // ========== FORM HANDLER (EmailJS) ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize EmailJS with public key (provided from original code)
+            emailjs.init("yxLV03ogHCzBmF-by");
+
+            const form = document.getElementById('contactForm');
+            const msgContainer = document.getElementById('formGlobalMessage');
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+
+            // Helper to show custom alert
+            function showAlert(message, isSuccess){
+                msgContainer.innerHTML = `
+                    <div class="custom-alert ${isSuccess ? 'alert-success-custom' : 'alert-error-custom'}">
+                        <i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                setTimeout(() => {
+                    if(msgContainer.firstChild) msgContainer.innerHTML = '';
+                }, 5500);
+            }
+
+            // clear previous message on new typing (optional user friendly)
+            const inputs = ['name', 'email', 'subject', 'message'];
+            inputs.forEach(id => {
+                const field = document.getElementById(id);
+                if(field) field.addEventListener('focus', () => {
+                    if(msgContainer.firstChild) msgContainer.innerHTML = '';
+                });
+            });
+
+            // validate email pattern
+            function isValidEmail(email){
+                return /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(email);
+            }
+
+            // Submit event
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // gather values
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                if(!name || !email || !subject || !message){
+                    showAlert('❌ All fields are required. Please fill out the form completely.', false);
+                    return;
+                }
+                if(!isValidEmail(email)){
+                    showAlert('⚠️ Please enter a valid email address (e.g., name@domain.com).', false);
+                    return;
+                }
+
+                // loading UI
+                submitBtn.disabled = true;
+                btnText.style.opacity = '0.7';
+                btnText.innerHTML = 'Sending...';
+                btnSpinner.style.display = 'inline-block';
+                const originalIcon = submitBtn.querySelector('i');
+                if(originalIcon) originalIcon.style.opacity = '0.5';
+
+                // params for email template
+                const templateParams = {
+                    from_name: name,
+                    from_email: email,
+                    subject: subject,
+                    message: message,
+                    to_name: 'Ravi Der',
+                    reply_to: email
+                };
+
+                try {
+                    // service ID & template ID from original code (fully functional)
+                    await emailjs.send('service_uln9bps', 'template_4u0n6wb', templateParams);
+                    showAlert(`✓ Message sent! Thanks ${name}, I'll get back to you soon.`, true);
+                    form.reset();
+
+                    // optional floating mini success toast (simple extra)
+                    const toast = document.createElement('div');
+                    toast.style.cssText = 'position:fixed; bottom:22px; right:22px; background:rgba(0,255,157,0.2); backdrop-filter:blur(10px); padding:10px 20px; border-radius:40px; color:#2effb0; font-size:0.85rem; border-left:3px solid #2effb0; z-index:9999; font-family:monospace;';
+                    toast.innerHTML = '<i class="fas fa-check-circle"></i> Message delivered! ✨';
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 2800);
+                } catch (err) {
+                    console.error("EmailJS error:", err);
+                    showAlert('⚠️ Could not send message. Try again later or reach out via social media.', false);
+                } finally {
+                    submitBtn.disabled = false;
+                    btnText.innerHTML = 'Send message';
+                    btnSpinner.style.display = 'none';
+                    btnText.style.opacity = '1';
+                    if(originalIcon) originalIcon.style.opacity = '1';
+                }
+            });
+
+            // ripple click effect (clean micro interaction)
+            submitBtn.addEventListener('click', (e) => {
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255,255,255,0.6)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'rippleAnim 0.45s linear';
+                ripple.style.pointerEvents = 'none';
+                const rect = submitBtn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+                submitBtn.style.position = 'relative';
+                submitBtn.style.overflow = 'hidden';
+                submitBtn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 500);
+            });
+
+            // Social icons interactive (friendly feedback)
+            const socials = document.querySelectorAll('.social-icon-circle');
+            socials.forEach(icon => {
+                icon.addEventListener('click', (ev) => {
+                    ev.preventDefault();
+                    const platform = icon.querySelector('i')?.classList[1]?.replace('fa-', '') || 'social';
+                    showAlert(`✨ Connect with me on ${platform} — let's create something awesome!`, true);
+                });
+            });
+        });
+
+        // style the ripple animation keyframe globally
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = `@keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }`;
+        document.head.appendChild(styleSheet);
+    })();
+</script>
+{% endblock extra_js %}

@@ -1,0 +1,734 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <!-- Animated Logo -->
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <span class="brand-text">Ravi Der</span>
+            <div class="brand-glow"></div>
+        </a>
+        
+        <!-- Animated Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+        
+        <!-- Navigation Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" href="{{ url_for('home') }}">
+                        <i class="fas fa-home me-2"></i>
+                        <span>Home</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" href="{{ url_for('about') }}">
+                        <i class="fas fa-user me-2"></i>
+                        <span>About</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'projects' %}active{% endif %}" href="{{ url_for('projects') }}">
+                        <i class="fas fa-code me-2"></i>
+                        <span>Projects</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'skills' %}active{% endif %}" href="{{ url_for('skills') }}">
+                        <i class="fas fa-cogs me-2"></i>
+                        <span>Skills</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'achievements' %}active{% endif %}" href="{{ url_for('achievements') }}">
+                        <i class="fas fa-trophy me-2"></i>
+                        <span>Achievements</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'experience' %}active{% endif %}" href="{{ url_for('experience') }}">
+                        <i class="fas fa-briefcase me-2"></i>
+                        <span>Experience</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'education' %}active{% endif %}" href="{{ url_for('education') }}">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        <span>Education</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'blog' %}active{% endif %}" href="{{ url_for('blog') }}">
+                        <i class="fas fa-blog me-2"></i>
+                        <span>Blog</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">
+                        <i class="fas fa-envelope me-2"></i>
+                        <span>Contact</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+:root {
+    --primary: #00f3ff;
+    --secondary: #7b00ff;
+    --dark: #0a0a1a;
+    --darker: #050510;
+    --light: #e2f1f8;
+    --accent: #ff00c8;
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(135deg, 
+        rgba(10, 10, 26, 0.95) 0%, 
+        rgba(5, 5, 16, 0.95) 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    padding: 12px 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar.scrolled {
+    padding: 8px 0;
+    background: rgba(5, 5, 16, 0.98);
+    border-bottom-color: rgba(0, 243, 255, 0.4);
+}
+
+/* Brand/Logo Styles */
+.navbar-brand {
+    position: relative;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-decoration: none;
+    padding: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.brand-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    filter: blur(15px);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.navbar-brand:hover .brand-glow {
+    opacity: 0.6;
+}
+
+/* Navigation Links */
+.navbar-nav {
+    gap: 5px;
+}
+
+.nav-item {
+    position: relative;
+    margin: 0 2px;
+}
+
+.nav-link {
+    color: var(--light) !important;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 12px 20px !important;
+    border-radius: 25px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background: transparent;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 243, 255, 0.1), 
+        transparent);
+    transition: left 0.6s ease;
+}
+
+.nav-link:hover::before {
+    left: 100%;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+    background: rgba(0, 243, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    color: var(--primary) !important;
+    background: linear-gradient(135deg, 
+        rgba(0, 243, 255, 0.15), 
+        rgba(123, 0, 255, 0.1));
+    box-shadow: 0 4px 15px rgba(0, 243, 255, 0.2);
+}
+
+.nav-link i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover i {
+    transform: scale(1.2);
+}
+
+/* Navigation Indicator */
+.nav-indicator {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.nav-link.active .nav-indicator {
+    width: 30px;
+}
+
+/* Custom Hamburger Menu */
+.navbar-toggler {
+    border: none;
+    padding: 8px;
+    background: transparent;
+    position: relative;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hamburger {
+    width: 25px;
+    height: 18px;
+    position: relative;
+    transform: rotate(0deg);
+    transition: .5s ease-in-out;
+    cursor: pointer;
+}
+
+.hamburger span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 2px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+}
+
+.hamburger span:nth-child(1) {
+    top: 0px;
+}
+
+.hamburger span:nth-child(2) {
+    top: 8px;
+}
+
+.hamburger span:nth-child(3) {
+    top: 16px;
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger span:nth-child(1) {
+    top: 8px;
+    transform: rotate(135deg);
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger span:nth-child(2) {
+    opacity: 0;
+    left: -60px;
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger span:nth-child(3) {
+    top: 8px;
+    transform: rotate(-135deg);
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Large Tablets (992px - 1199px) */
+@media (max-width: 1199px) {
+    .nav-link {
+        padding: 10px 16px !important;
+        font-size: 0.85rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.6rem;
+    }
+    
+    .nav-link i {
+        font-size: 0.9rem;
+        width: 18px;
+    }
+}
+
+/* Tablets and Small Desktops (768px - 991px) */
+@media (max-width: 991px) {
+    .navbar {
+        padding: 10px 0;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    
+    .navbar-collapse {
+        background: linear-gradient(135deg, 
+            rgba(10, 10, 26, 0.98) 0%, 
+            rgba(5, 5, 16, 0.98) 100%);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 15px;
+        margin-top: 15px;
+        padding: 20px;
+        border: 1px solid rgba(0, 243, 255, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    .navbar-nav {
+        gap: 0;
+    }
+    
+    .nav-item {
+        margin: 0;
+    }
+    
+    .nav-link {
+        padding: 15px 20px !important;
+        margin: 5px 0;
+        border-radius: 12px;
+        justify-content: flex-start;
+        font-size: 0.95rem;
+        border: 1px solid transparent;
+    }
+    
+    .nav-link:hover {
+        transform: translateX(5px);
+        border-color: rgba(0, 243, 255, 0.2);
+    }
+    
+    .nav-link.active {
+        background: linear-gradient(135deg, 
+            rgba(0, 243, 255, 0.2), 
+            rgba(123, 0, 255, 0.15));
+        border-color: rgba(0, 243, 255, 0.3);
+    }
+    
+    .nav-indicator {
+        display: none;
+    }
+    
+    .nav-link i {
+        font-size: 1rem;
+        width: 22px;
+    }
+    
+    /* Larger touch target for mobile */
+    .navbar-toggler {
+        width: 46px;
+        height: 46px;
+    }
+    
+    .hamburger {
+        width: 26px;
+        height: 20px;
+    }
+    
+    .hamburger span {
+        height: 2.5px;
+    }
+    
+    .hamburger span:nth-child(2) {
+        top: 9px;
+    }
+    
+    .hamburger span:nth-child(3) {
+        top: 18px;
+    }
+}
+
+/* Mobile Devices (576px - 767px) */
+@media (max-width: 767px) {
+    .navbar {
+        padding: 8px 0;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+    
+    .navbar-collapse {
+        margin-top: 12px;
+        padding: 15px;
+        border-radius: 12px;
+        max-height: 65vh;
+    }
+    
+    .nav-link {
+        padding: 14px 18px !important;
+        margin: 4px 0;
+        font-size: 0.92rem;
+    }
+    
+    .nav-link i {
+        font-size: 0.95rem;
+        width: 20px;
+    }
+    
+    .navbar-toggler {
+        width: 44px;
+        height: 44px;
+        padding: 6px;
+    }
+    
+    .hamburger {
+        width: 24px;
+        height: 18px;
+    }
+}
+
+/* Small Mobile Devices (up to 575px) */
+@media (max-width: 575px) {
+    .navbar {
+        padding: 6px 0;
+    }
+    
+    .container {
+        padding: 0 12px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+    
+    .navbar-collapse {
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 10px;
+        max-height: 60vh;
+    }
+    
+    .nav-link {
+        padding: 12px 16px !important;
+        margin: 3px 0;
+        font-size: 0.9rem;
+    }
+    
+    .nav-link i {
+        font-size: 0.9rem;
+        width: 18px;
+        margin-right: 12px;
+    }
+    
+    .navbar-toggler {
+        width: 40px;
+        height: 40px;
+        padding: 5px;
+    }
+    
+    .hamburger {
+        width: 22px;
+        height: 16px;
+    }
+    
+    .hamburger span {
+        height: 2px;
+    }
+    
+    .hamburger span:nth-child(2) {
+        top: 7px;
+    }
+    
+    .hamburger span:nth-child(3) {
+        top: 14px;
+    }
+}
+
+/* Extra Small Devices (up to 375px) */
+@media (max-width: 375px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .container {
+        padding: 0 10px;
+    }
+    
+    .navbar-collapse {
+        padding: 10px;
+        margin-top: 8px;
+    }
+    
+    .nav-link {
+        padding: 10px 14px !important;
+        font-size: 0.88rem;
+    }
+    
+    .nav-link i {
+        font-size: 0.88rem;
+        width: 16px;
+        margin-right: 10px;
+    }
+}
+
+/* Landscape Orientation for Mobile */
+@media (max-height: 500px) and (max-width: 991px) {
+    .navbar-collapse {
+        max-height: 50vh;
+        margin-top: 10px;
+        padding: 15px;
+    }
+    
+    .nav-link {
+        padding: 10px 16px !important;
+        margin: 2px 0;
+    }
+}
+
+/* High-resolution displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .navbar {
+        border-bottom-width: 1.5px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .nav-link:hover {
+        transform: none;
+        background: rgba(0, 243, 255, 0.03);
+    }
+    
+    .nav-link:active {
+        background: rgba(0, 243, 255, 0.1);
+        transform: scale(0.98);
+    }
+    
+    .navbar-toggler:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Scroll Behavior Enhancement */
+.navbar {
+    transition: all 0.4s ease;
+}
+
+/* Dropdown Animation */
+.navbar-collapse.collapsing {
+    transition: height 0.35s ease;
+}
+
+.navbar-collapse.show {
+    animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 991px) {
+    body {
+        overflow-x: hidden;
+    }
+    
+    .navbar-collapse {
+        position: fixed;
+        top: 70px;
+        left: 15px;
+        right: 15px;
+        z-index: 1000;
+    }
+}
+
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading state for navbar */
+.navbar.loading .navbar-brand,
+.navbar.loading .nav-link {
+    opacity: 0.7;
+}
+</style>
+
+<script>
+// Enhanced Navbar Script with Mobile Optimizations
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    
+    // Navbar scroll effect
+    function handleScroll() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    // Enhanced hover effects for desktop only
+    if (window.innerWidth > 991) {
+        navLinks.forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            link.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    }
+    
+    // Mobile menu close on click
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            if (window.innerWidth < 992) {
+                const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                bsCollapse.hide();
+            }
+        });
+    });
+    
+    // Touch feedback for mobile
+    if (window.innerWidth < 992) {
+        navLinks.forEach(link => {
+            link.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+                this.style.background = 'rgba(0, 243, 255, 0.1)';
+            });
+            
+            link.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+                if (!this.classList.contains('active')) {
+                    this.style.background = 'transparent';
+                }
+            });
+        });
+        
+        // Touch feedback for navbar toggler
+        navbarToggler.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+        });
+        
+        navbarToggler.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+        });
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        // Close mobile menu when switching to desktop
+        if (window.innerWidth >= 992) {
+            const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+            bsCollapse.hide();
+        }
+    });
+    
+    // Prevent body scroll when mobile menu is open
+    navbarToggler.addEventListener('click', function() {
+        if (window.innerWidth < 992) {
+            if (navbarCollapse.classList.contains('show')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
+            if (!navbar.contains(event.target)) {
+                const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                bsCollapse.hide();
+                document.body.style.overflow = '';
+            }
+        }
+    });
+    
+    // Handle escape key to close mobile menu
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
+            const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+            bsCollapse.hide();
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Initialize navbar state
+    handleScroll();
+});
+</script>
