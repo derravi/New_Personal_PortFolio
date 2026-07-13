@@ -98,3 +98,4 @@
 2026-07-12 16:59:19,935 INFO [flask_app] 404: /static/images/imbalance datasets.jpg
 2026-07-12 16:59:52,268 INFO [flask_app] 404: /static/images/mllifecycle.png
 2026-07-12 17:04:54,566 INFO [flask_app] 404: /static/images/Diabetes_predection_system_using_logistic_regression.jpg
+2026-07-12 22:43:59,190 INFO [flask_app] 404: /favicon.ico

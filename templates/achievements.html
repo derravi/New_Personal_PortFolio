@@ -359,7 +359,269 @@ body::before {
     letter-spacing: 0.5px;
 }
 
-/* Mobile-First Responsive Adjustments */
+/* ================================================================
+   MOBILE-FIRST RESPONSIVE - SMALL CARDS ON PHONE VIEW
+   ================================================================ */
+
+/* Small devices (phones, 576px and below) */
+@media (max-width: 576px) {
+    .section {
+        padding-top: 10px;
+    }
+    
+    .section-header {
+        margin-bottom: 25px;
+    }
+    
+    .section-icon {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+    }
+    
+    .section-subtitle p {
+        font-size: 0.95rem;
+    }
+    
+    /* --- Compact card for mobile --- */
+    .achievement-card {
+        padding: 14px 14px 18px;
+        border-radius: 12px;
+        margin-bottom: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    /* smaller badge */
+    .achievement-badge {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .achievement-icon {
+        font-size: 1.1rem;
+        border-radius: 10px;
+        border-width: 1.5px;
+    }
+    
+    .badge-glow {
+        border-radius: 12px;
+        filter: blur(8px);
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+    }
+    
+    .achievement-header {
+        margin-bottom: 6px;
+        gap: 6px;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+    
+    .achievement-meta {
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        min-width: unset;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+    
+    .achievement-date {
+        font-size: 0.6rem;
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+    
+    .achievement-type {
+        font-size: 0.55rem;
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+    
+    .achievement-title {
+        font-size: 1rem;
+        margin-bottom: 2px;
+    }
+    
+    .achievement-issuer {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+    }
+    
+    .achievement-description {
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+    
+    .achievement-skills {
+        gap: 4px;
+        margin-bottom: 12px;
+    }
+    
+    .skill-tag {
+        font-size: 0.6rem;
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+    
+    .certificate-link {
+        padding: 6px 14px;
+        font-size: 0.75rem;
+        border-radius: 16px;
+        gap: 6px;
+    }
+    
+    /* stack section headings on mobile */
+    .section-title {
+        font-size: 1.6rem;
+        margin-top: 18px;
+        margin-bottom: 12px;
+    }
+    
+    /* stats compact */
+    .stat-item {
+        padding: 10px 12px;
+        gap: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+    
+    .stat-number {
+        font-size: 1.2rem;
+    }
+    
+    .stat-label {
+        font-size: 0.65rem;
+    }
+    
+    /* remove hover effects on touch devices */
+    .achievement-card:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: rgba(0, 243, 255, 0.15);
+    }
+    
+    .achievement-card:hover .achievement-glow {
+        opacity: 0;
+    }
+    
+    .achievement-card:hover .badge-glow {
+        opacity: 0.4;
+    }
+    
+    .achievement-card:active {
+        transform: scale(0.98);
+        border-color: var(--primary);
+        box-shadow: 0 4px 12px rgba(0, 243, 255, 0.15);
+    }
+    
+    /* adjust grid spacing */
+    .row.g-3 {
+        --bs-gutter-y: 0.5rem;
+        --bs-gutter-x: 0.5rem;
+    }
+    
+    .col-xl-4, .col-lg-6, .col-md-6 {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+    
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
+/* Extra small phones (≤ 400px) */
+@media (max-width: 400px) {
+    .achievement-card {
+        padding: 12px 10px 14px;
+        border-radius: 10px;
+    }
+    
+    .achievement-badge {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .achievement-icon {
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+    
+    .achievement-title {
+        font-size: 0.9rem;
+    }
+    
+    .achievement-issuer {
+        font-size: 0.75rem;
+    }
+    
+    .achievement-description {
+        font-size: 0.7rem;
+    }
+    
+    .achievement-date {
+        font-size: 0.5rem;
+        padding: 1px 6px;
+    }
+    
+    .achievement-type {
+        font-size: 0.5rem;
+        padding: 1px 6px;
+    }
+    
+    .certificate-link {
+        padding: 4px 10px;
+        font-size: 0.65rem;
+        border-radius: 14px;
+    }
+    
+    .skill-tag {
+        font-size: 0.55rem;
+        padding: 1px 6px;
+        border-radius: 6px;
+    }
+    
+    .stat-item {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+    
+    .stat-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+    }
+    
+    .stat-number {
+        font-size: 1rem;
+    }
+    
+    .stat-label {
+        font-size: 0.55rem;
+    }
+}
+
+/* ================================================================
+   KEEP DESKTOP STYLES UNCHANGED (for screens > 576px)
+   ================================================================ */
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
@@ -494,57 +756,7 @@ body::before {
     }
 }
 
-/* Special adjustments for very small screens */
-@media (max-width: 400px) {
-    .section-title {
-        font-size: 1.8rem;
-    }
-    
-    .section-subtitle p {
-        font-size: 1rem;
-    }
-    
-    .achievement-card {
-        padding: 15px;
-    }
-    
-    .achievement-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    
-    .achievement-meta {
-        align-items: flex-start;
-        flex-direction: row;
-        gap: 8px;
-        width: 100%;
-    }
-    
-    .achievement-title {
-        font-size: 1.1rem;
-    }
-    
-    .achievement-issuer {
-        font-size: 0.95rem;
-    }
-    
-    .stat-item {
-        padding: 12px;
-    }
-    
-    .stat-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.1rem;
-    }
-    
-    .stat-number {
-        font-size: 1.3rem;
-    }
-}
-
-/* Touch-friendly improvements for mobile */
+/* Touch-friendly improvements for mobile (keep) */
 @media (hover: none) and (pointer: coarse) {
     .achievement-card:hover {
         transform: none;

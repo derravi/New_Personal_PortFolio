@@ -452,14 +452,11 @@ h1, h2, h3, h4, h5, h6 {
     }
     .stats-row {
         gap: 12px;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        justify-content: flex-start;
-        padding-bottom: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     .stat-card {
-        flex: 0 0 auto;
-        width: calc(33.33% - 10px);
+        flex: 0 0 calc(33.33% - 12px);
         min-width: 140px;
         padding: 20px 15px;
     }
@@ -478,6 +475,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* ===== MOBILE VIEW: SMALLER CARDS & STATS GRID ===== */
 @media (max-width: 575px) {
     .section {
         padding-top: 12px;
@@ -514,116 +512,128 @@ h1, h2, h3, h4, h5, h6 {
         left: 0%;
     }
     .timeline-content {
-        padding: 20px 15px;
+        padding: 18px 14px;
         border-radius: 12px;
     }
     .timeline-date {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         padding: 3px 10px;
     }
     .timeline-title {
-        font-size: 1.1rem;
-        margin-bottom: 8px;
+        font-size: 1rem;
+        margin-bottom: 4px;
     }
     .timeline-company {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         margin-bottom: 0;
     }
     .timeline-description {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         line-height: 1.5;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
     .timeline-skills {
-        gap: 6px;
+        gap: 5px;
     }
     .skill-badge {
-        font-size: 0.75rem;
-        padding: 4px 8px;
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        border-radius: 8px;
     }
     .stats-section {
         margin-top: 40px;
         padding: 0 10px;
     }
+    /* Stats grid: 3 columns on first row, 2 on second */
     .stats-row {
-        gap: 12px;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        justify-content: flex-start;
-        padding-bottom: 10px;
-        scrollbar-width: thin;
-        -webkit-overflow-scrolling: touch;
-    }
-    .stats-row::-webkit-scrollbar {
-        height: 3px;
-    }
-    .stats-row::-webkit-scrollbar-track {
-        background: rgba(0, 243, 255, 0.1);
-        border-radius: 10px;
-    }
-    .stats-row::-webkit-scrollbar-thumb {
-        background: var(--primary);
-        border-radius: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow: visible;
+        padding-bottom: 0;
     }
     .stat-card {
         flex: 0 0 auto;
-        width: 140px;
-        padding: 20px 12px;
+        width: 100%;
+        padding: 16px 8px;
         margin-bottom: 0;
         border-radius: 12px;
+        min-width: unset;
     }
+    /* Make stat cards smaller and more compact */
     .stat-number {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+        margin-bottom: 4px;
     }
     .stat-icon {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1rem;
-        margin-bottom: 12px;
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+        margin-bottom: 10px;
     }
     .stat-label {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.5px;
     }
     .container {
-        padding: 0 15px;
+        padding: 0 12px;
     }
     .company-logo {
-        max-width: 40px;
-        padding: 4px;
+        max-width: 50px;
+        padding: 3px;
     }
     .timeline-header {
-        gap: 10px;
-        margin-bottom: 12px;
+        gap: 8px;
+        margin-bottom: 10px;
     }
 }
 
-@media (max-width: 375px) {
+/* Very small phones */
+@media (max-width: 400px) {
     .section-title {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
     .timeline-item {
-        padding-left: 40px;
+        padding-left: 38px;
         padding-right: 10px;
     }
     .timeline-content {
-        padding: 15px 12px;
+        padding: 14px 10px;
     }
     .timeline-title {
-        font-size: 1rem;
-    }
-    .timeline-company {
         font-size: 0.9rem;
     }
+    .timeline-company {
+        font-size: 0.8rem;
+    }
+    .timeline-description {
+        font-size: 0.8rem;
+    }
+    .stats-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
     .stat-card {
-        width: 130px;
-        padding: 15px 10px;
+        padding: 12px 6px;
+        border-radius: 10px;
     }
     .stat-number {
-        font-size: 1.6rem;
+        font-size: 1.3rem;
+    }
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+    .stat-label {
+        font-size: 0.6rem;
     }
     .company-logo {
-        max-width: 35px;
-        padding: 3px;
+        max-width: 40px;
+        padding: 2px;
     }
 }
 
@@ -706,9 +716,9 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Increase logo size */
 .company-logo {
-    max-width: 150px;      /* Increase from 55px to desired size */
-    padding: 1px;         /* Slightly more padding for visual balance */
-    border-radius: 5px;  /* Optional: slightly larger rounding */
+    max-width: 150px;
+    padding: 1px;
+    border-radius: 5px;
 }
 
 /* For tablets, keep slightly smaller but still larger than before */
@@ -722,7 +732,7 @@ h1, h2, h3, h4, h5, h6 {
 /* For mobile devices, adjust proportionally */
 @media (max-width: 575px) {
     .company-logo {
-        max-width: 100px;   /* Still larger than the original 40px, adjust as needed */
+        max-width: 80px;
         padding: 2px;
     }
 }
@@ -866,7 +876,7 @@ h1, h2, h3, h4, h5, h6 {
             </div>
         </div>
 
-        <!-- Stats Section - Single Horizontal Row with 5 Cards -->
+        <!-- Stats Section - Grid on mobile, row on desktop -->
         <div class="stats-section">
             <div class="stats-row">
                 <div class="stat-card">
@@ -1091,4 +1101,4 @@ if ('ontouchstart' in window) {
     });
 }
 </script>
-{% endblock %}
+{% endblock %}      

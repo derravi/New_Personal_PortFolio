@@ -62,12 +62,12 @@
                             </div>
                             <span class="social-text">Docker HUB</span>
                         </a>
-                        <a href="#" class="social-link" target="_blank">
+                        <!-- <a href="#" class="social-link" target="_blank">
                             <div class="social-icon">
                                 <i class="fab fa-instagram"></i>
                             </div>
                             <span class="social-text">Instagram</span>
-                        </a>
+                        </a> -->
                         <a href="#" class="social-link" target="_blank">
                             <div class="social-icon">
                                 <i class="fab fa-facebook"></i>
@@ -422,7 +422,7 @@
     }
 }
 
-/* Mobile Devices (576px - 768px) */
+/* ===== NEW MOBILE LAYOUT (≤ 768px) ===== */
 @media (max-width: 768px) {
     .footer-futuristic {
         padding: 40px 0 20px;
@@ -431,13 +431,13 @@
     }
 
     .footer-section {
-        padding: 15px 10px;
-        margin-bottom: 20px;
+        padding: 12px 8px;
+        margin-bottom: 8px;
     }
     
     .footer-title {
         font-size: 1.1rem;
-        margin-bottom: 15px;
+        margin-bottom: 14px;
     }
     
     .footer-title::after {
@@ -445,188 +445,234 @@
         transform: translateX(-50%);
     }
     
-    /* Stack columns vertically on mobile */
+    /* --- ROW 1: Quick Links + Newsletter (side by side) --- */
     .row.align-items-center {
-        flex-direction: column;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
-    .col-lg-4, .col-md-6, .col-md-12 {
-        width: 100%;
-        margin-bottom: 20px;
+    .row.align-items-center > .col-lg-4,
+    .row.align-items-center > .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: 0;
     }
     
-    /* Center align all content on mobile */
-    .text-lg-end, .text-md-start {
+    /* third column (Connect) becomes full width on row 2 */
+    .row.align-items-center > .col-lg-4.col-md-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-top: 12px;
+    }
+    
+    /* align text in first two columns to center (mobile friendly) */
+    .footer-section.text-md-start {
         text-align: center !important;
     }
     
-    
-    
-    
-    .contact-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 0.8rem;
-    }
-    
-    /* Quick links adjustments */
+    /* Quick links: smaller & centered */
     .quick-links {
         align-items: center;
-        gap: 8px;
+        gap: 6px;
     }
     
     .quick-link {
-        width: 200px;
-        justify-content: center;
-        text-align: center;
-        padding: 8px 15px;
-        font-size: 0.9rem;
+        width: auto;
+        padding: 4px 12px;
+        font-size: 0.85rem;
+        display: inline-block;
+        white-space: nowrap;
     }
     
-    /* Social links adjustments */
+    /* newsletter input group: center and shrink */
+    .newsletter-input-group {
+        max-width: 240px;
+        margin: 0 auto;
+        gap: 6px;
+    }
+    .newsletter-input {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    .newsletter-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    .newsletter-msg {
+        font-size: 0.75rem;
+        min-height: 16px;
+    }
+    
+    /* resume link inline */
+    .quick-link[style*="display:inline-block"] {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+    }
+    
+    /* Social links: display as 2‑column grid on mobile (row 2) */
     .social-links {
-        align-items: center;
-        gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px 12px;
+        max-width: 380px;
+        margin: 0 auto;
     }
     
     .social-link {
+        padding: 8px 10px;
+        gap: 8px;
+        border-radius: 20px;
         justify-content: flex-start;
-        max-width: 220px;
-        margin: 0 auto;
-        padding: 10px 15px;
-        gap: 12px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(0, 243, 255, 0.1);
     }
     
     .social-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+        flex-shrink: 0;
     }
     
     .social-text {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
     }
     
-    /* Footer divider adjustments */
+    /* remove transform on hover for better touch */
+    .social-link:hover {
+        transform: none;
+    }
+    
+    /* footer divider */
     .footer-divider {
-        margin: 30px 0 20px;
+        margin: 24px 0 16px;
     }
     
-    /* Footer bottom adjustments */
     .footer-bottom {
-        margin-top: 20px;
+        margin-top: 16px;
     }
-    
     .copyright-text, .made-with {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
     
-    /* Reduce floating element sizes on mobile */
+    /* floating elements smaller */
     .footer-floating-elements .floating-element:nth-child(1) {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
     }
-    
     .footer-floating-elements .floating-element:nth-child(2) {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
     }
-    
     .footer-floating-elements .floating-element:nth-child(3) {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
     }
 }
 
-/* Small Mobile Devices (up to 576px) */
+/* Small Mobile (≤ 576px) – fine-tune */
 @media (max-width: 576px) {
     .footer-futuristic {
-        padding: 30px 0 15px;
-        margin-top: 50px;
+        padding: 30px 0 12px;
+        margin-top: 40px;
     }
-    
     .footer-section {
-        padding: 10px 5px;
-        margin-bottom: 15px;
+        padding: 6px 4px;
     }
-    
     .footer-title {
-        font-size: 1rem;
-        margin-bottom: 12px;
+        font-size: 0.95rem;
+        margin-bottom: 10px;
     }
     
-    .contact-icon {
-        width: 28px;
-        height: 28px;
-        font-size: 0.7rem;
+    .row.align-items-center > .col-lg-4,
+    .row.align-items-center > .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
     }
-   
+    
     .quick-link {
-        width: 180px;
-        padding: 6px 12px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
+        padding: 3px 8px;
+        white-space: nowrap;
     }
     
+    .newsletter-input-group {
+        max-width: 190px;
+    }
+    .newsletter-input {
+        font-size: 0.7rem;
+        padding: 6px 10px;
+    }
+    .newsletter-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+    .newsletter-msg {
+        font-size: 0.65rem;
+    }
+    
+    .social-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px 8px;
+        max-width: 300px;
+    }
     .social-link {
-        max-width: 200px;
-        padding: 8px 12px;
-        gap: 10px;
+        padding: 6px 8px;
+        gap: 6px;
+        border-radius: 16px;
     }
-    
     .social-icon {
-        width: 28px;
-        height: 28px;
-        font-size: 0.9rem;
+        width: 26px;
+        height: 26px;
+        font-size: 0.75rem;
     }
-    
     .social-text {
-        font-size: 0.85rem;
+        font-size: 0.7rem;
     }
     
     .footer-divider {
-        margin: 20px 0 15px;
+        margin: 16px 0 10px;
     }
-    
     .footer-bottom {
-        margin-top: 15px;
+        margin-top: 10px;
     }
-    
     .copyright-text, .made-with {
-        font-size: 0.8rem;
-    }
-    
-    /* Further reduce floating elements */
-    .footer-floating-elements .floating-element:nth-child(1) {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .footer-floating-elements .floating-element:nth-child(2) {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .footer-floating-elements .floating-element:nth-child(3) {
-        width: 30px;
-        height: 30px;
+        font-size: 0.7rem;
     }
 }
 
 /* Landscape Orientation for Mobile */
 @media (max-height: 500px) and (max-width: 768px) {
     .footer-futuristic {
-        padding: 25px 0 15px;
+        padding: 20px 0 10px;
     }
-    
     .footer-section {
-        padding: 8px 5px;
-        margin-bottom: 10px;
+        padding: 4px 6px;
+        margin-bottom: 4px;
     }
-    
-    
-    
-    .quick-link, .social-link {
-        padding: 6px 10px;
+    .footer-title {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+    .quick-link {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+    }
+    .social-link {
+        padding: 4px 8px;
+        gap: 6px;
+    }
+    .social-icon {
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+    }
+    .social-text {
+        font-size: 0.65rem;
     }
 }
 
@@ -641,16 +687,17 @@
 @media (hover: none) and (pointer: coarse) {
     .quick-link:hover,
     .social-link:hover {
-        transform: none;
+        transform: none !important;
         background: rgba(0, 243, 255, 0.03);
     }
-    
     .social-link:active,
     .quick-link:active {
         background: rgba(0, 243, 255, 0.08);
         transform: scale(0.98);
     }
 }
+
+/* newsletter styles (kept) */
 .newsletter-input-group {
     display: flex;
     gap: 8px;
@@ -768,8 +815,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data = await res.json();
                 if (res.ok) {
                     msg.textContent = data.status === 'already_subscribed'
-                        ? "You're already subscribed \u2713"
-                        : 'Subscribed! Check your inbox \u2713';
+                        ? "You're already subscribed ✓"
+                        : 'Subscribed! Check your inbox ✓';
                     msg.classList.add('success');
                     emailInput.value = '';
                 } else {
