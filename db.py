@@ -51,7 +51,10 @@ CREATE TABLE IF NOT EXISTS project_reviews (
     reviewer_name TEXT NOT NULL,
     rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
     comment TEXT,
-    created_at TEXT NOT NULL
+    status TEXT DEFAULT 'pending' CHECK (status IN ('approved', 'pending', 'hidden', 'deleted')),
+    created_at TEXT NOT NULL,
+    reviewed_at TEXT,
+    reviewed_by TEXT
 );
 
 CREATE TABLE IF NOT EXISTS newsletter_subscribers (

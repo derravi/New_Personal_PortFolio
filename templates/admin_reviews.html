@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Reviews - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Project Reviews</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <!-- Status Filter -->
+    <div class="mb-4">
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('admin.reviews_list', status='all') }}" 
+               class="btn btn-{% if selected_status == 'all' %}primary{% else %}outline-primary{% endif %}">
+                All Reviews <span class="badge bg-secondary">{{ reviews|length }}</span>
+            </a>
+            <a href="{{ url_for('admin.reviews_list', status='pending') }}" 
+               class="btn btn-{% if selected_status == 'pending' %}warning{% else %}outline-warning{% endif %}">
+                Pending
+            </a>
+            <a href="{{ url_for('admin.reviews_list', status='approved') }}" 
+               class="btn btn-{% if selected_status == 'approved' %}success{% else %}outline-success{% endif %}">
+                Approved
+            </a>
+            <a href="{{ url_for('admin.reviews_list', status='hidden') }}" 
+               class="btn btn-{% if selected_status == 'hidden' %}danger{% else %}outline-danger{% endif %}">
+                Hidden
+            </a>
+        </div>
+    </div>
+
+    <!-- Reviews Table -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" id="reviewsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Project</th>
+                        <th>Reviewer</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewsBody">
+                    {% for review in reviews %}
+                    <tr data-review-id="{{ review.id }}">
+                        <td>
+                            <strong>{{ review.project_slug }}</strong>
+                        </td>
+                        <td>{{ review.reviewer_name }}</td>
+                        <td>
+                            <div class="rating">
+                                {% for i in range(review.rating) %}
+                                    <span class="text-warning">★</span>
+                                {% endfor %}
+                                {% for i in range(5 - review.rating) %}
+                                    <span class="text-muted">☆</span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td>
+                            <small>
+                                {% if review.comment %}
+                                    {{ review.comment[:50] }}{% if review.comment|length > 50 %}...{% endif %}
+                                {% else %}
+                                    <em class="text-muted">No comment</em>
+                                {% endif %}
+                            </small>
+                        </td>
+                        <td>
+                            <span class="badge bg-{% if review.status == 'approved' %}success{% elif review.status == 'pending' %}warning{% elif review.status == 'hidden' %}danger{% else %}secondary{% endif %}">
+                                {{ review.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <small class="text-muted">{{ review.created_at[:10] }}</small>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                {% if review.status != 'approved' %}
+                                <button class="btn btn-success" onclick="updateReviewStatus({{ review.id }}, 'approved')">
+                                    Approve
+                                </button>
+                                {% endif %}
+                                {% if review.status != 'hidden' %}
+                                <button class="btn btn-warning" onclick="updateReviewStatus({{ review.id }}, 'hidden')">
+                                    Hide
+                                </button>
+                                {% endif %}
+                                <button class="btn btn-danger" onclick="deleteReview({{ review.id }})">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not reviews %}
+            <div class="alert alert-info m-3">
+                No reviews found.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .rating span { font-size: 1.2em; }
+    .btn-group-sm .btn { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+</style>
+
+<script>
+async function updateReviewStatus(reviewId, newStatus) {
+    try {
+        const response = await fetch(`/admin/api/review/${reviewId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Remove the row and reload
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error updating review: ' + error.message);
+    }
+}
+
+async function deleteReview(reviewId) {
+    if (!confirm('Are you sure you want to permanently delete this review?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/admin/api/review/${reviewId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error deleting review: ' + error.message);
+    }
+}
+</script>
+{% endblock %}

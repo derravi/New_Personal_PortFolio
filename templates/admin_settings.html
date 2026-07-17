@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .settings-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .settings-header {
+            margin-bottom: 30px;
+        }
+
+        .settings-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .settings-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+        }
+
+        .card-title i {
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-strength {
+            font-size: 12px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .strength-indicator {
+            height: 100%;
+            width: 0%;
+            background: #ff6b6b;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .strength-indicator.fair {
+            width: 50%;
+            background: #ffa94d;
+        }
+
+        .strength-indicator.good {
+            width: 75%;
+            background: #51cf66;
+        }
+
+        .strength-indicator.strong {
+            width: 100%;
+            background: #2196f3;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 6px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert.error {
+            background: #ffebee;
+            color: #c00;
+            border-left: 4px solid #c00;
+            display: none;
+        }
+
+        .alert.error.show {
+            display: flex;
+        }
+
+        .alert.success {
+            background: #efe;
+            color: #0a0;
+            border-left: 4px solid #0a0;
+            display: none;
+        }
+
+        .alert.success.show {
+            display: flex;
+        }
+
+        .info-box {
+            background: #f5f7ff;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+            font-size: 13px;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .info-box strong {
+            display: block;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .toggle-password {
+            position: relative;
+        }
+
+        .toggle-password .show-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            font-size: 18px;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .toggle-password input {
+            padding-right: 40px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 30px 0;
+        }
+
+        .export-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 12px 15px;
+            background: #f5f7ff;
+            border: 2px dashed #667eea;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .file-input-wrapper input[type="file"]:hover ~ .file-input-label {
+            background: #e3f2fd;
+        }
+
+        .file-input-wrapper input[type="file"]:focus ~ .file-input-label {
+            border-color: #764ba2;
+            color: #764ba2;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-card {
+                padding: 20px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <a href="/admin/dashboard" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+
+        <div class="settings-header">
+            <h1>
+                <i class="fas fa-cog"></i> Admin Settings
+            </h1>
+            <p>Manage your admin account and portfolio data</p>
+        </div>
+
+        <div class="settings-grid">
+            <!-- CHANGE PASSWORD CARD -->
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-lock"></i> Change Password
+                </div>
+
+                <div id="passwordAlert" class="alert error"></div>
+                <div id="passwordSuccess" class="alert success"></div>
+
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="old_password">Current Password</label>
+                        <input type="password" id="old_password" name="old_password" placeholder="Enter your current password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_password">New Password</label>
+                        <div class="toggle-password">
+                            <input type="password" id="new_password" name="new_password" placeholder="Enter a strong password" required onkeyup="checkPasswordStrength(this.value)">
+                            <button type="button" class="show-btn" onclick="togglePassword('new_password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <span>Strength:</span>
+                            <div class="strength-bar">
+                                <div class="strength-indicator" id="strengthIndicator"></div>
+                            </div>
+                            <span id="strengthText">Weak</span>
+                        </div>
+                        <div class="help-text">Minimum 6 characters, use mix of letters, numbers, and symbols</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm New Password</label>
+                        <div class="toggle-password">
+                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter your new password" required>
+                            <button type="button" class="show-btn" onclick="togglePassword('confirm_password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="passwordBtn">
+                        <i class="fas fa-save"></i> Update Password
+                    </button>
+                </form>
+
+                <div class="info-box">
+                    <strong>Security Tips:</strong>
+                    Use a strong password with at least 8 characters including uppercase, lowercase, numbers, and symbols.
+                </div>
+            </div>
+
+            <!-- ACCOUNT INFO CARD -->
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-user"></i> Account Information
+                </div>
+
+                <div class="form-group">
+                    <label>Admin Email</label>
+                    <input type="text" value="{{ admin_email }}" disabled style="background: #f5f7fa; color: #999;">
+                    <span class="help-text">Email address for admin login</span>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="form-group">
+                    <label>Account Status</label>
+                    <div style="padding: 10px; background: #efe; border-radius: 4px; color: #0a0; font-size: 13px; font-weight: 600;">
+                        <i class="fas fa-check-circle"></i> Active
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Need help?</strong>
+                    Contact support if you're having trouble with your account or need to reset your password.
+                </div>
+            </div>
+
+            <!-- DATA MANAGEMENT CARD - FULL WIDTH -->
+        </div>
+
+        <div class="settings-card" style="margin-top: 30px;">
+            <div class="card-title">
+                <i class="fas fa-database"></i> Data Management & Backup
+            </div>
+
+            <div id="dataAlert" class="alert error"></div>
+            <div id="dataSuccess" class="alert success"></div>
+
+            <div class="export-section">
+                <h3 style="font-size: 15px; margin-bottom: 15px;">Export Projects</h3>
+                <p style="font-size: 13px; color: #999; margin-bottom: 15px;">Download all your projects as a JSON file for backup or migration purposes.</p>
+                <button class="btn btn-secondary" onclick="exportProjects()">
+                    <i class="fas fa-download"></i> Export All Projects as JSON
+                </button>
+            </div>
+
+            <div class="export-section">
+                <h3 style="font-size: 15px; margin-bottom: 15px;">Import Projects</h3>
+                <p style="font-size: 13px; color: #999; margin-bottom: 15px;">Upload a previously exported JSON file to import projects. Duplicates will be skipped.</p>
+                
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept=".json">
+                    <label for="fileInput" class="file-input-label">
+                        <i class="fas fa-cloud-upload-alt"></i> Click to select or drag & drop JSON file
+                    </label>
+                </div>
+
+                <button class="btn btn-secondary" id="importBtn" style="margin-top: 15px; display: none;">
+                    <i class="fas fa-upload"></i> Import Projects
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            const indicator = document.getElementById('strengthIndicator');
+            const text = document.getElementById('strengthText');
+            let strength = 0;
+
+            if (password.length >= 6) strength++;
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[!@#$%^&*-_=+]/.test(password)) strength++;
+
+            indicator.className = 'strength-indicator';
+            if (strength <= 2) {
+                indicator.classList.add('fair');
+                text.textContent = 'Fair';
+            } else if (strength <= 3) {
+                indicator.classList.add('good');
+                text.textContent = 'Good';
+            } else {
+                indicator.classList.add('strong');
+                text.textContent = 'Strong';
+            }
+        }
+
+        // Toggle password visibility
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const btn = event.target.closest('.show-btn');
+            if (field.type === 'password') {
+                field.type = 'text';
+                btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                field.type = 'password';
+                btn.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+
+        // Change password form
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const oldPassword = document.getElementById('old_password').value;
+            const newPassword = document.getElementById('new_password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (newPassword !== confirmPassword) {
+                showAlert('passwordAlert', 'Passwords do not match', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('passwordBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span style="display:inline-block;width:16px;height:16px;border:2px solid #f0f0f0;border-top-color:white;border-radius:50%;animation:spin 0.6s linear infinite;"></span> Updating...';
+
+            try {
+                const response = await fetch('/admin/api/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        old_password: oldPassword,
+                        new_password: newPassword,
+                        confirm_password: confirmPassword
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('passwordSuccess', data.message, 'success');
+                    document.getElementById('passwordForm').reset();
+                    document.getElementById('strengthIndicator').className = 'strength-indicator';
+                    document.getElementById('strengthText').textContent = 'Weak';
+                } else {
+                    showAlert('passwordAlert', data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('passwordAlert', 'Error: ' + error.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Update Password';
+            }
+        });
+
+        // Export projects
+        async function exportProjects() {
+            try {
+                const response = await fetch('/admin/api/export-projects');
+                const data = await response.json();
+
+                if (data.success) {
+                    const dataStr = JSON.stringify(data.projects, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
+                    link.click();
+                    showAlert('dataSuccess', `Exported ${data.projects.length} projects successfully`, 'success');
+                }
+            } catch (error) {
+                showAlert('dataAlert', 'Error exporting projects: ' + error.message, 'error');
+            }
+        }
+
+        // File input change
+        document.getElementById('fileInput').addEventListener('change', () => {
+            const importBtn = document.getElementById('importBtn');
+            importBtn.style.display = document.getElementById('fileInput').files.length > 0 ? 'block' : 'none';
+        });
+
+        // Import projects
+        document.getElementById('importBtn').addEventListener('click', async () => {
+            const file = document.getElementById('fileInput').files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const projects = JSON.parse(e.target.result);
+                    if (!Array.isArray(projects)) {
+                        showAlert('dataAlert', 'Invalid JSON format. Expected an array of projects.', 'error');
+                        return;
+                    }
+
+                    const response = await fetch('/admin/api/import-projects', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ projects })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        showAlert('dataSuccess', `Imported ${data.imported} projects (${data.failed} failed)`, 'success');
+                        document.getElementById('fileInput').value = '';
+                        document.getElementById('importBtn').style.display = 'none';
+                    } else {
+                        showAlert('dataAlert', data.message, 'error');
+                    }
+                } catch (error) {
+                    showAlert('dataAlert', 'Error parsing JSON: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Show alert helper
+        function showAlert(elementId, message, type) {
+            const alert = document.getElementById(elementId);
+            alert.className = `alert ${type}`;
+            alert.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+                <span>${message}</span>
+            `;
+            alert.classList.add('show');
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

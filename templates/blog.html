@@ -897,6 +897,50 @@ body::after {
                 </div>
             </div>
         </div>
+
+        <!-- Posts published from the admin dashboard (create/edit/delete at /admin/blog) -->
+        {% if posts %}
+        <div class="section-header" style="margin-top:80px;">
+            <h2 class="section-title" style="font-size: 28px;">Latest From the Blog</h2>
+            <div class="section-subtitle"><p>Fresh posts published from the admin dashboard</p></div>
+        </div>
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-md-6 col-lg-4">
+                <div class="blog-card" data-category="latest">
+                    <div class="blog-img">
+                        {% if post.cover_image %}
+                        <img src="{{ post.cover_image }}" alt="{{ post.title }}" onerror="this.style.display='none'">
+                        {% endif %}
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date"><i class="far fa-calendar-alt"></i> {{ post.published_at[:10] if post.published_at else '' }}</span>
+                            <span class="blog-category"><i class="far fa-eye"></i> {{ post.views }} views</span>
+                        </div>
+                        <h3 class="blog-title">{{ post.title }}</h3>
+                        <div class="blog-excerpt-wrapper">
+                            <p class="blog-excerpt">{{ post.summary }}</p>
+                        </div>
+                        <div class="blog-tags">
+                            {% if post.tags %}
+                                {% for tag in post.tags.split(',') %}
+                                    {% if tag.strip() %}<span class="blog-tag">{{ tag.strip() }}</span>{% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="blog-actions">
+                            <a href="{{ url_for('blog_post', slug=post.slug) }}" class="btn-futuristic">
+                                <span>Read Article</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 </section>
 {% endblock %}
 

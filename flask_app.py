@@ -18,7 +18,7 @@ Enhancement systems added on top of the original static site:
   - Basic performance monitoring              -> request timing -> page_visits table
 """
 
-from flask import Flask, render_template, request, jsonify, Response, abort, redirect, url_for, send_file
+from flask import Flask, render_template, request, jsonify, Response, abort, redirect, url_for, send_file, session
 import os
 import time
 import re
@@ -33,7 +33,13 @@ import chatbot
 import pdf_export
 import docx_export
 from rate_limit import rate_limit
-from projects_data import PROJECTS, PROJECTS_BY_SLUG, CATEGORY_LABELS, get_related
+import projects_data
+from projects_data import CATEGORY_LABELS
+
+# --- Admin dashboard (manage projects: add/edit/delete from /admin) ---
+from admin_routes import admin_bp
+from admin_db import init_admin_tables
+from admin_auth import init_admin_credentials
 
 try:
     from dotenv import load_dotenv
@@ -70,6 +76,20 @@ try:
     )
 
     db.init_db()
+
+    # --- Admin dashboard setup ---
+    # Session config (admin login stays signed in for 7 days)
+    app.config['SESSION_PERMANENT'] = True
+    app.config['PERMANENT_SESSION_LIFETIME'] = 86400 * 7
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    app.config['SESSION_COOKIE_SECURE'] = os.environ.get('FLASK_ENV') == 'production'
+
+    init_admin_tables()
+    projects_data.ensure_seeded()  # one-time: loads existing projects into the DB
+    init_admin_credentials()       # one-time: generates admin login if none exists yet
+
+    app.register_blueprint(admin_bp)
 
 except Exception as e:
     print(f"Error initializing Flask app: {e}")
@@ -194,7 +214,11 @@ try:
 
     @app.route('/projects')
     def projects():
-        return render_template('projects.html', projects_json=PROJECTS, category_labels=CATEGORY_LABELS)
+        return render_template(
+            'projects.html',
+            projects=projects_data.get_projects(),
+            category_labels=CATEGORY_LABELS,
+        )
 
     @app.route('/skills')
     def skills():
@@ -215,7 +239,10 @@ try:
     @app.route('/blog')
     def blog():
         conn = db.get_connection()
-        posts = conn.execute("SELECT * FROM blog_posts ORDER BY published_at DESC").fetchall()
+        posts = conn.execute(
+            "SELECT * FROM blog_posts WHERE status = 'published' OR status IS NULL "
+            "ORDER BY published_at DESC"
+        ).fetchall()
         conn.close()
         return render_template('blog.html', posts=posts)
 
@@ -226,7 +253,8 @@ try:
             conn.execute("UPDATE blog_posts SET views = views + 1 WHERE slug = ?", (slug,))
         post = conn.execute("SELECT * FROM blog_posts WHERE slug = ?", (slug,)).fetchone()
         related = conn.execute(
-            "SELECT * FROM blog_posts WHERE slug != ? ORDER BY published_at DESC LIMIT 3", (slug,)
+            "SELECT * FROM blog_posts WHERE slug != ? AND (status = 'published' OR status IS NULL) "
+            "ORDER BY published_at DESC LIMIT 3", (slug,)
         ).fetchall()
         conn.close()
         if not post:
@@ -235,37 +263,13 @@ try:
 
     @app.route('/blog/new', methods=['GET', 'POST'])
     def blog_new():
-        """Simple protected form to publish a new article (no separate admin
-        panel/auth system — protected by a shared ADMIN_TOKEN, good enough
-        for a single-author portfolio blog)."""
-        error = None
-        if request.method == 'POST':
-            if request.form.get('token') != ADMIN_TOKEN:
-                error = "Invalid admin token."
-            else:
-                title = request.form.get('title', '').strip()
-                summary = request.form.get('summary', '').strip()
-                content = request.form.get('content', '').strip()
-                tags = request.form.get('tags', '').strip()
-                cover_image = request.form.get('cover_image', '').strip()
-                if not (title and summary and content):
-                    error = "Title, summary and content are required."
-                else:
-                    slug = slugify(title)
-                    conn = db.get_connection()
-                    try:
-                        with conn:
-                            conn.execute(
-                                "INSERT INTO blog_posts (slug, title, summary, content, cover_image, tags, author, published_at, views) "
-                                "VALUES (?, ?, ?, ?, ?, ?, 'Ravi Der', ?, 0)",
-                                (slug, title, summary, content, cover_image, tags, db.now_iso()),
-                            )
-                        conn.close()
-                        return redirect(url_for('blog_post', slug=slug))
-                    except Exception as exc:
-                        conn.close()
-                        error = f"Could not save post (slug may already exist): {exc}"
-        return render_template('blog_new.html', error=error)
+        """Deprecated: publishing now happens from the admin dashboard
+        (/admin/blog/new), which has full login-protected create/edit/delete
+        for posts, cover images and tags. This route just forwards anyone
+        who still has the old URL bookmarked."""
+        if 'admin_logged_in' in session:
+            return redirect(url_for('admin.new_blog_post'))
+        return redirect(url_for('admin.login'))
 
     @app.route('/quiz')
     def quiz():
@@ -298,12 +302,12 @@ except Exception as e:
 
 @app.route('/api/projects')
 def api_projects():
-    return jsonify(PROJECTS)
+    return jsonify(projects_data.get_projects())
 
 
 @app.route('/api/projects/<slug>')
 def api_project_detail(slug):
-    project = PROJECTS_BY_SLUG.get(slug)
+    project = projects_data.get_project(slug)
     if not project:
         return jsonify({"error": "not found"}), 404
     return jsonify(project)
@@ -314,7 +318,7 @@ def api_get_reviews(slug):
     conn = db.get_connection()
     rows = conn.execute(
         "SELECT reviewer_name, rating, comment, created_at FROM project_reviews "
-        "WHERE project_slug = ? ORDER BY created_at DESC", (slug,)
+        "WHERE project_slug = ? AND status = 'approved' ORDER BY created_at DESC", (slug,)
     ).fetchall()
     conn.close()
     reviews = [dict(r) for r in rows]
@@ -325,7 +329,7 @@ def api_get_reviews(slug):
 @app.route('/api/projects/<slug>/reviews', methods=['POST'])
 @rate_limit(max_requests=5, window_seconds=60)
 def api_post_review(slug):
-    if slug not in PROJECTS_BY_SLUG:
+    if not projects_data.get_project(slug):
         return jsonify({"error": "unknown project"}), 404
 
     data = request.get_json(silent=True) or request.form
@@ -345,17 +349,17 @@ def api_post_review(slug):
     conn = db.get_connection()
     with conn:
         conn.execute(
-            "INSERT INTO project_reviews (project_slug, reviewer_name, rating, comment, created_at) "
-            "VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO project_reviews (project_slug, reviewer_name, rating, comment, status, created_at) "
+            "VALUES (?, ?, ?, ?, 'pending', ?)",
             (slug, name, rating, comment, db.now_iso()),
         )
     conn.close()
-    return jsonify({"status": "ok"}), 201
+    return jsonify({"status": "ok", "message": "Review submitted and is pending approval"}), 201
 
 
 @app.route('/api/recommendations/<slug>')
 def api_recommendations(slug):
-    return jsonify({"slug": slug, "related": get_related(slug)})
+    return jsonify({"slug": slug, "related": projects_data.get_related(slug)})
 
 
 @app.route('/api/blog')
@@ -519,7 +523,9 @@ STATIC_ROUTES = [
 @app.route('/sitemap.xml')
 def sitemap():
     conn = db.get_connection()
-    posts = conn.execute("SELECT slug, published_at FROM blog_posts").fetchall()
+    posts = conn.execute(
+        "SELECT slug, published_at FROM blog_posts WHERE status = 'published' OR status IS NULL"
+    ).fetchall()
     conn.close()
 
     urls = []
@@ -546,7 +552,7 @@ def robots():
         "User-agent: *",
         "Allow: /",
         "Disallow: /analytics",
-        "Disallow: /blog/new",
+        "Disallow: /admin",
         "Disallow: /api/",
         f"Sitemap: {SITE_URL.rstrip('/')}{url_for('sitemap')}",
     ]
@@ -582,7 +588,7 @@ def export_resume_docx():
 def resume_view():
     """Printable HTML resume (Ctrl/Cmd+P -> Save as PDF also works from here)."""
     by_category = {}
-    for p in PROJECTS:
+    for p in projects_data.get_projects():
         by_category.setdefault(p["category"], []).append(p)
     return render_template('resume.html', by_category=by_category, category_labels=CATEGORY_LABELS)
 

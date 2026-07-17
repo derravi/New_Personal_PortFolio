@@ -106,6 +106,34 @@ body::before {
     position: relative;
     isolation: isolate;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    cursor: grab;
+    user-select: none;
+}
+
+.project-card:active {
+    cursor: grabbing;
+}
+
+.project-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.project-card.drag-over {
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+}
+
+.drag-hint {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: rgba(0, 243, 255, 0.6);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
 }
 
 .project-card::before {
@@ -545,20 +573,21 @@ body::before {
 <p>Showcasing innovative solutions and creative implementations</p>
 </div>
 </div>
-<div class="row">
-<!-- Object Detection Project -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,opencv,numpy,yolo,computer-vision">
-<div class="project-card" data-project-slug="object-detection-distance-estimation">
+<div class="row" id="projectsRow">
+{% for p in projects %}
+<div class="col-md-6 col-lg-4" data-category="{{ p.category }}" data-tags="{{ p.tags|join(',') }}" data-project-id="{{ p.id or loop.index }}">
+<div class="project-card" data-project-slug="{{ p.slug }}" draggable="true" data-project-id="{{ p.id or loop.index }}">
+<div class="drag-hint">⋮⋮ Drag to reorder</div>
 <div class="project-img">
-<img alt="AI Object Detection Project" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Object%20Detection%20Projects.png"/>
+<img alt="{{ p.title }}" class="img-fluid" src="{{ p.image_url or 'https://via.placeholder.com/600x400?text=No+Image' }}"/>
 </div>
 <div class="project-content">
-<h3 class="project-title">AI-Powered Real-Time Object Detection and Distance Estimation System</h3>
-<p>AI-powered real-time object detection using YOLOv8 for multi-object tracking with unique IDs and distance estimation — GPU-optimized for surveillance, robotics, and autonomous systems.</p>
+<h3 class="project-title">{{ p.title }}</h3>
+<p>{{ p.description }}</p>
 <div class="project-badges">
-<span class="badge bg-primary">Python | OpenCV | NumPy</span>
-<span class="badge bg-primary">YOLOv3-Tiny | OpenCV DNN Face Detector</span>
-</div><div class="rating-widget" data-project-slug="object-detection-distance-estimation">
+{% for tag in p.tags %}<span class="badge bg-primary">{{ tag }}</span>
+{% endfor %}
+</div><div class="rating-widget" data-project-slug="{{ p.slug }}">
 <span class="rating-stars">☆☆☆☆☆</span>
 <span class="rating-summary">No reviews yet</span>
 <span class="review-toggle-link">Rate this project</span>
@@ -572,547 +601,15 @@ body::before {
 </div>
 </div>
 <div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/AI-Powered-Real-Time-Object-Detection-and-Distance-Estimation-System-">Github Link</a>
+<a class="btn btn-futuristic" href="{{ p.github_url }}" target="_blank" rel="noopener">Github Link</a>
+{% if p.demo_url %}<a class="btn btn-futuristic" href="{{ p.demo_url }}" target="_blank" rel="noopener">Live Demo</a>{% endif %}
 </div>
 </div>
 </div>
 </div>
-<!-- AI Farmer Assistant -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,gemini,genai">
-<div class="project-card"   data-project-slug="kisan-sathi-farmer-assistant">
-<div class="project-img">
-<img alt="Kisan Sathi Image" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Kisan%20Sathi%20Image.png"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">AI Powerful Farmer Assistant</h3>
-<p>Kisan Saathi AI is a smart farming assistant providing weather updates, crop prices, schemes, and market access in multiple Indian languages using Google Gemini AI.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Gemini - APIs</span>
-</div><div class="rating-widget" data-project-slug="kisan-sathi-farmer-assistant">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/AI-Powerfull-Farmer-Assistant">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- Credit Card Fraud Detection -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,scikit-learn,knn,decision-tree">
-<div class="project-card" data-project-slug="credit-card-fraud-detection">
-<div class="project-img">
-<img alt="Credit Card Fraud Detection" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/AI-Powered%20Credit%20Card%20Fraud%20Detection%20System.jpg
-"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Credit Card Fraud Detection</h3>
-<p>A credit card fraud detection project using K-Nearest Neighbors and Decision Tree classifiers. Covers data preprocessing, feature scaling, performance evaluation (confusion matrix, ROC curve), and a user input system to predict whether a transaction is fraudulent or genuine.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python-Scikir_learn</span>
-<span class="badge bg-primary">KNN Model</span>
-<span class="badge bg-primary">Decision Tree</span>
-</div><div class="rating-widget" data-project-slug="credit-card-fraud-detection">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Credit_Card_Fraud_Detection_using_KNN_-_Decision_Tree">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- Diabetes Prediction -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,scikit-learn,logistic-regression">
-<div class="project-card" data-project-slug="diabetes-prediction-system">
-<div class="project-img">
-<img alt="Diabetes Prediction System" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Diabetes_prediction_system_using_logistic_regression.jpg"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Diabetes Prediction System</h3>
-<p>A Machine Learning project that predicts diabetes risk using Logistic Regression. The system preprocesses data, trains a model on the Pima Indians Diabetes Dataset, evaluates performance, and allows users to input health metrics for prediction. Includes visual analysis &amp; heatmaps.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Scikit-Learn</span>
-<span class="badge bg-primary">Logistic Regression Model</span>
-</div><div class="rating-widget" data-project-slug="diabetes-prediction-system">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Diabetes_Prediction_System_using_Logistic_Regression">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- Student Success Prediction -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,scikit-learn,logistic-regression">
-<div class="project-card" data-project-slug="student-success-prediction">
-<div class="project-img">
-<img alt="Student Success Prediction" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Student_prediction.png"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Student Success Prediction</h3>
-<p>A machine learning project using Logistic Regression to predict student success (Pass/Fail) based on academic and behavioral features with data preprocessing, visualization, and interactive prediction.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Scikit-Learn</span>
-<span class="badge bg-primary">Logistic Regression Model</span>
-</div><div class="rating-widget" data-project-slug="student-success-prediction">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Student_Success_Prediction">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- Student Exam Score Prediction -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,scikit-learn,linear-regression">
-<div class="project-card" data-project-slug="student-exam-score-prediction">
-<div class="project-img">
-<img alt="Student Exam Score Prediction" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Student%20Exam%20Score%20Prediction.jpg
-"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Student Exam Score Prediction</h3>
-<p>Predicts students' final exam scores using linear regression based on factors like study hours, attendance, and past performance. Includes error metrics (MAE, MSE, RMSE, R²) and visualizations (histogram, scatter plot) to analyze the model's accuracy.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Scikit-Learn</span>
-<span class="badge bg-primary">Linear Regression Model</span>
-</div><div class="rating-widget" data-project-slug="student-exam-score-prediction">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Student-Exam-Score-Prediction-using-Linear-Regression">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- House Price Prediction -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,scikit-learn,linear-regression">
-<div class="project-card" data-project-slug="house-price-prediction">
-<div class="project-img">
-<img alt="House Price Prediction" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/House%20Price%20Prediction%20using%20Linear%20Regression.jpg"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">House Price Prediction</h3>
-<p>A machine learning project that predicts house prices based on area, bedrooms, bathrooms, floors, and year built using Linear Regression. Includes model evaluation metrics, data visualization, and interactive price prediction.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Scikit-Learn</span>
-<span class="badge bg-primary">Linear Regression Model</span>
-</div><div class="rating-widget" data-project-slug="house-price-prediction">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/House_Price_Prediction_using_Linear_Regression">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- PCA Analysis -->
-<div class="col-md-6 col-lg-4" data-category="data-analysis" data-tags="python,scikit-learn,pca">
-<div class="project-card" data-project-slug="pca-loan-dataset">
-<div class="project-img">
-<img alt="PCA Analysis on Loan Dataset" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Principal%20Component%20Analysis%20%28PCA%29%20project%20on%20a%20loan%20dataset.jpg"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">PCA Analysis on Loan Dataset</h3>
-<p>This project performs data preprocessing, handles missing values, standardizes features, and applies Principal Component Analysis (PCA) on a loan dataset. It visualizes variance explained by components and scatter plots to explore dimensionality reduction and feature importance.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Scikit-Learn</span>
-<span class="badge bg-primary">PCA Model</span>
-</div><div class="rating-widget" data-project-slug="pca-loan-dataset">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/PCA_Analysis_on_Loan_Dataset">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- Weather Insight -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,scikit-learn,weather">
-<div class="project-card" data-project-slug="weather-insight-ml">
-<div class="project-img">
-<img alt="Weather Insight: ML/AI Powered Weather Prediction and Analysis" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Weither%20Insights%20ML%20Ai.jpg"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Weather Insight: AI/ML Powered Weather Prediction and Analysis</h3>
-<p>ClimaCast: AI-Powered Weather Forecasting using Machine Learning</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Scikit-Learn</span>
-</div><div class="rating-widget" data-project-slug="weather-insight-ml">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Weather_Insight_ML-AI_Powered_Weather_Prediction_and_Analysis">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- COVID-19 Dashboard -->
-<div class="col-md-6 col-lg-4" data-category="data-analysis" data-tags="python,pandas,numpy,matplotlib">
-<div class="project-card" data-project-slug="covid19-analytics-dashboard">
-<div class="project-img">
-<img alt="COVID-19 Data Analytics Dashboard" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/COVID-19%20Data%20Analytics%20Dashboard.png"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">COVID-19 Data Analytics Dashboard</h3>
-<p>A Python-based COVID-19 Data Analytics Dashboard using Pandas, Matplotlib, and Seaborn. It visualizes global and country-level trends with line charts, pie charts, and bubble plots, providing insights on daily cases, deaths, regional distribution, and top affected countries.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Pandas</span>
-<span class="badge bg-primary">Numpy</span>
-<span class="badge bg-primary">Matplotlib</span>
-</div><div class="rating-widget" data-project-slug="covid19-analytics-dashboard">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/COVID-19_Data_Analytics_Dashboard">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- Air Quality Prediction -->
-<div class="col-md-6 col-lg-4" data-category="ai-ml" data-tags="python,knn">
-<div class="project-card" data-project-slug="air-quality-prediction">
-<div class="project-img">
-<img alt="AI Powered Air Quality Prediction" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Air%20Polution%20KNN%20Model.png"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">AI Powered Air Quality Prediction – Monitoring System</h3>
-<p>To predict Air Quality Index (AQI) and classify the Air Pollution Level (Good, Moderate, Poor, etc.) using real-world environmental data.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-</div><div class="rating-widget" data-project-slug="air-quality-prediction">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/AI_Powered_Air_Quality_Prediction_-_Monitoring_System">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-6 col-lg-4" data-category="data-analysis" data-tags="python,pandas,numpy,matplotlib">
-<div class="project-card" data-project-slug="blinkit-sales-analysis">
-<div class="project-img">
-<img alt="Blinkit Sales Data Analysis" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Blinkit%20Sales%20Data%20Analysis%20Project.png"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Blinkit Sales Data Analysis – Visualization</h3>
-<p>Data analysis project on Blinkit sales dataset. Includes data cleaning, handling missing values, outlier removal, and creating interactive visualizations with Matplotlib &amp; Seaborn. Explores sales patterns by item type, MRP, outlet size, and establishment year for insights.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Pandas - Numpy</span>
-<span class="badge bg-primary">Matplotlib</span>
-</div><div class="rating-widget" data-project-slug="blinkit-sales-analysis">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Blinkit_Sales_Data_Analysis_-_Visualization">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-6 col-lg-4" data-category="data-analysis" data-tags="python,pandas,numpy,matplotlib">
-<div class="project-card" data-project-slug="netflix-data-visualization">
-<div class="project-img">
-<img alt="AINetflix Data Cleaning &amp; Visualization" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Netflix%20Data%20Analysis%20%26%20Visualization%20%E2%80%93%20End-to-End%20Insights.png"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Netflix Data Cleaning &amp; Visualization</h3>
-<p>Netflix Data Cleaning &amp; Visualization project using Python (Pandas, NumPy, Matplotlib, Seaborn). Includes handling missing values, outliers, duplicates, and generating insightful visualizations to explore trends in Movies &amp; TV Shows.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Pandas - Numpy</span>
-<span class="badge bg-primary">Matplotlib</span>
-</div><div class="rating-widget" data-project-slug="netflix-data-visualization">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Netflix-Data-Cleaning-Visualization-Project-Full-Projects">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-6 col-lg-4" data-category="web-dev" data-tags="python,django,weather-api">
-<div class="project-card" data-project-slug="live-weather-django">
-<div class="project-img">
-<img alt="Live Weather Website using Django" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Live%20Weather%20Web%20Application%20%E2%80%93%20Built%20with%20Django.png"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Live Weather Website using Django</h3>
-<p>A weather website built using Django that provides real-time weather updates and forecasts. It fetches data from weather APIs and displays it in an easy-to-understand format, offering users accurate weather information for their location.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Open Weather APIs</span>
-<span class="badge bg-primary">Django</span>
-</div><div class="rating-widget" data-project-slug="live-weather-django">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Live_Weather_Website_Using_Django">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-6 col-lg-4" data-category="web-dev" data-tags="python,html,css">
-<div class="project-card" data-project-slug="todo-list-django">
-<div class="project-img">
-<img alt="Todo List using Django" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/todo%20list%20using%20the%20python%20django.png"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Todo List</h3>
-<p>A To-Do List allows users to add, update, delete, and track tasks. It lets you mark tasks as completed or incomplete to stay organized and manage your daily activities effectively.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">HTML - CSS</span>
-</div><div class="rating-widget" data-project-slug="todo-list-django">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Todo-list-using-django">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-6 col-lg-4" data-category="web-dev" data-tags="python,django,qrcode">
-<div class="project-card" data-project-slug="qr-code-generator">
-<div class="project-img">
-<img alt="AIQR Code Generator using Django" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/QR%20Code%20Generator%20Project%20Using%20Django.jpg"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">QR Code Generator</h3>
-<p>QR Code Generator Project: A user-friendly tool built with Python Django, using the QRCode and PIL libraries. Enter a link, click "OK," and instantly generate a downloadable QR code! Perfect for creating QR codes for websites, events, and more.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">QRCODE Library</span>
-<span class="badge bg-primary">Django</span>
-</div><div class="rating-widget" data-project-slug="qr-code-generator">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/QRcode_genorater--Using-Django">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-6 col-lg-4" data-category="web-dev" data-tags="python,django">
-<div class="project-card" data-project-slug="password-generator-django">
-<div class="project-img">
-<img alt="Password Generator using Django" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Auto%20Password%20Generator.jpg
-"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Password Generator</h3>
-<p>This project is a feature-rich password generator built with HTML, CSS, and JavaScript. It allows users to create secure passwords by including numbers, symbols, uppercase and lowercase characters, ensuring strong password security.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-<span class="badge bg-primary">Django</span>
-</div><div class="rating-widget" data-project-slug="password-generator-django">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Password-Genorater-Using-Django">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-<!-- Age Calculator -->
-<div class="col-md-6 col-lg-4" data-category="python-tools" data-tags="python">
-<div class="project-card" data-project-slug="age-calculator-python">
-<div class="project-img">
-<img alt="Age Calculator using Python" class="img-fluid" src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/age_caleculator_using_python.png
-"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">Age Calculator using Python</h3>
-<p>A simple desktop application built with Python's Tkinter library to calculate a person's age based on their date of birth. It provides an interactive GUI where users can input their name and birth date, and instantly see their current age.</p>
-<div class="project-badges">
-<span class="badge bg-primary">Python</span>
-</div><div class="rating-widget" data-project-slug="age-calculator-python">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="https://github.com/derravi/Age-Calculator-GUI-using-Python">Github Link</a>
-</div>
-</div>
-</div>
-</div>
-</div>
+{% else %}
+<p style="opacity:.7">No projects yet. Add your first one from the <a href="/admin/login">admin dashboard</a>.</p>
+{% endfor %}
 </div>
 </section>
 {% endblock %}
@@ -1121,6 +618,9 @@ body::before {
 <script>
 // Projects page specific animations
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize drag-and-drop for project cards
+    initDragAndDrop();
+    
     // Animate project cards on scroll
     const projectCards = document.querySelectorAll('.project-card');
     
@@ -1147,6 +647,111 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hover lift/tilt effect is now handled by static/js/enhancements.js
     // (initProjectTilt) which adds a subtle 3D tilt-on-mousemove effect.
 });
+
+// Drag and Drop Functionality
+function initDragAndDrop() {
+    const projectRow = document.getElementById('projectsRow');
+    const projectCards = document.querySelectorAll('.project-card');
+    let draggedCard = null;
+
+    projectCards.forEach(card => {
+        card.addEventListener('dragstart', handleDragStart);
+        card.addEventListener('dragend', handleDragEnd);
+        card.addEventListener('dragover', handleDragOver);
+        card.addEventListener('drop', handleDrop);
+        card.addEventListener('dragenter', handleDragEnter);
+        card.addEventListener('dragleave', handleDragLeave);
+    });
+
+    function handleDragStart(e) {
+        draggedCard = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.innerHTML);
+    }
+
+    function handleDragEnd(e) {
+        this.classList.remove('dragging');
+        projectCards.forEach(card => {
+            card.classList.remove('drag-over');
+        });
+    }
+
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+
+    function handleDragEnter(e) {
+        if (this !== draggedCard) {
+            this.classList.add('drag-over');
+        }
+    }
+
+    function handleDragLeave(e) {
+        this.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+
+        if (draggedCard !== this) {
+            // Get the parent columns
+            const draggedParent = draggedCard.closest('.col-md-6');
+            const targetParent = this.closest('.col-md-6');
+            
+            // Swap the columns
+            const draggedParentClone = draggedParent.cloneNode(true);
+            const targetParentClone = targetParent.cloneNode(true);
+            
+            draggedParent.replaceWith(targetParentClone);
+            targetParent.replaceWith(draggedParentClone);
+            
+            // Reinitialize drag and drop for new elements
+            initDragAndDrop();
+            
+            // Save the new order
+            saveProjectOrder();
+        }
+
+        return false;
+    }
+}
+
+// Save project order to backend
+async function saveProjectOrder() {
+    try {
+        const projectOrder = [];
+        document.querySelectorAll('.project-card').forEach((card, index) => {
+            const projectId = card.getAttribute('data-project-id');
+            projectOrder.push({
+                id: projectId,
+                position: index
+            });
+        });
+
+        // Send order to backend
+        const response = await fetch('/api/projects/reorder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ order: projectOrder })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            console.log('Project order saved successfully');
+        }
+    } catch (error) {
+        console.error('Error saving project order:', error);
+    }
+}
 
 // Touch device optimizations
 if ('ontouchstart' in window) {

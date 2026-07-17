@@ -16,7 +16,8 @@ import json
 import urllib.request
 import urllib.error
 
-from projects_data import PROJECTS, CATEGORY_LABELS
+import projects_data
+from projects_data import CATEGORY_LABELS
 
 SITE_CONTEXT = """
 You are the portfolio assistant for Ravi Der, a B.Tech IT graduate currently
@@ -68,7 +69,7 @@ def _rule_based_reply(message):
         return "Hey! I'm the portfolio assistant. Ask me about Ravi's skills, projects, experience, or how to get in touch."
 
     if any(w in text for w in ["project", "portfolio", "work", "built"]):
-        names = ", ".join(p["title"] for p in PROJECTS[:5])
+        names = ", ".join(p["title"] for p in projects_data.get_projects()[:5])
         return f"Ravi has built 20+ projects across {', '.join(CATEGORY_LABELS.values())}. A few examples: {names}. Check out the Projects page for the full list."
 
     if any(w in text for w in ["skill", "tech", "stack", "language", "tool"]):

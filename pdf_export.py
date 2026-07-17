@@ -15,7 +15,8 @@ from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, ListFlowable, ListItem
 )
 
-from projects_data import PROJECTS, CATEGORY_LABELS
+import projects_data
+from projects_data import CATEGORY_LABELS
 
 
 def build_resume_pdf():
@@ -64,7 +65,7 @@ def build_resume_pdf():
 
     story.append(Paragraph("Selected Projects", heading_style))
     by_category = {}
-    for p in PROJECTS:
+    for p in projects_data.get_projects():
         by_category.setdefault(p["category"], []).append(p)
 
     for cat, items in by_category.items():

@@ -8,7 +8,8 @@ from docx import Document
 from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-from projects_data import PROJECTS, CATEGORY_LABELS
+import projects_data
+from projects_data import CATEGORY_LABELS
 
 PRIMARY_COLOR = RGBColor(0x00, 0xA3, 0xFF)
 ACCENT_COLOR = RGBColor(0x7B, 0x00, 0xFF)
@@ -48,7 +49,7 @@ def build_resume_docx():
 
     doc.add_heading("Selected Projects", level=1)
     by_category = {}
-    for p in PROJECTS:
+    for p in projects_data.get_projects():
         by_category.setdefault(p["category"], []).append(p)
 
     for cat, items in by_category.items():

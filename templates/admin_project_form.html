@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if project %}Edit{% else %}Create New{% endif %} Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .form-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-header p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+        }
+
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+        }
+
+        .section-title i {
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .required::after {
+            content: '*';
+            color: #ff6b6b;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        textarea,
+        select {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="url"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .tag-input-wrapper {
+            position: relative;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            min-height: 35px;
+            padding: 5px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            max-width: 200px;
+        }
+
+        .image-preview img {
+            width: 100%;
+            border-radius: 5px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .image-preview.error {
+            color: #ff6b6b;
+            font-size: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: 400;
+            font-size: 14px;
+        }
+
+        .select-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert.error {
+            background: #ffebee;
+            color: #c00;
+            border-left: 4px solid #c00;
+        }
+
+        .alert.success {
+            background: #efe;
+            color: #0a0;
+            border-left: 4px solid #0a0;
+        }
+
+        .alert.info {
+            background: #e3f2fd;
+            color: #2196f3;
+            border-left: 4px solid #2196f3;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f0f0f0;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .code-section {
+            background: #f5f7fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            color: #666;
+            border-left: 3px solid #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 20px auto;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                flex: initial;
+                width: 100%;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <a href="/admin/projects" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Projects
+        </a>
+
+        <div class="form-header">
+            <h1>
+                <i class="fas {% if project %}fa-edit{% else %}fa-plus-circle{% endif %}"></i>
+                {% if project %}Edit Project{% else %}Create New Project{% endif %}
+            </h1>
+            <p>{% if project %}Update your project details and information{% else %}Add a new project to your portfolio{% endif %}</p>
+        </div>
+
+        <div class="form-card">
+            <div id="alertContainer"></div>
+
+            <form id="projectForm">
+                <!-- BASIC INFORMATION SECTION -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-info-circle"></i> Basic Information
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="title" class="required">Project Title</label>
+                            <input type="text" id="title" name="title" placeholder="e.g., AI Object Detection System"
+                                value="{% if project %}{{ project.title }}{% endif %}" required>
+                            <span class="help-text">The main title of your project</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="slug" class="required">Slug (URL-friendly)</label>
+                            <input type="text" id="slug" name="slug" placeholder="e.g., ai-object-detection"
+                                value="{% if project %}{{ project.slug }}{% endif %}" required
+                                pattern="[a-z0-9\-]+">
+                            <span class="help-text">Lowercase letters, numbers, and hyphens only</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category" class="required">Category</label>
+                            <select id="category" name="category" required>
+                                <option value="">Select a category...</option>
+                                <option value="ai-ml" {% if project and project.category == 'ai-ml' %}selected{% endif %}>AI & Machine Learning</option>
+                                <option value="web-dev" {% if project and project.category == 'web-dev' %}selected{% endif %}>Web Development</option>
+                                <option value="data-analysis" {% if project and project.category == 'data-analysis' %}selected{% endif %}>Data Analysis</option>
+                                <option value="python-tools" {% if project and project.category == 'python-tools' %}selected{% endif %}>Python Tools</option>
+                                <option value="mobile-app" {% if project and project.category == 'mobile-app' %}selected{% endif %}>Mobile App</option>
+                                <option value="other" {% if project and project.category == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESCRIPTION & LINKS SECTION -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-align-left"></i> Description & Links
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" placeholder="Describe your project, its purpose, technologies used, and key features...">{% if project %}{{ project.description }}{% endif %}</textarea>
+                            <span class="help-text">Markdown formatting is supported</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="github_url">GitHub Repository</label>
+                            <input type="url" id="github_url" name="github_url" placeholder="https://github.com/yourname/repo"
+                                value="{% if project %}{{ project.github_url }}{% endif %}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="demo_url">Live Demo / Website</label>
+                            <input type="url" id="demo_url" name="demo_url" placeholder="https://yourproject.com"
+                                value="{% if project %}{{ project.demo_url }}{% endif %}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEDIA & TAGS SECTION -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-image"></i> Media & Tags
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label for="image_url">Project Image</label>
+                            
+                            <!-- CDN URL Input -->
+                            <div style="margin-bottom: 20px;">
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: #666; font-weight: 500;">Option 1: Paste CDN URL</label>
+                                <input type="text" id="image_url" name="image_url" placeholder="https://example.com/project-image.jpg"
+                                    value="{% if project %}{{ project.image_url }}{% endif %}"
+                                    style="margin-bottom: 8px;">
+                                <span class="help-text">Paste a CDN URL to your project image</span>
+                            </div>
+
+                            <!-- File Upload Input -->
+                            <div style="margin-bottom: 20px;">
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: #666; font-weight: 500;">Option 2: Upload Image</label>
+                                <div class="file-upload-wrapper">
+                                    <input type="file" id="imageFile" accept="image/*" style="display: none;">
+                                    <button type="button" id="uploadBtn" class="btn btn-upload" style="background: #667eea; color: white; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer; font-weight: 600;">
+                                        <i class="fas fa-cloud-upload-alt"></i> Choose Image
+                                    </button>
+                                    <span id="fileName" style="margin-left: 10px; font-size: 12px; color: #666;"></span>
+                                </div>
+                                <span class="help-text">Upload an image from your computer (JPG, PNG, WebP, GIF)</span>
+                            </div>
+
+                            <!-- Image Preview -->
+                            <div class="image-preview" id="imagePreview"></div>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="tags">Tags</label>
+                            <div class="tag-input-wrapper">
+                                <input type="text" id="tags" placeholder="Type a tag and press Enter (e.g., python, react, machine-learning)">
+                                <div class="tag-container" id="tagContainer"></div>
+                            </div>
+                            <span class="help-text">Add relevant tags separated by comma or by pressing Enter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STATUS & FEATURED SECTION -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-cogs"></i> Settings
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" name="status">
+                                <option value="published" {% if project and project.status == 'published' %}selected{% endif %}>Published</option>
+                                <option value="draft" {% if project and project.status == 'draft' %}selected{% endif %}>Draft</option>
+                                <option value="archived" {% if project and project.status == 'archived' %}selected{% endif %}>Archived</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="featured" name="featured" {% if project and project.featured %}checked{% endif %}>
+                                <label for="featured">Mark as Featured Project</label>
+                            </div>
+                            <span class="help-text">Featured projects appear at the top</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM ACTIONS -->
+                <div class="form-actions">
+                    <a href="/admin/projects" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    {% if project %}
+                    <button type="button" class="btn btn-secondary" id="duplicateBtn" onclick="duplicateThisProject()">
+                        <i class="fas fa-copy"></i> Duplicate
+                    </button>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-save"></i> {% if project %}Update Project{% else %}Create Project{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const projectForm = document.getElementById('projectForm');
+        const tagsInput = document.getElementById('tags');
+        const tagContainer = document.getElementById('tagContainer');
+        const imageInput = document.getElementById('image_url');
+        const imageFile = document.getElementById('imageFile');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileName = document.getElementById('fileName');
+        const imagePreview = document.getElementById('imagePreview');
+        const submitBtn = document.getElementById('submitBtn');
+        let tags = [];
+        let uploadedImageData = null;
+
+        // Upload button click handler
+        uploadBtn.addEventListener('click', () => {
+            imageFile.click();
+        });
+
+        // File input change handler
+        imageFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showAlert('Please select a valid image file', 'error');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showAlert('Image size should be less than 5MB', 'error');
+                return;
+            }
+
+            // Read file as data URL
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                uploadedImageData = event.target.result;
+                fileName.textContent = `✓ ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                fileName.style.color = '#667eea';
+                updateImagePreview();
+            };
+            reader.onerror = () => {
+                showAlert('Error reading file', 'error');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Initialize tags from existing project
+        {% if project and project.tags %}
+        try {
+            const existingTags = {{ project.tags | tojson }};
+            if (Array.isArray(existingTags)) {
+                tags = existingTags;
+            } else if (typeof existingTags === 'string') {
+                tags = JSON.parse(existingTags);
+            }
+            renderTags();
+        } catch (e) {
+            console.error('Error parsing tags:', e);
+        }
+        {% endif %}
+
+        // Tag input handling
+        tagsInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const tag = tagsInput.value.trim().toLowerCase();
+                if (tag && !tags.includes(tag)) {
+                    tags.push(tag);
+                    renderTags();
+                }
+                tagsInput.value = '';
+            }
+        });
+
+        // Handle comma-separated tags
+        tagsInput.addEventListener('blur', () => {
+            const value = tagsInput.value.trim();
+            if (value.includes(',')) {
+                const newTags = value.split(',').map(t => t.trim().toLowerCase()).filter(t => t && !tags.includes(t));
+                tags = [...tags, ...newTags];
+                renderTags();
+                tagsInput.value = '';
+            }
+        });
+
+        function renderTags() {
+            tagContainer.innerHTML = '';
+            tags.forEach(tag => {
+                const tagEl = document.createElement('div');
+                tagEl.className = 'tag';
+                tagEl.innerHTML = `
+                    ${tag}
+                    <button type="button" onclick="removeTag('${tag}')">×</button>
+                `;
+                tagContainer.appendChild(tagEl);
+            });
+        }
+
+        function removeTag(tag) {
+            tags = tags.filter(t => t !== tag);
+            renderTags();
+        }
+
+        // Image preview
+        imageInput.addEventListener('change', updateImagePreview);
+        imageInput.addEventListener('keyup', updateImagePreview);
+
+        function updateImagePreview() {
+            // Prioritize uploaded image
+            let imageSource = uploadedImageData || imageInput.value.trim();
+            
+            if (imageSource) {
+                const img = document.createElement('img');
+                img.src = imageSource;
+                img.style.marginTop = '15px';
+                img.onload = () => {
+                    imagePreview.innerHTML = '';
+                    imagePreview.appendChild(img);
+                    imagePreview.classList.remove('error');
+                };
+                img.onerror = () => {
+                    imagePreview.innerHTML = '<span class="error">Failed to load image</span>';
+                    imagePreview.classList.add('error');
+                };
+            } else {
+                imagePreview.innerHTML = '';
+            }
+        }
+
+        // Auto-generate slug from title
+        document.getElementById('title').addEventListener('blur', () => {
+            const titleInput = document.getElementById('title');
+            const slugInput = document.getElementById('slug');
+            if (!slugInput.value || slugInput.value === '') {
+                const slug = titleInput.value
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+                slugInput.value = slug;
+            }
+        });
+
+        // Form submission
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Validate
+            if (!document.getElementById('title').value.trim()) {
+                showAlert('Please enter a project title', 'error');
+                return;
+            }
+
+            if (!document.getElementById('slug').value.trim()) {
+                showAlert('Please enter a project slug', 'error');
+                return;
+            }
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span> Saving...';
+
+            const formData = {
+                title: document.getElementById('title').value,
+                slug: document.getElementById('slug').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                github_url: document.getElementById('github_url').value,
+                demo_url: document.getElementById('demo_url').value,
+                image_url: uploadedImageData || document.getElementById('image_url').value,
+                tags: tags,
+                status: document.getElementById('status').value,
+                featured: document.getElementById('featured').checked
+            };
+
+            try {
+                {% if project %}
+                const response = await fetch('/admin/api/project/{{ project.id }}', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                {% else %}
+                const response = await fetch('/admin/api/project', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                {% endif %}
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '/admin/projects';
+                    }, 1500);
+                } else {
+                    showAlert(data.message || 'An error occurred', 'error');
+                }
+            } catch (error) {
+                showAlert('Error saving project: ' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> {% if project %}Update Project{% else %}Create Project{% endif %}';
+            }
+        });
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertEl = document.createElement('div');
+            alertEl.className = `alert ${type}`;
+            alertEl.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertEl);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        {% if project %}
+        // Duplicate this project as a starting template for a new one
+        async function duplicateThisProject() {
+            if (!confirm('Duplicate this project? A new draft copy will be created that you can edit separately.')) {
+                return;
+            }
+
+            const duplicateBtn = document.getElementById('duplicateBtn');
+            duplicateBtn.disabled = true;
+            duplicateBtn.innerHTML = '<span class="spinner"></span> Duplicating...';
+
+            try {
+                const response = await fetch('/admin/api/project/{{ project.id }}/duplicate', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = `/admin/project/${data.project_id}`;
+                    }, 1200);
+                } else {
+                    showAlert(data.message || 'An error occurred', 'error');
+                    duplicateBtn.disabled = false;
+                    duplicateBtn.innerHTML = '<i class="fas fa-copy"></i> Duplicate';
+                }
+            } catch (error) {
+                showAlert('Error duplicating project: ' + error.message, 'error');
+                duplicateBtn.disabled = false;
+                duplicateBtn.innerHTML = '<i class="fas fa-copy"></i> Duplicate';
+            }
+        }
+        {% endif %}
+
+        // Initialize image preview on load
+        updateImagePreview();
+    </script>
+</body>
+</html>

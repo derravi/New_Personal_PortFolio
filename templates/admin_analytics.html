@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Site Analytics</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Total Visits</h6>
+                    <h3 class="card-text">{{ analytics.total_visits }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Avg Response</h6>
+                    <h3 class="card-text">{{ analytics.avg_response_ms }}ms</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Newsletter Subscribers</h6>
+                    <h3 class="card-text">{{ analytics.newsletter_subscribers }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Contact Messages</h6>
+                    <h3 class="card-text">{{ analytics.contact_messages }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Metrics -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quiz Attempts</h5>
+                </div>
+                <div class="card-body">
+                    <h3>{{ analytics.quiz_attempts }}</h3>
+                    <small class="text-muted">Users who took the skill assessment quiz</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Project Reviews</h5>
+                </div>
+                <div class="card-body">
+                    <h3>{{ analytics.project_reviews }}</h3>
+                    <small class="text-muted">Reviews submitted (all statuses)</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Pages -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Top Pages</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Page</th>
+                                <th class="text-end">Visits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for page in analytics.top_pages %}
+                            <tr>
+                                <td>{{ page.path }}</td>
+                                <td class="text-end"><strong>{{ page.c }}</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Analytics Summary</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <span class="d-block text-muted small text-uppercase">Performance</span>
+                            <strong>{{ analytics.avg_response_ms }}ms</strong> average response time
+                        </li>
+                        <li class="mb-3">
+                            <span class="d-block text-muted small text-uppercase">Engagement</span>
+                            <strong>{{ analytics.newsletter_subscribers }}</strong> newsletter subscribers
+                        </li>
+                        <li class="mb-3">
+                            <span class="d-block text-muted small text-uppercase">Feedback</span>
+                            <strong>{{ analytics.contact_messages }}</strong> messages received
+                        </li>
+                        <li>
+                            <span class="d-block text-muted small text-uppercase">Assessment</span>
+                            <strong>{{ analytics.quiz_attempts }}</strong> quiz attempts
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Visits -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Visits (Last 50)</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Path</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th>Duration</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for visit in analytics.recent_visits %}
+                            <tr>
+                                <td><code class="small">{{ visit.path }}</code></td>
+                                <td>
+                                    <span class="badge bg-info">{{ visit.method }}</span>
+                                </td>
+                                <td>
+                                    {% if visit.status_code < 300 %}
+                                        <span class="badge bg-success">{{ visit.status_code }}</span>
+                                    {% elif visit.status_code < 400 %}
+                                        <span class="badge bg-info">{{ visit.status_code }}</span>
+                                    {% elif visit.status_code < 500 %}
+                                        <span class="badge bg-warning">{{ visit.status_code }}</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">{{ visit.status_code }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ visit.duration_ms }}ms</td>
+                                <td><small class="text-muted">{{ visit.visited_at[-8:] }}</small></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-header {
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 1rem;
+    }
+    
+    .badge {
+        padding: 0.35em 0.65em;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
