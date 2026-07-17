@@ -1,6 +1,6 @@
 # File Tree: New_Personal_portfoLio
 
-**Generated:** 7/15/2026, 11:30:54 PM
+**Generated:** 7/17/2026, 11:38:36 PM
 **Root Path:** `d:\E drive\Github Projects\New_Personal_portfoLio`
 
 ```
@@ -8,6 +8,7 @@
 │   └── 📁 workflows
 │       └── ⚙️ ci-cd.yml
 ├── 📁 data
+│   ├── ⚙️ admin_credentials.json
 │   └── 📄 portfolio.db
 ├── 📁 logs
 ├── 📁 nginx
@@ -23,9 +24,21 @@
 │   ├── 🌐 404.html
 │   ├── 🌐 500.html
 │   ├── 🌐 achievements.html
+│   ├── 🌐 admin_analytics.html
+│   ├── 🌐 admin_blog.html
+│   ├── 🌐 admin_blog_form.html
+│   ├── 🌐 admin_dashboard.html
+│   ├── 🌐 admin_forgot_password.html
+│   ├── 🌐 admin_login.html
+│   ├── 🌐 admin_project_form.html
+│   ├── 🌐 admin_projects.html
+│   ├── 🌐 admin_reset_password.html
+│   ├── 🌐 admin_reviews.html
+│   ├── 🌐 admin_settings.html
 │   ├── 🌐 analytics.html
 │   ├── 🌐 base.html
 │   ├── 🌐 blog.html
+│   ├── 🌐 blog_post.html
 │   ├── 🌐 contact.html
 │   ├── 🌐 education.html
 │   ├── 🌐 experience.html
@@ -39,9 +52,15 @@
 │   └── 🌐 skills.html
 ├── ⚙️ .dockerignore
 ├── ⚙️ .env.example
+├── 📄 ADMIN_LOGIN_CREDENTIALS.txt
+├── 📝 ADMIN_PANEL_DOCS.md
 ├── 🐳 Dockerfile
+├── 📝 FEATURES_UPDATE.md
 ├── 📄 Portfolio_Image_Links.txt
 ├── 📝 README.md
+├── 🐍 admin_auth.py
+├── 🐍 admin_db.py
+├── 🐍 admin_routes.py
 ├── 🐍 chatbot.py
 ├── 🐍 db.py
 ├── ⚙️ docker-compose.yml
