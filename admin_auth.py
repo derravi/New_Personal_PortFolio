@@ -117,74 +117,48 @@ def get_admin_email():
     return admin_data.get('email')
 
 
-# ==================== FORGOT PASSWORD (EMAIL OTP) ====================
+# ==================== FORGOT PASSWORD (PASSKEY) ====================
+# Simple recovery flow: instead of emailing a one-time code, the admin
+# proves ownership by entering a fixed recovery passkey. Anyone who knows
+# the passkey can set a new password, so keep it private the same way
+# you'd keep a password private.
 
-OTP_VALID_MINUTES = 10
-OTP_MAX_ATTEMPTS = 5
+RESET_PASSKEY = "769833"
+RESET_MAX_ATTEMPTS = 5
 
 
-def request_password_reset(email):
-    """Generate a 6-digit OTP, store it (hashed) with an expiry, and email it
-    to the admin's registered address. Returns (success, message).
-    Always returns a generic success-shaped message even if the email doesn't
-    match, so this endpoint can't be used to probe/confirm the admin email."""
+def verify_reset_passkey(passkey):
+    """Check a submitted passkey against the recovery passkey. Tracks failed
+    attempts and temporarily locks recovery after too many wrong tries, so
+    the 6-digit key can't just be brute-forced. Returns (success, message)."""
     admin_data = load_admin_credentials()
 
-    otp = f"{secrets.randbelow(1_000_000):06d}"
+    if admin_data.get('reset_attempts', 0) >= RESET_MAX_ATTEMPTS:
+        return False, "Too many incorrect passkey attempts. Please try again later."
 
-    if admin_data.get('email') == email:
-        admin_data['reset_otp_hash'] = generate_password_hash(otp)
-        admin_data['reset_otp_expires'] = (datetime.now() + timedelta(minutes=OTP_VALID_MINUTES)).isoformat()
-        admin_data['reset_otp_attempts'] = 0
+    if (passkey or '').strip() != RESET_PASSKEY:
+        admin_data['reset_attempts'] = admin_data.get('reset_attempts', 0) + 1
         save_admin_credentials(admin_data)
+        return False, "Incorrect passkey."
 
-        import mailer
-        mailer.send_email(
-            email,
-            "Your portfolio admin password reset code",
-            f"Your one-time code is: {otp}\n\n"
-            f"This code expires in {OTP_VALID_MINUTES} minutes. "
-            f"If you didn't request this, you can safely ignore this email."
-        )
-
-    # Same message regardless of whether the email matched (avoids leaking
-    # whether an account/email exists).
-    return True, "If that email is registered, a reset code has been sent."
+    admin_data['reset_attempts'] = 0
+    save_admin_credentials(admin_data)
+    return True, "Passkey verified."
 
 
-def verify_reset_otp_and_set_password(email, otp, new_password):
-    """Verify the OTP and, if valid, set a new password. Returns (success, message)."""
-    admin_data = load_admin_credentials()
-
-    if admin_data.get('email') != email:
-        return False, "Invalid email or code"
-
-    otp_hash = admin_data.get('reset_otp_hash')
-    expires_at = admin_data.get('reset_otp_expires')
-
-    if not otp_hash or not expires_at:
-        return False, "No reset code was requested. Please request a new one."
-
-    if datetime.now() > datetime.fromisoformat(expires_at):
-        return False, "This code has expired. Please request a new one."
-
-    if admin_data.get('reset_otp_attempts', 0) >= OTP_MAX_ATTEMPTS:
-        return False, "Too many incorrect attempts. Please request a new code."
-
-    if not check_password_hash(otp_hash, otp):
-        admin_data['reset_otp_attempts'] = admin_data.get('reset_otp_attempts', 0) + 1
-        save_admin_credentials(admin_data)
-        return False, "Invalid or expired code"
+def reset_password_with_passkey(passkey, new_password):
+    """Verify the recovery passkey and, if valid, set a new admin password.
+    Returns (success, message)."""
+    ok, message = verify_reset_passkey(passkey)
+    if not ok:
+        return False, message
 
     if len(new_password) < 6:
         return False, "Password must be at least 6 characters"
 
-    # Success: set new password, clear the OTP, and unlock the account
-    # (a successful reset is proof of email ownership).
+    admin_data = load_admin_credentials()
     admin_data['password_hash'] = generate_password_hash(new_password)
-    admin_data.pop('reset_otp_hash', None)
-    admin_data.pop('reset_otp_expires', None)
-    admin_data['reset_otp_attempts'] = 0
+    admin_data['reset_attempts'] = 0
     admin_data['login_attempts'] = 0
     admin_data['locked'] = False
     save_admin_credentials(admin_data)

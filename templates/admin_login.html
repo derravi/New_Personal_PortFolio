@@ -222,30 +222,6 @@
             color: #999;
         }
 
-        .demo-credentials {
-            background: #f5f7ff;
-            padding: 12px;
-            border-radius: 5px;
-            margin-top: 15px;
-            font-size: 12px;
-            color: #666;
-            border-left: 3px solid #667eea;
-        }
-
-        .demo-credentials strong {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .demo-credentials code {
-            background: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-            color: #667eea;
-        }
-
         @media (max-width: 480px) {
             .login-container {
                 padding: 30px 20px;
@@ -293,11 +269,7 @@
                 >
             </div>
 
-            <div class="remember-forgot">
-                <label>
-                    <input type="checkbox" name="remember" id="remember">
-                    Remember me
-                </label>
+            <div class="remember-forgot" style="justify-content: flex-end;">
                 <a href="/admin/forgot-password" class="forgot-link">Forgot password?</a>
             </div>
 
@@ -309,12 +281,6 @@
             {{ error }}
         </div>
         {% endif %}
-
-        <div class="demo-credentials">
-            <strong>📝 Demo Credentials:</strong>
-            Email: <code>admin@portfolio.com</code><br>
-            Password: <code>Check console or check data/admin_credentials.json</code>
-        </div>
 
         <div class="login-footer">
             <p>Protected Admin Area • Session expires after inactivity</p>

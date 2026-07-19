@@ -7,7 +7,7 @@ from flask import Blueprint, render_template, request, jsonify, session, redirec
 from functools import wraps
 from admin_auth import (
     login_required, verify_admin_password, change_admin_password, get_admin_email,
-    request_password_reset, verify_reset_otp_and_set_password
+    reset_password_with_passkey
 )
 import db
 from admin_db import (
@@ -81,54 +81,40 @@ def logout():
     return redirect(url_for('admin.login'))
 
 
-# ==================== FORGOT / RESET PASSWORD (EMAIL OTP) ====================
+# ==================== FORGOT / RESET PASSWORD (PASSKEY) ====================
 
 @admin_bp.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
-    """Step 1: admin enters their email, we email them a 6-digit OTP code."""
+    """Recovery flow: admin enters the recovery passkey plus a new password,
+    and if the passkey is correct the admin password is updated directly.
+    No email is sent — everything happens in one step."""
     if request.method == 'POST':
         data = request.get_json(silent=True) or request.form
-        email = (data.get('email') or '').strip()
-
-        if not email:
-            return jsonify({'success': False, 'message': 'Email is required'}), 400
-
-        success, message = request_password_reset(email)
-
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return jsonify({'success': success, 'message': message,
-                             'redirect': url_for('admin.reset_password', email=email)})
-        return redirect(url_for('admin.reset_password', email=email))
-
-    return render_template('admin_forgot_password.html')
-
-
-@admin_bp.route('/reset-password', methods=['GET', 'POST'])
-def reset_password():
-    """Step 2: admin enters the OTP code + new password."""
-    if request.method == 'POST':
-        data = request.get_json(silent=True) or request.form
-        email = (data.get('email') or '').strip()
-        otp = (data.get('otp') or '').strip()
+        passkey = (data.get('passkey') or '').strip()
         new_password = (data.get('new_password') or '').strip()
         confirm_password = (data.get('confirm_password') or '').strip()
 
-        if not all([email, otp, new_password, confirm_password]):
+        if not all([passkey, new_password, confirm_password]):
             return jsonify({'success': False, 'message': 'All fields are required'}), 400
 
         if new_password != confirm_password:
             return jsonify({'success': False, 'message': 'Passwords do not match'}), 400
 
-        success, message = verify_reset_otp_and_set_password(email, otp, new_password)
+        success, message = reset_password_with_passkey(passkey, new_password)
 
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return jsonify({'success': success, 'message': message,
                              'redirect': url_for('admin.login') if success else None}), (200 if success else 400)
-        return render_template('admin_reset_password.html', email=email,
-                                error=None if success else message)
+        return render_template('admin_forgot_password.html', error=None if success else message)
 
-    email = request.args.get('email', '')
-    return render_template('admin_reset_password.html', email=email, error=None)
+    return render_template('admin_forgot_password.html', error=None)
+
+
+@admin_bp.route('/reset-password')
+def reset_password():
+    """Old bookmarked link support: the two-step email flow was replaced by
+    the single-step passkey flow above, so just send people there."""
+    return redirect(url_for('admin.forgot_password'))
 
 # ==================== DASHBOARD ====================
 
