@@ -27,8 +27,11 @@
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
     <meta name="theme-color" content="#00f3ff">
 
-    <!-- Enhancement systems: theme toggle, filters, lightbox, chatbot, etc. -->
+    <!-- Enhancement systems: theme toggle, filters, lightbox, etc. -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/enhancements.css') }}">
+    
+    <!-- Mobile & Tablet Responsive Styles (Mobile First Approach) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-responsive.css') }}">
 
     {% block extra_css %}{% endblock %}
     
@@ -964,53 +967,14 @@
             }
         `;
         document.head.appendChild(style);
-        
-        // Touch gesture support for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        document.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        }, false);
-        
-        document.addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, false);
-        
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            
-            // Swipe right to open sidebar
-            if (touchEndX - touchStartX > swipeThreshold && window.innerWidth <= 768 && !isSidebarOpen) {
-                toggleMobileMenu();
-            }
-            
-            // Swipe left to close sidebar
-            if (touchStartX - touchEndX > swipeThreshold && window.innerWidth <= 768 && isSidebarOpen) {
-                toggleMobileMenu();
-            }
-        }
+
+        // NOTE: Swipe-to-open/close gesture support has been intentionally removed.
+        // The sidebar must only be toggled via the hamburger menu button (#mobileMenuBtn),
+        // the overlay click, nav link click, or the ESC key handlers above.
     });
-    document.addEventListener('touchmove', function(event) {
-  // Prevent accidental sidebar open on swipe
-  if (event.touches.length > 1) return; // ignore multi-touch
-  const touch = event.touches[0];
-  const startX = touch.clientX;
-
-  document.addEventListener('touchend', function(endEvent) {
-    const endX = endEvent.changedTouches[0].clientX;
-    const diffX = endX - startX;
-
-    // Agar swipe 50px se zyada hai left→right me, to prevent it
-    if (diffX > 50) {
-      event.preventDefault();
-    }
-  }, { once: true });
-});
     </script>
     
-    <!-- Enhancement systems: theme toggle, filters, lightbox, chatbot, etc. -->
+    <!-- Enhancement systems: theme toggle, filters, lightbox, etc. -->
     <script src="{{ url_for('static', filename='js/enhancements.js') }}"></script>
 
     {% block extra_js %}{% endblock %}

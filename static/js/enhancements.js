@@ -12,7 +12,6 @@
         initCardTilt();
         initProjectFilter();
         initSkillTagLinks();
-        initChatbot();
         initProjectReviews();
         initParallax();
         initDetailModal();
@@ -204,81 +203,6 @@
         });
     }
 
-    /* ---------------- AI Chatbot widget ---------------- */
-    function initChatbot() {
-        if (document.querySelector(".chatbot-fab")) return;
-
-        const fab = document.createElement("button");
-        fab.className = "chatbot-fab";
-        fab.setAttribute("aria-label", "Open portfolio assistant");
-        fab.innerHTML = '<i class="fas fa-robot"></i>';
-        document.body.appendChild(fab);
-
-        const panel = document.createElement("div");
-        panel.className = "chatbot-panel";
-        panel.innerHTML = `
-            <div class="chatbot-header">
-                <h5><i class="fas fa-robot"></i> Portfolio Assistant</h5>
-                <span class="chatbot-close"><i class="fas fa-times"></i></span>
-            </div>
-            <div class="chatbot-messages" id="chatMessages">
-                <div class="chat-bubble bot">Hi! Ask me about Ravi's projects, skills, or how to get in touch.</div>
-            </div>
-            <div class="chat-typing" id="chatTyping" style="display:none;">Assistant is typing…</div>
-            <form class="chatbot-input-row" id="chatForm">
-                <input type="text" id="chatInput" placeholder="Ask a question..." autocomplete="off">
-                <button type="submit"><i class="fas fa-paper-plane"></i></button>
-            </form>
-        `;
-        document.body.appendChild(panel);
-
-        const history = [];
-        fab.addEventListener("click", function () {
-            panel.classList.add("open");
-            document.getElementById("chatInput").focus();
-        });
-        panel.querySelector(".chatbot-close").addEventListener("click", function () {
-            panel.classList.remove("open");
-        });
-
-        const messagesEl = document.getElementById("chatMessages");
-        const typingEl = document.getElementById("chatTyping");
-
-        function addBubble(text, who) {
-            const b = document.createElement("div");
-            b.className = "chat-bubble " + who;
-            b.textContent = text;
-            messagesEl.appendChild(b);
-            messagesEl.scrollTop = messagesEl.scrollHeight;
-        }
-
-        document.getElementById("chatForm").addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const input = document.getElementById("chatInput");
-            const text = input.value.trim();
-            if (!text) return;
-            addBubble(text, "user");
-            history.push({ role: "user", content: text });
-            input.value = "";
-            typingEl.style.display = "block";
-
-            try {
-                const res = await fetch("/api/chatbot", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: text, history: history }),
-                });
-                const data = await res.json();
-                typingEl.style.display = "none";
-                const reply = data.reply || "Sorry, I couldn't process that.";
-                addBubble(reply, "bot");
-                history.push({ role: "assistant", content: reply });
-            } catch (err) {
-                typingEl.style.display = "none";
-                addBubble("Network error — please try again in a moment.", "bot");
-            }
-        });
-    }
     /* ---------------- Project reviews & ratings ---------------- */
     function renderStars(container, avg) {
         const full = Math.round(avg || 0);

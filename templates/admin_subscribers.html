@@ -1,0 +1,89 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Newsletter Subscribers - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h1 class="h2">Newsletter Subscribers</h1>
+        <div class="d-flex gap-2">
+            <a href="/admin/api/subscribers/export" class="btn btn-outline-primary">
+                <i class="fas fa-file-csv"></i> Export CSV
+            </a>
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row mb-4">
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Total Subscribers</div>
+                    <div class="h2 mb-0">{{ stats.total }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscribers Table -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" id="subscribersTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Email</th>
+                        <th>Subscribed On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="subscribersBody">
+                    {% for sub in subscribers %}
+                    <tr data-subscriber-id="{{ sub.id }}">
+                        <td class="text-muted">{{ sub.id }}</td>
+                        <td><strong>{{ sub.email }}</strong></td>
+                        <td><small class="text-muted">{{ sub.subscribed_at[:10] }}</small></td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="removeSubscriber({{ sub.id }}, '{{ sub.email }}')">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not subscribers %}
+            <div class="alert alert-info m-3">
+                No subscribers yet. New signups from the footer "Subscribe" button will show up here.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+async function removeSubscriber(subscriberId, email) {
+    if (!confirm(`Remove "${email}" from the newsletter list? This cannot be undone.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/admin/api/subscriber/${subscriberId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error removing subscriber: ' + error.message);
+    }
+}
+</script>
+{% endblock %}

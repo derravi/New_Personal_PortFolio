@@ -73,6 +73,76 @@
             </div>
         </div>
 
+        <!-- Overall Reviews & Ratings -->
+        <div class="row">
+            <div class="col-12">
+                <div class="footer-section reviews-section">
+                    <h4 class="footer-title text-center text-lg-start">Overall Reviews</h4>
+
+                    <div class="reviews-grid">
+                        <!-- Average rating + Subscribe -->
+                        <div class="reviews-rating-block">
+                            <div class="avg-stars" id="avgStars" aria-label="Average rating">
+                                <span class="star" data-index="1">&#9734;</span>
+                                <span class="star" data-index="2">&#9734;</span>
+                                <span class="star" data-index="3">&#9734;</span>
+                                <span class="star" data-index="4">&#9734;</span>
+                                <span class="star" data-index="5">&#9734;</span>
+                            </div>
+                            <div class="avg-rating-meta">
+                                <span id="avgRatingValue">0.0</span> / 5
+                                <span class="avg-rating-count">(<span id="avgRatingCount">0</span> reviews)</span>
+                            </div>
+
+                            <form id="footerSubscribeForm" class="newsletter-form" novalidate>
+                                <div class="newsletter-input-group">
+                                    <input type="email" id="footerSubscribeEmail" class="newsletter-input"
+                                           placeholder="you@example.com" required>
+                                    <button type="submit" class="newsletter-btn" id="footerSubscribeBtn" title="Subscribe">
+                                        <i class="fas fa-bell"></i>
+                                    </button>
+                                </div>
+                                <div id="footerSubscribeMsg" class="newsletter-msg"></div>
+                            </form>
+
+                            <button type="button" class="read-comments-btn" id="readAllCommentsBtn">
+                                <i class="fas fa-comments"></i> Read All Comments
+                            </button>
+                        </div>
+
+                        <!-- Add a comment -->
+                        <div class="reviews-comment-block">
+                            <div class="add-comment-line" id="addCommentLine">
+                                <i class="fas fa-pen"></i>
+                                <span>Share your experience — add a comment...</span>
+                            </div>
+
+                            <form id="addCommentForm" class="add-comment-form">
+                                <input type="text" id="commentName" class="comment-input"
+                                       placeholder="Your name" maxlength="80" required>
+
+                                <div class="star-picker" id="starPicker" data-rating="0" role="radiogroup" aria-label="Rate your experience out of 5 stars">
+                                    <span class="star-pick" data-value="1" role="radio" aria-checked="false" aria-label="1 star" tabindex="0">&#9734;</span>
+                                    <span class="star-pick" data-value="2" role="radio" aria-checked="false" aria-label="2 stars" tabindex="0">&#9734;</span>
+                                    <span class="star-pick" data-value="3" role="radio" aria-checked="false" aria-label="3 stars" tabindex="0">&#9734;</span>
+                                    <span class="star-pick" data-value="4" role="radio" aria-checked="false" aria-label="4 stars" tabindex="0">&#9734;</span>
+                                    <span class="star-pick" data-value="5" role="radio" aria-checked="false" aria-label="5 stars" tabindex="0">&#9734;</span>
+                                </div>
+
+                                <textarea id="commentText" class="comment-textarea"
+                                          placeholder="Write your comment..." maxlength="1000" rows="2" required></textarea>
+
+                                <button type="submit" class="comment-submit-btn" id="commentSubmitBtn">
+                                    <i class="fas fa-paper-plane"></i> Post Comment
+                                </button>
+                                <div id="commentMsg" class="newsletter-msg"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer Divider -->
         <div class="footer-divider">
             <div class="divider-line"></div>
@@ -103,6 +173,20 @@
         <div class="floating-element"></div>
     </div>
 </footer>
+
+<!-- All Comments Modal (Overall Reviews) -->
+<div class="comments-modal-overlay" id="commentsModalOverlay">
+    <div class="comments-modal">
+        <div class="comments-modal-header">
+            <h5><i class="fas fa-comments"></i> All Reviews &amp; Comments</h5>
+            <button type="button" class="comments-modal-close" id="commentsModalClose" aria-label="Close">&times;</button>
+        </div>
+        <div class="comments-modal-summary" id="commentsModalSummary"></div>
+        <div class="comments-modal-body" id="commentsModalBody">
+            <div class="comments-empty">Loading…</div>
+        </div>
+    </div>
+</div>
 
 <style>
 :root {
@@ -324,6 +408,420 @@
 
 .newsletter-msg.error { 
     color: #ff5c7c; 
+}
+
+/* ============================= */
+/* Overall Reviews & Ratings     */
+/* ============================= */
+.reviews-section {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(260px, 1.4fr);
+    gap: 30px;
+    align-items: start;
+}
+
+.reviews-rating-block,
+.reviews-comment-block {
+    text-align: center;
+}
+
+@media (min-width: 992px) {
+    .reviews-rating-block { text-align: left; }
+    .reviews-comment-block { text-align: left; }
+}
+
+/* Average stars — plain unicode characters, no icon-font dependency so
+   the widget always renders and is clickable even if a third-party
+   font CDN is blocked, slow, or offline. */
+.avg-stars {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    font-size: 1.6rem;
+    line-height: 1;
+    margin-bottom: 8px;
+    color: rgba(226, 241, 248, 0.25);
+}
+
+@media (min-width: 992px) {
+    .avg-stars { justify-content: flex-start; }
+}
+
+.avg-stars .star {
+    position: relative;
+    display: inline-block;
+    min-width: 1em;
+    min-height: 1em;
+    color: rgba(226, 241, 248, 0.25);
+}
+
+.avg-stars .star.filled {
+    color: #ffd60a;
+    text-shadow: 0 0 12px rgba(255, 214, 10, 0.5);
+}
+
+.avg-stars .star.half {
+    position: relative;
+    color: rgba(226, 241, 248, 0.25);
+}
+
+.avg-stars .star.half::before {
+    content: '\2605';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    overflow: hidden;
+    color: #ffd60a;
+    text-shadow: 0 0 12px rgba(255, 214, 10, 0.5);
+}
+
+.avg-rating-meta {
+    color: var(--light);
+    opacity: 0.85;
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+}
+
+.avg-rating-meta #avgRatingValue {
+    font-weight: 700;
+    color: #ffd60a;
+}
+
+.avg-rating-count {
+    opacity: 0.7;
+    font-size: 0.85rem;
+    margin-left: 2px;
+}
+
+/* Subscribe button sits right under the stars */
+.reviews-rating-block .newsletter-form {
+    margin-bottom: 14px;
+}
+
+/* Read All Comments small button */
+.read-comments-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    color: var(--light);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.read-comments-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: rgba(0, 243, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Add-a-comment blank line trigger */
+.add-comment-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 24px;
+    border: 1px dashed rgba(0, 243, 255, 0.35);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(226, 241, 248, 0.6);
+    font-size: 0.88rem;
+    cursor: text;
+    transition: all 0.3s ease;
+}
+
+.add-comment-line:hover {
+    border-color: var(--primary);
+    color: var(--light);
+    background: rgba(0, 243, 255, 0.05);
+}
+
+.add-comment-line i {
+    color: var(--primary);
+}
+
+/* Comment composer form (revealed on click) */
+.add-comment-form {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 243, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.add-comment-form.open {
+    display: flex;
+}
+
+.comment-input,
+.comment-textarea {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--light);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
+}
+
+.comment-textarea {
+    resize: vertical;
+    min-height: 60px;
+    border-radius: 14px;
+}
+
+.comment-input:focus,
+.comment-textarea:focus {
+    border-color: var(--primary);
+}
+
+.comment-input::placeholder,
+.comment-textarea::placeholder {
+    color: rgba(226, 241, 248, 0.5);
+}
+
+/* Star picker used for submitting a new review — plain unicode
+   characters with an explicit hit area, so it is always visible and
+   clickable/tappable/keyboard-operable regardless of icon-font load state. */
+.star-picker {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: rgba(226, 241, 248, 0.35);
+}
+
+@media (min-width: 992px) {
+    .star-picker { justify-content: flex-start; }
+}
+
+.star-picker .star-pick {
+    display: inline-block;
+    min-width: 1.4em;
+    min-height: 1.4em;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.star-picker .star-pick:hover,
+.star-picker .star-pick:focus-visible {
+    transform: scale(1.15);
+}
+
+.star-picker .star-pick:focus-visible {
+    outline: 2px solid #ffd60a;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.star-picker .star-pick.active {
+    color: #ffd60a;
+    text-shadow: 0 0 10px rgba(255, 214, 10, 0.5);
+}
+
+.comment-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    align-self: center;
+    padding: 10px 22px;
+    border-radius: 22px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #05050f;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+@media (min-width: 992px) {
+    .comment-submit-btn { align-self: flex-start; }
+}
+
+.comment-submit-btn:hover {
+    transform: scale(1.04);
+}
+
+.comment-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Read-all-comments modal */
+.comments-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 16, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.comments-modal-overlay.open {
+    display: flex;
+}
+
+.comments-modal {
+    width: 100%;
+    max-width: 560px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(10, 10, 26, 0.98), rgba(5, 5, 16, 0.98));
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.comments-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+}
+
+.comments-modal-header h5 {
+    margin: 0;
+    color: var(--light);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.05rem;
+}
+
+.comments-modal-header h5 i {
+    color: var(--primary);
+    margin-right: 8px;
+}
+
+.comments-modal-close {
+    background: none;
+    border: none;
+    color: var(--light);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.comments-modal-close:hover {
+    opacity: 1;
+    color: var(--primary);
+}
+
+.comments-modal-summary {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    color: rgba(226, 241, 248, 0.75);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.08);
+}
+
+.comments-modal-body {
+    padding: 12px 20px 20px;
+    overflow-y: auto;
+}
+
+.comment-card {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.comment-card:last-child {
+    border-bottom: none;
+}
+
+.comment-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.comment-card-name {
+    color: var(--light);
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.comment-card-stars {
+    color: #ffd60a;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.comment-card-text {
+    color: rgba(226, 241, 248, 0.85);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.comment-card-date {
+    color: rgba(226, 241, 248, 0.45);
+    font-size: 0.72rem;
+    margin-top: 4px;
+}
+
+.comments-empty {
+    text-align: center;
+    color: rgba(226, 241, 248, 0.6);
+    padding: 30px 10px;
+    font-size: 0.9rem;
+}
+
+/* Mobile responsiveness for reviews section */
+@media (max-width: 991px) {
+    .reviews-grid {
+        grid-template-columns: 1fr;
+        gap: 26px;
+    }
+}
+
+@media (max-width: 576px) {
+    .avg-stars { font-size: 1.35rem; gap: 4px; }
+    .star-picker { font-size: 1.25rem; gap: 6px; }
+    .read-comments-btn { font-size: 0.8rem; padding: 7px 14px; }
+    .add-comment-line { font-size: 0.82rem; padding: 10px 14px; }
+    .comments-modal { max-width: 100%; max-height: 85vh; border-radius: 14px; }
+    .comments-modal-header { padding: 14px 16px; }
+    .comments-modal-body { padding: 10px 16px 16px; }
+    .comment-submit-btn { width: 100%; }
+}
+
+@media (max-width: 400px) {
+    .avg-stars { font-size: 1.15rem; }
+    .avg-rating-meta { font-size: 0.85rem; }
+    .comment-card-name { font-size: 0.85rem; }
+    .comment-card-text { font-size: 0.82rem; }
 }
 
 /* Footer Divider */
@@ -933,5 +1431,252 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // ===== Overall Reviews & Ratings (footer) =====
+    (function () {
+        const avgStarsEl = document.getElementById('avgStars');
+        const avgValueEl = document.getElementById('avgRatingValue');
+        const avgCountEl = document.getElementById('avgRatingCount');
+        const readAllBtn = document.getElementById('readAllCommentsBtn');
+        const modalOverlay = document.getElementById('commentsModalOverlay');
+        const modalClose = document.getElementById('commentsModalClose');
+        const modalBody = document.getElementById('commentsModalBody');
+        const modalSummary = document.getElementById('commentsModalSummary');
+
+        const addCommentLine = document.getElementById('addCommentLine');
+        const addCommentForm = document.getElementById('addCommentForm');
+        const starPicker = document.getElementById('starPicker');
+        const commentMsg = document.getElementById('commentMsg');
+        const commentSubmitBtn = document.getElementById('commentSubmitBtn');
+
+        const footerSubscribeForm = document.getElementById('footerSubscribeForm');
+
+        if (!avgStarsEl) return; // section not present on this page
+
+        let cachedReviews = [];
+        let pickedRating = 0;
+
+        function renderStars(container, rating) {
+            const stars = container.querySelectorAll('.star');
+            stars.forEach((star, i) => {
+                const pos = i + 1;
+                star.classList.remove('filled', 'half');
+                if (rating >= pos) {
+                    star.classList.add('filled');
+                    star.textContent = '\u2605'; // filled star
+                } else if (rating >= pos - 0.5) {
+                    star.classList.add('half');
+                    star.textContent = '\u2606'; // outline (half handled via ::before overlay)
+                } else {
+                    star.textContent = '\u2606'; // outline star
+                }
+            });
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
+        }
+
+        function formatDate(iso) {
+            try {
+                const d = new Date(iso);
+                return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function renderCommentsList(reviews) {
+            if (!reviews.length) {
+                modalBody.innerHTML = '<div class="comments-empty">No comments yet — be the first to share your feedback!</div>';
+                return;
+            }
+            modalBody.innerHTML = reviews.map(r => `
+                <div class="comment-card">
+                    <div class="comment-card-head">
+                        <span class="comment-card-name">${escapeHtml(r.reviewer_name)}</span>
+                        <span class="comment-card-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                    </div>
+                    ${r.comment ? `<div class="comment-card-text">${escapeHtml(r.comment)}</div>` : ''}
+                    <div class="comment-card-date">${formatDate(r.created_at)}</div>
+                </div>
+            `).join('');
+        }
+
+        async function loadReviews() {
+            try {
+                const res = await fetch('/api/site-reviews');
+                const data = await res.json();
+                cachedReviews = data.reviews || [];
+                renderStars(avgStarsEl, data.average_rating || 0);
+                avgValueEl.textContent = (data.average_rating || 0).toFixed(1);
+                avgCountEl.textContent = data.count || 0;
+                modalSummary.textContent = data.count
+                    ? `Average ${data.average_rating.toFixed(1)} / 5 from ${data.count} review${data.count === 1 ? '' : 's'}`
+                    : 'No reviews yet';
+                renderCommentsList(cachedReviews);
+            } catch (err) {
+                modalBody.innerHTML = '<div class="comments-empty">Could not load reviews. Please try again later.</div>';
+            }
+        }
+
+        // Open / close the "Read All Comments" modal
+        if (readAllBtn) {
+            readAllBtn.addEventListener('click', () => {
+                modalOverlay.classList.add('open');
+                renderCommentsList(cachedReviews);
+            });
+        }
+        if (modalClose) {
+            modalClose.addEventListener('click', () => modalOverlay.classList.remove('open'));
+        }
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) modalOverlay.classList.remove('open');
+            });
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay) modalOverlay.classList.remove('open');
+        });
+
+        // Reveal the "Add a comment" composer on click
+        if (addCommentLine) {
+            addCommentLine.addEventListener('click', () => {
+                addCommentForm.classList.add('open');
+                addCommentLine.style.display = 'none';
+                document.getElementById('commentName').focus();
+            });
+        }
+
+        // Star picker for the new-comment form
+        if (starPicker) {
+            const stars = starPicker.querySelectorAll('.star-pick');
+            function paintPicker(rating) {
+                stars.forEach(s => {
+                    const v = parseInt(s.dataset.value, 10);
+                    const isActive = v <= rating;
+                    s.classList.toggle('active', isActive);
+                    s.textContent = isActive ? '\u2605' : '\u2606';
+                    s.setAttribute('aria-checked', v === rating ? 'true' : 'false');
+                });
+            }
+            function pickRating(value) {
+                pickedRating = value;
+                starPicker.dataset.rating = pickedRating;
+                paintPicker(pickedRating);
+            }
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    pickRating(parseInt(star.dataset.value, 10));
+                });
+                star.addEventListener('mouseenter', () => paintPicker(parseInt(star.dataset.value, 10)));
+                // Keyboard support (Enter / Space) since these are plain <span>s acting as radio buttons
+                star.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        pickRating(parseInt(star.dataset.value, 10));
+                    }
+                });
+            });
+            starPicker.addEventListener('mouseleave', () => paintPicker(pickedRating));
+        }
+
+        // Submit a new comment / review
+        if (addCommentForm) {
+            addCommentForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const name = document.getElementById('commentName').value.trim();
+                const text = document.getElementById('commentText').value.trim();
+
+                commentMsg.textContent = '';
+                commentMsg.className = 'newsletter-msg';
+
+                if (!pickedRating) {
+                    commentMsg.textContent = 'Please pick a star rating.';
+                    commentMsg.classList.add('error');
+                    return;
+                }
+
+                commentSubmitBtn.disabled = true;
+                try {
+                    const res = await fetch('/api/site-reviews', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, rating: pickedRating, comment: text })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        commentMsg.textContent = 'Thanks for your feedback! ✓';
+                        commentMsg.classList.add('success');
+                        addCommentForm.reset();
+                        pickedRating = 0;
+                        starPicker.dataset.rating = 0;
+                        starPicker.querySelectorAll('.star-pick').forEach(s => {
+                            s.classList.remove('active');
+                            s.textContent = '\u2606';
+                            s.setAttribute('aria-checked', 'false');
+                        });
+                        await loadReviews();
+                        setTimeout(() => {
+                            addCommentForm.classList.remove('open');
+                            addCommentLine.style.display = 'flex';
+                            commentMsg.textContent = '';
+                        }, 1800);
+                    } else {
+                        commentMsg.textContent = data.error || 'Something went wrong.';
+                        commentMsg.classList.add('error');
+                    }
+                } catch (err) {
+                    commentMsg.textContent = 'Network error — please try again.';
+                    commentMsg.classList.add('error');
+                } finally {
+                    commentSubmitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Subscribe button under the average stars (reuses /api/newsletter)
+        if (footerSubscribeForm) {
+            footerSubscribeForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const emailInput = document.getElementById('footerSubscribeEmail');
+                const msg = document.getElementById('footerSubscribeMsg');
+                const btn = document.getElementById('footerSubscribeBtn');
+                const email = emailInput.value.trim();
+
+                msg.textContent = '';
+                msg.className = 'newsletter-msg';
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch('/api/newsletter', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        msg.textContent = data.status === 'already_subscribed'
+                            ? "You're already subscribed ✓"
+                            : 'Subscribed! Check your inbox ✓';
+                        msg.classList.add('success');
+                        emailInput.value = '';
+                    } else {
+                        msg.textContent = data.error || 'Something went wrong.';
+                        msg.classList.add('error');
+                    }
+                } catch (err) {
+                    msg.textContent = 'Network error — please try again.';
+                    msg.classList.add('error');
+                } finally {
+                    btn.disabled = false;
+                }
+            });
+        }
+
+        loadReviews();
+    })();
 });
 </script>

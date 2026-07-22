@@ -10,7 +10,6 @@ Enhancement systems added on top of the original static site:
   - Contact form backend (backs up EmailJS)   -> /api/contact
   - Skill assessment quiz                     -> /quiz, /api/quiz
   - Lightweight project recommendations       -> /api/recommendations/<slug>
-  - AI chatbot (OpenAI, with offline fallback)-> /api/chatbot
   - Analytics dashboard                       -> /analytics (token protected)
   - Sitemap & SEO                             -> /sitemap.xml, /robots.txt
   - PDF export of resume/projects             -> /export/resume.pdf
@@ -27,19 +26,20 @@ from logging.handlers import RotatingFileHandler
 from datetime import datetime, timezone
 from functools import wraps
 
-import db
-import mailer
-import chatbot
-import pdf_export
-import docx_export
-from rate_limit import rate_limit
-import projects_data
-from projects_data import CATEGORY_LABELS
+from app.core import db
+from app.services import mailer
+from app.exports import pdf_export
+from app.exports import docx_export
+from app.core.rate_limit import rate_limit
+from app.content import projects_data
+from app.content.projects_data import CATEGORY_LABELS
+from app.content import learning_data
+from app.content import achievements_data
 
 # --- Admin dashboard (manage projects: add/edit/delete from /admin) ---
-from admin_routes import admin_bp
-from admin_db import init_admin_tables
-from admin_auth import init_admin_credentials
+from app.admin.admin_routes import admin_bp
+from app.admin.admin_db import init_admin_tables
+from app.admin.admin_auth import init_admin_credentials
 
 try:
     from dotenv import load_dotenv
@@ -87,6 +87,8 @@ try:
 
     init_admin_tables()
     projects_data.ensure_seeded()  # one-time: loads existing projects into the DB
+    learning_data.ensure_seeded()  # one-time: loads existing "My Learning" cards into the DB
+    achievements_data.ensure_seeded()  # one-time: loads existing achievement cards into the DB
     init_admin_credentials()       # one-time: generates admin login if none exists yet
 
     app.register_blueprint(admin_bp)
@@ -226,7 +228,11 @@ try:
 
     @app.route('/achievements')
     def achievements():
-        return render_template('achievements.html')
+        return render_template(
+            'achievements.html',
+            achievement_groups=achievements_data.get_achievements_grouped(),
+            total_achievements=len(achievements_data.get_achievements()),
+        )
 
     @app.route('/experience')
     def experience():
@@ -290,7 +296,10 @@ try:
 
     @app.route('/my_learning')
     def my_learning():
-        return render_template('my_learning.html')
+        return render_template(
+            'my_learning.html',
+            learning_items=learning_data.get_learning_items(),
+        )
 
 except Exception as e:
     print(f"Route Error: {e}")
@@ -355,6 +364,56 @@ def api_post_review(slug):
         )
     conn.close()
     return jsonify({"status": "ok", "message": "Review submitted and is pending approval"}), 201
+
+
+# Special "project_slug" value used to store site-wide / overall footer
+# reviews inside the existing project_reviews table, so the admin panel's
+# existing review moderation screen (/admin/reviews) keeps working for
+# these too — no schema change needed. Defined once in db.py and shared
+# with admin_db.py / admin_routes.py.
+SITE_REVIEW_SLUG = db.SITE_REVIEW_SLUG
+
+
+@app.route('/api/site-reviews', methods=['GET'])
+def api_get_site_reviews():
+    conn = db.get_connection()
+    rows = conn.execute(
+        "SELECT id, reviewer_name, rating, comment, created_at FROM project_reviews "
+        "WHERE project_slug = ? AND status = 'approved' ORDER BY created_at DESC LIMIT 200",
+        (SITE_REVIEW_SLUG,)
+    ).fetchall()
+    conn.close()
+    reviews = [dict(r) for r in rows]
+    avg = round(sum(r["rating"] for r in reviews) / len(reviews), 1) if reviews else 0
+    return jsonify({"average_rating": avg, "count": len(reviews), "reviews": reviews})
+
+
+@app.route('/api/site-reviews', methods=['POST'])
+@rate_limit(max_requests=5, window_seconds=60)
+def api_post_site_review():
+    data = request.get_json(silent=True) or request.form
+    name = (data.get('name') or '').strip()[:80]
+    rating = data.get('rating')
+    comment = (data.get('comment') or '').strip()[:1000]
+
+    try:
+        rating = int(rating)
+        assert 1 <= rating <= 5
+    except (TypeError, ValueError, AssertionError):
+        return jsonify({"error": "rating must be an integer between 1 and 5"}), 400
+
+    if not name:
+        return jsonify({"error": "name is required"}), 400
+
+    conn = db.get_connection()
+    with conn:
+        conn.execute(
+            "INSERT INTO project_reviews (project_slug, reviewer_name, rating, comment, status, created_at) "
+            "VALUES (?, ?, ?, ?, 'approved', ?)",
+            (SITE_REVIEW_SLUG, name, rating, comment, db.now_iso()),
+        )
+    conn.close()
+    return jsonify({"status": "ok", "message": "Thanks for your feedback!"}), 201
 
 
 @app.route('/api/recommendations/<slug>')
@@ -465,19 +524,6 @@ def api_quiz_submit():
         )
     conn.close()
     return jsonify({"score": score, "total": total, "percentage": round(pct, 1), "level": level})
-
-
-@app.route('/api/chatbot', methods=['POST'])
-@rate_limit(max_requests=15, window_seconds=60)
-def api_chatbot():
-    data = request.get_json(silent=True) or {}
-    message = (data.get('message') or '').strip()[:2000]
-    history = data.get('history') or []
-    if not message:
-        return jsonify({"error": "message is required"}), 400
-
-    reply, source = chatbot.get_reply(message, history)
-    return jsonify({"reply": reply, "source": source})
 
 
 @app.route('/api/analytics/summary')

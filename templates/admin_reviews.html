@@ -1,31 +1,101 @@
-{% extends "base.html" %}
+{% extends "admin_base.html" %}
 
 {% block title %}Reviews - Admin Panel{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-4">
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2">Project Reviews</h1>
-        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h1 class="h2">Reviews &amp; Ratings</h1>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('admin.subscribers_list') }}" class="btn btn-outline-primary">
+                <i class="fas fa-envelope-open-text"></i> Subscribers
+            </a>
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row mb-4">
+        <div class="col-6 col-md-2 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body p-2">
+                    <div class="text-muted small">Total</div>
+                    <div class="h4 mb-0">{{ review_stats.total }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body p-2">
+                    <div class="text-muted small">Pending</div>
+                    <div class="h4 mb-0 text-warning">{{ review_stats.pending }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body p-2">
+                    <div class="text-muted small">Approved</div>
+                    <div class="h4 mb-0 text-success">{{ review_stats.approved }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body p-2">
+                    <div class="text-muted small">Hidden</div>
+                    <div class="h4 mb-0 text-danger">{{ review_stats.hidden }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 mb-3">
+            <div class="card text-center h-100" style="background:#fffbea;">
+                <div class="card-body p-2">
+                    <div class="text-muted small">⭐ Overall Site Rating (footer widget)</div>
+                    <div class="h4 mb-0">
+                        {{ site_review_summary.average }} / 5
+                        <small class="text-muted">({{ site_review_summary.count }} reviews)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Source Filter -->
+    <div class="mb-2">
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('admin.reviews_list', status=selected_status, source='all') }}"
+               class="btn btn-sm btn-{% if selected_source == 'all' %}dark{% else %}outline-dark{% endif %}">
+                All Sources
+            </a>
+            <a href="{{ url_for('admin.reviews_list', status=selected_status, source='overall') }}"
+               class="btn btn-sm btn-{% if selected_source == 'overall' %}dark{% else %}outline-dark{% endif %}">
+                ⭐ Overall Site Reviews
+            </a>
+            <a href="{{ url_for('admin.reviews_list', status=selected_status, source='projects') }}"
+               class="btn btn-sm btn-{% if selected_source == 'projects' %}dark{% else %}outline-dark{% endif %}">
+                Project Reviews
+            </a>
+        </div>
     </div>
 
     <!-- Status Filter -->
     <div class="mb-4">
         <div class="btn-group" role="group">
-            <a href="{{ url_for('admin.reviews_list', status='all') }}" 
+            <a href="{{ url_for('admin.reviews_list', status='all', source=selected_source) }}" 
                class="btn btn-{% if selected_status == 'all' %}primary{% else %}outline-primary{% endif %}">
                 All Reviews <span class="badge bg-secondary">{{ reviews|length }}</span>
             </a>
-            <a href="{{ url_for('admin.reviews_list', status='pending') }}" 
+            <a href="{{ url_for('admin.reviews_list', status='pending', source=selected_source) }}" 
                class="btn btn-{% if selected_status == 'pending' %}warning{% else %}outline-warning{% endif %}">
                 Pending
             </a>
-            <a href="{{ url_for('admin.reviews_list', status='approved') }}" 
+            <a href="{{ url_for('admin.reviews_list', status='approved', source=selected_source) }}" 
                class="btn btn-{% if selected_status == 'approved' %}success{% else %}outline-success{% endif %}">
                 Approved
             </a>
-            <a href="{{ url_for('admin.reviews_list', status='hidden') }}" 
+            <a href="{{ url_for('admin.reviews_list', status='hidden', source=selected_source) }}" 
                class="btn btn-{% if selected_status == 'hidden' %}danger{% else %}outline-danger{% endif %}">
                 Hidden
             </a>
@@ -38,7 +108,7 @@
             <table class="table table-hover mb-0" id="reviewsTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Project</th>
+                        <th>Source</th>
                         <th>Reviewer</th>
                         <th>Rating</th>
                         <th>Comment</th>
@@ -51,7 +121,11 @@
                     {% for review in reviews %}
                     <tr data-review-id="{{ review.id }}">
                         <td>
+                            {% if review.project_slug == site_review_slug %}
+                            <span class="badge bg-warning text-dark">⭐ Overall Site Review</span>
+                            {% else %}
                             <strong>{{ review.project_slug }}</strong>
+                            {% endif %}
                         </td>
                         <td>{{ review.reviewer_name }}</td>
                         <td>

@@ -1,0 +1,758 @@
+{% extends "admin_base.html" %}
+
+{% block title %}{% if achievement %}Edit{% else %}Create New{% endif %} Achievement{% endblock %}
+
+{% block extra_css %}
+<style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .form-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-header p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+        }
+
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+        }
+
+        .section-title i {
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .required::after {
+            content: '*';
+            color: #ff6b6b;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        textarea,
+        select {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="url"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .tag-input-wrapper {
+            position: relative;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            min-height: 35px;
+            padding: 5px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            max-width: 200px;
+        }
+
+        .image-preview img {
+            width: 100%;
+            border-radius: 5px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .image-preview.error {
+            color: #ff6b6b;
+            font-size: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: 400;
+            font-size: 14px;
+        }
+
+        .select-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert.error {
+            background: #ffebee;
+            color: #c00;
+            border-left: 4px solid #c00;
+        }
+
+        .alert.success {
+            background: #efe;
+            color: #0a0;
+            border-left: 4px solid #0a0;
+        }
+
+        .alert.info {
+            background: #e3f2fd;
+            color: #2196f3;
+            border-left: 4px solid #2196f3;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f0f0f0;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .code-section {
+            background: #f5f7fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            color: #666;
+            border-left: 3px solid #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 20px auto;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                flex: initial;
+                width: 100%;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <a href="/admin/achievements" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Achievements
+        </a>
+
+        <div class="form-header">
+            <h1>
+                <i class="fas {% if achievement %}fa-edit{% else %}fa-plus-circle{% endif %}"></i>
+                {% if achievement %}Edit Achievement{% else %}Create New Achievement{% endif %}
+            </h1>
+            <p>{% if achievement %}Update this achievement's details{% else %}Add a new card to your "Achievements & Certifications" section{% endif %}</p>
+        </div>
+
+        <div class="form-card">
+            <div id="alertContainer"></div>
+
+            <form id="projectForm">
+                <!-- BASIC INFORMATION SECTION -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-info-circle"></i> Basic Information
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="title" class="required">Title</label>
+                            <input type="text" id="title" name="title" placeholder="e.g., Introduction To Python"
+                                value="{% if achievement %}{{ achievement.title }}{% endif %}" required>
+                            <span class="help-text">The main title of this achievement</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="slug" class="required">Slug (URL-friendly)</label>
+                            <input type="text" id="slug" name="slug" placeholder="e.g., introduction-to-python"
+                                value="{% if achievement %}{{ achievement.slug }}{% endif %}" required
+                                pattern="[a-z0-9\-]+">
+                            <span class="help-text">Lowercase letters, numbers, and hyphens only</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issuer">Issuer / Role</label>
+                            <input type="text" id="issuer" name="issuer" placeholder="e.g., Infosys Springboard, or AI Intern"
+                                value="{% if achievement %}{{ achievement.issuer }}{% endif %}">
+                            <span class="help-text">Who issued it, or your role/title</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category" class="required">Section / Category</label>
+                            <select id="category" name="category" required>
+                                <option value="">Select a section...</option>
+                                <option value="internship" {% if achievement and achievement.category == 'internship' %}selected{% endif %}>Internship</option>
+                                <option value="certification" {% if achievement and achievement.category == 'certification' %}selected{% endif %}>Certifications</option>
+                                <option value="bootcamp" {% if achievement and achievement.category == 'bootcamp' %}selected{% endif %}>Bootcamps</option>
+                                <option value="event" {% if achievement and achievement.category == 'event' %}selected{% endif %}>Events</option>
+                                <option value="award" {% if achievement and achievement.category == 'award' %}selected{% endif %}>Awards</option>
+                                <option value="other" {% if achievement and achievement.category == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                            <span class="help-text">Controls which section heading this card appears under</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="achievement_type">Badge Label</label>
+                            <input type="text" id="achievement_type" name="achievement_type" placeholder="e.g., Internship, Certification, Data Science Bootcamp"
+                                value="{% if achievement %}{{ achievement.achievement_type }}{% endif %}">
+                            <span class="help-text">Small badge text shown on the card (can differ from the section)</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date_label">Date</label>
+                            <input type="text" id="date_label" name="date_label" placeholder="e.g., July - 2025"
+                                value="{% if achievement %}{{ achievement.date_label }}{% endif %}">
+                            <span class="help-text">Free text, shown as-is (e.g. "July - 2025")</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="icon">Icon</label>
+                            <select id="icon" name="icon">
+                                <option value="fas fa-graduation-cap" {% if achievement and achievement.icon == 'fas fa-graduation-cap' %}selected{% endif %}>🎓 Graduation Cap (Internship)</option>
+                                <option value="fas fa-certificate" {% if achievement and achievement.icon == 'fas fa-certificate' %}selected{% endif %}>📜 Certificate</option>
+                                <option value="fas fa-award" {% if achievement and achievement.icon == 'fas fa-award' %}selected{% endif %}>🏅 Award</option>
+                                <option value="fas fa-trophy" {% if not achievement or achievement.icon == 'fas fa-trophy' %}selected{% endif %}>🏆 Trophy</option>
+                                <option value="fas fa-medal" {% if achievement and achievement.icon == 'fas fa-medal' %}selected{% endif %}>🥇 Medal</option>
+                                <option value="fas fa-code" {% if achievement and achievement.icon == 'fas fa-code' %}selected{% endif %}>💻 Code</option>
+                                <option value="fas fa-shield-alt" {% if achievement and achievement.icon == 'fas fa-shield-alt' %}selected{% endif %}>🛡️ Shield</option>
+                                <option value="fas fa-star" {% if achievement and achievement.icon == 'fas fa-star' %}selected{% endif %}>⭐ Star</option>
+                            </select>
+                            <span class="help-text">Icon shown in the card's badge circle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESCRIPTION & CERTIFICATE SECTION -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-align-left"></i> Description & Certificate
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" placeholder="Describe the achievement, what you learned, or what you accomplished...">{% if achievement %}{{ achievement.description }}{% endif %}</textarea>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="certificate_url">Certificate URL</label>
+                            <input type="url" id="certificate_url" name="certificate_url" placeholder="https://github.com/yourname/demo/blob/main/certificate.jpg?raw=true"
+                                value="{% if achievement %}{{ achievement.certificate_url }}{% endif %}">
+                            <span class="help-text">Link to the certificate image or verification page</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SKILLS SECTION -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-tags"></i> Skills
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label for="tags">Skills</label>
+                            <div class="tag-input-wrapper">
+                                <input type="text" id="tags" placeholder="Type a skill and press Enter (e.g., Python, Leadership)">
+                                <div class="tag-container" id="tagContainer"></div>
+                            </div>
+                            <span class="help-text">Shown as pills on the card — add one or more, separated by comma or Enter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STATUS & FEATURED SECTION -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-cogs"></i> Settings
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" name="status">
+                                <option value="published" {% if achievement and achievement.status == 'published' %}selected{% endif %}>Published</option>
+                                <option value="draft" {% if achievement and achievement.status == 'draft' %}selected{% endif %}>Draft</option>
+                                <option value="archived" {% if achievement and achievement.status == 'archived' %}selected{% endif %}>Archived</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="featured" name="featured" {% if achievement and achievement.featured %}checked{% endif %}>
+                                <label for="featured">Mark as Featured</label>
+                            </div>
+                            <span class="help-text">Featured items appear at the top</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM ACTIONS -->
+                <div class="form-actions">
+                    <a href="/admin/achievements" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    {% if achievement %}
+                    <button type="button" class="btn btn-secondary" id="duplicateBtn" onclick="duplicateThisProject()">
+                        <i class="fas fa-copy"></i> Duplicate
+                    </button>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-save"></i> {% if achievement %}Update Achievement{% else %}Create Achievement{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>{% endblock %}
+
+{% block extra_js %}
+<script>
+
+        const projectForm = document.getElementById('projectForm');
+        const tagsInput = document.getElementById('tags');
+        const tagContainer = document.getElementById('tagContainer');
+        const submitBtn = document.getElementById('submitBtn');
+        let tags = [];
+
+        // Initialize tags from existing achievement
+        {% if achievement and achievement.skills %}
+        try {
+            const existingTags = {{ achievement.skills | tojson }};
+            if (Array.isArray(existingTags)) {
+                tags = existingTags;
+            } else if (typeof existingTags === 'string') {
+                tags = JSON.parse(existingTags);
+            }
+            renderTags();
+        } catch (e) {
+            console.error('Error parsing skills:', e);
+        }
+        {% endif %}
+
+        // Tag input handling (skills keep their original casing, e.g. "Python", "Leadership")
+        tagsInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const tag = tagsInput.value.trim();
+                if (tag && !tags.includes(tag)) {
+                    tags.push(tag);
+                    renderTags();
+                }
+                tagsInput.value = '';
+            }
+        });
+
+        // Handle comma-separated tags
+        tagsInput.addEventListener('blur', () => {
+            const value = tagsInput.value.trim();
+            if (value.includes(',')) {
+                const newTags = value.split(',').map(t => t.trim()).filter(t => t && !tags.includes(t));
+                tags = [...tags, ...newTags];
+                renderTags();
+                tagsInput.value = '';
+            }
+        });
+
+        function renderTags() {
+            tagContainer.innerHTML = '';
+            tags.forEach(tag => {
+                const tagEl = document.createElement('div');
+                tagEl.className = 'tag';
+                tagEl.innerHTML = `
+                    ${tag}
+                    <button type="button" onclick="removeTag('${tag}')">×</button>
+                `;
+                tagContainer.appendChild(tagEl);
+            });
+        }
+
+        function removeTag(tag) {
+            tags = tags.filter(t => t !== tag);
+            renderTags();
+        }
+
+        // Auto-generate slug from title
+        document.getElementById('title').addEventListener('blur', () => {
+            const titleInput = document.getElementById('title');
+            const slugInput = document.getElementById('slug');
+            if (!slugInput.value || slugInput.value === '') {
+                const slug = titleInput.value
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+                slugInput.value = slug;
+            }
+        });
+
+        // Form submission
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Validate
+            if (!document.getElementById('title').value.trim()) {
+                showAlert('Please enter a title', 'error');
+                return;
+            }
+
+            if (!document.getElementById('slug').value.trim()) {
+                showAlert('Please enter a slug', 'error');
+                return;
+            }
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span> Saving...';
+
+            const formData = {
+                title: document.getElementById('title').value,
+                slug: document.getElementById('slug').value,
+                issuer: document.getElementById('issuer').value,
+                category: document.getElementById('category').value,
+                achievement_type: document.getElementById('achievement_type').value,
+                date_label: document.getElementById('date_label').value,
+                icon: document.getElementById('icon').value,
+                description: document.getElementById('description').value,
+                certificate_url: document.getElementById('certificate_url').value,
+                skills: tags,
+                status: document.getElementById('status').value,
+                featured: document.getElementById('featured').checked
+            };
+
+            try {
+                {% if achievement %}
+                const response = await fetch('/admin/api/achievement/{{ achievement.id }}', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                {% else %}
+                const response = await fetch('/admin/api/achievement', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                {% endif %}
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '/admin/achievements';
+                    }, 1500);
+                } else {
+                    showAlert(data.message || 'An error occurred', 'error');
+                }
+            } catch (error) {
+                showAlert('Error saving achievement: ' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> {% if achievement %}Update Achievement{% else %}Create Achievement{% endif %}';
+            }
+        });
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertEl = document.createElement('div');
+            alertEl.className = `alert ${type}`;
+            alertEl.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertEl);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        {% if achievement %}
+        // Duplicate this achievement as a starting template for a new one
+        async function duplicateThisProject() {
+            if (!confirm('Duplicate this achievement? A new draft copy will be created that you can edit separately.')) {
+                return;
+            }
+
+            const duplicateBtn = document.getElementById('duplicateBtn');
+            duplicateBtn.disabled = true;
+            duplicateBtn.innerHTML = '<span class="spinner"></span> Duplicating...';
+
+            try {
+                const response = await fetch('/admin/api/achievement/{{ achievement.id }}/duplicate', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = `/admin/achievement/${data.item_id}`;
+                    }, 1200);
+                } else {
+                    showAlert(data.message || 'An error occurred', 'error');
+                    duplicateBtn.disabled = false;
+                    duplicateBtn.innerHTML = '<i class="fas fa-copy"></i> Duplicate';
+                }
+            } catch (error) {
+                showAlert('Error duplicating achievement: ' + error.message, 'error');
+                duplicateBtn.disabled = false;
+                duplicateBtn.innerHTML = '<i class="fas fa-copy"></i> Duplicate';
+            }
+        }
+        {% endif %}
+    </script>
+{% endblock %}

@@ -1,0 +1,969 @@
+/* ============================================================================
+   MOBILE & TABLET RESPONSIVE CSS
+   Responsive Design for All Devices (Mobile First Approach)
+   ============================================================================ */
+
+/* ============================================================================
+   MOBILE BREAKPOINTS:
+   - Mobile: 320px - 767px
+   - Tablet: 768px - 1024px
+   - Desktop: 1025px+
+   ============================================================================ */
+
+/* ============================================================================
+   1. BASE MOBILE STYLES (Mobile First)
+   ============================================================================ */
+
+:root {
+    --primary: #00f3ff;
+    --secondary: #7b00ff;
+    --dark: #0a0a1a;
+    --darker: #050510;
+    --light: #e2f1f8;
+    --accent: #ff00c8;
+    --sidebar-width-mobile: 280px;
+    --sidebar-width-tablet: 300px;
+    --sidebar-width-desktop: 300px;
+}
+
+/* ============================================================================
+   2. MOBILE SIDEBAR (320px - 767px)
+   ============================================================================ */
+
+@media (max-width: 767px) {
+    /* Sidebar - Full Screen Drawer on Mobile */
+    .sidebar {
+        position: fixed !important;
+        width: var(--sidebar-width-mobile) !important;
+        height: 100vh !important;
+        top: 0 !important;
+        left: -100% !important;
+        z-index: 2000 !important;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        overflow-y: auto !important;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .sidebar.mobile-open {
+        left: 0 !important;
+    }
+
+    .sidebar-header {
+        padding: 20px 15px !important;
+        height: auto !important;
+    }
+
+    .profile-photo-sidebar {
+        width: 60px !important;
+        height: 60px !important;
+        border: 2px solid var(--primary) !important;
+    }
+
+    .brand-text {
+        font-size: 1.3rem !important;
+    }
+
+    .nav-item {
+        margin: 6px 10px !important;
+    }
+
+    .nav-link {
+        padding: 12px 15px !important;
+        font-size: 0.95rem !important;
+    }
+
+    .nav-icon {
+        margin-right: 15px !important;
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 1rem !important;
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+        border: none !important;
+        color: #000 !important;
+        font-size: 1.3rem !important;
+        cursor: pointer !important;
+        z-index: 1500 !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 15px rgba(0, 243, 255, 0.3) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .mobile-menu-btn:active {
+        transform: scale(0.95) !important;
+    }
+
+    /* Mobile Overlay */
+    .mobile-overlay {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        z-index: 1000 !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .mobile-overlay.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Main Content - Full Width on Mobile */
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        min-height: 100vh !important;
+    }
+
+    .top-header {
+        padding: 12px 15px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        background: rgba(5, 5, 16, 0.8) !important;
+        backdrop-filter: blur(10px) !important;
+    }
+
+    .header-name {
+        font-size: 1.2rem !important;
+    }
+
+    .page-content {
+        padding: 15px !important;
+        padding-bottom: 60px !important; /* Space for FAB */
+    }
+
+    /* Mobile Typography */
+    h1 {
+        font-size: 1.8rem !important;
+        margin: 15px 0 10px !important;
+    }
+
+    h2 {
+        font-size: 1.4rem !important;
+        margin: 12px 0 8px !important;
+    }
+
+    h3 {
+        font-size: 1.1rem !important;
+        margin: 10px 0 6px !important;
+    }
+
+    p {
+        font-size: 0.95rem !important;
+        line-height: 1.5 !important;
+        margin: 8px 0 !important;
+    }
+
+    /* Mobile Forms */
+    .form-group,
+    .mb-3,
+    .form-control {
+        width: 100% !important;
+        margin-bottom: 12px !important;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100% !important;
+        padding: 10px 12px !important;
+        font-size: 1rem !important;
+        border-radius: 6px !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+
+    textarea {
+        min-height: 100px !important;
+    }
+
+    /* Mobile Buttons */
+    /* .newsletter-btn is excluded: it's a circular icon-only button
+       (used by the footer's Mail and Bell floating buttons) and must
+       keep its fixed round dimensions instead of being stretched
+       full-width like regular CTA buttons. */
+    button:not(.newsletter-btn),
+    .btn:not(.newsletter-btn) {
+        width: 100% !important;
+        padding: 12px 16px !important;
+        font-size: 0.95rem !important;
+        border-radius: 6px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .btn-group,
+    .button-group {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    /* Mobile Tables */
+    table {
+        font-size: 0.85rem !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+    }
+
+    .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    th, td {
+        padding: 8px !important;
+        word-break: break-word !important;
+    }
+
+    /* Mobile Cards */
+    .card,
+    .glass-card {
+        margin-bottom: 12px !important;
+        padding: 15px !important;
+        border-radius: 8px !important;
+    }
+
+    /* Mobile Grid */
+    .grid,
+    .project-grid,
+    .skill-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* Mobile Navbar */
+    nav {
+        padding: 10px 0 !important;
+    }
+
+    .navbar {
+        padding: 10px 12px !important;
+        flex-wrap: wrap !important;
+    }
+
+    /* Mobile Footer */
+    footer {
+        padding: 15px 10px !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Mobile Images */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+    }
+
+    /* Mobile Lists */
+    ul, ol {
+        margin-left: 15px !important;
+        margin-bottom: 10px !important;
+    }
+
+    li {
+        margin-bottom: 6px !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Mobile Spacing Utilities */
+    .px-* {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .py-* {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .mx-auto {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* Hide desktop-only elements */
+    .desktop-only {
+        display: none !important;
+    }
+}
+
+/* ============================================================================
+   3. TABLET STYLES (768px - 1024px)
+   ============================================================================ */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    :root {
+        --sidebar-width: var(--sidebar-width-tablet);
+    }
+
+    /* Sidebar - Collapsible on Tablet */
+    .sidebar {
+        width: var(--sidebar-width-tablet) !important;
+        position: fixed !important;
+        left: 0 !important;
+        z-index: 900 !important;
+    }
+
+    .sidebar.collapsed {
+        width: 80px !important;
+    }
+
+    /* Main Content - Adjust for Sidebar */
+    .main-content {
+        margin-left: var(--sidebar-width-tablet) !important;
+        width: calc(100% - var(--sidebar-width-tablet)) !important;
+        transition: margin-left 0.3s ease !important;
+    }
+
+    .main-content-collapsed {
+        margin-left: 80px !important;
+        width: calc(100% - 80px) !important;
+    }
+
+    .top-header {
+        padding: 15px 20px !important;
+    }
+
+    .header-name {
+        font-size: 1.3rem !important;
+    }
+
+    .page-content {
+        padding: 20px !important;
+    }
+
+    /* Tablet Typography */
+    h1 {
+        font-size: 2rem !important;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+    }
+
+    h3 {
+        font-size: 1.2rem !important;
+    }
+
+    /* Tablet Forms */
+    .form-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 15px !important;
+    }
+
+    input,
+    textarea,
+    select {
+        padding: 11px 13px !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* Tablet Tables */
+    table {
+        font-size: 0.9rem !important;
+    }
+
+    /* Tablet Grid */
+    .grid,
+    .project-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    .skill-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    /* Tablet Cards */
+    .card,
+    .glass-card {
+        padding: 18px !important;
+    }
+
+    /* Hide mobile-only elements */
+    .mobile-only {
+        display: none !important;
+    }
+
+    .mobile-menu-btn {
+        display: none !important;
+    }
+
+    .mobile-overlay {
+        display: none !important;
+    }
+
+    /* Show tablet elements */
+    .tablet-visible {
+        display: block !important;
+    }
+}
+
+/* ============================================================================
+   4. DESKTOP STYLES (1025px+)
+   ============================================================================ */
+
+@media (min-width: 1025px) {
+    :root {
+        --sidebar-width: var(--sidebar-width-desktop);
+    }
+
+    /* Desktop Sidebar */
+    .sidebar {
+        width: var(--sidebar-width-desktop) !important;
+        position: fixed !important;
+        left: 0 !important;
+        z-index: 900 !important;
+    }
+
+    .sidebar.collapsed {
+        width: 80px !important;
+    }
+
+    /* Main Content - Full Width */
+    .main-content {
+        margin-left: var(--sidebar-width-desktop) !important;
+        width: calc(100% - var(--sidebar-width-desktop)) !important;
+    }
+
+    .main-content-collapsed {
+        margin-left: 80px !important;
+        width: calc(100% - 80px) !important;
+    }
+
+    .page-content {
+        padding: 30px !important;
+    }
+
+    /* Desktop Typography */
+    h1 {
+        font-size: 2.5rem !important;
+    }
+
+    h2 {
+        font-size: 1.8rem !important;
+    }
+
+    h3 {
+        font-size: 1.3rem !important;
+    }
+
+    /* Desktop Forms */
+    .form-row {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+    }
+
+    .form-row-3 {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    /* Desktop Grid */
+    .grid,
+    .project-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 20px !important;
+    }
+
+    .skill-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+
+    /* Desktop Cards */
+    .card,
+    .glass-card {
+        padding: 25px !important;
+    }
+
+    /* Desktop Buttons */
+    /* .newsletter-btn (Mail/Bell floating buttons) excluded so it keeps
+       its fixed round dimensions on desktop/laptop instead of stretching
+       into a pill/oval shape. */
+    button:not(.newsletter-btn),
+    .btn:not(.newsletter-btn) {
+        width: auto !important;
+        padding: 12px 24px !important;
+    }
+
+    /* Hide mobile elements on desktop */
+    .mobile-only,
+    .mobile-menu-btn,
+    .mobile-overlay {
+        display: none !important;
+    }
+
+    /* Show desktop elements */
+    .desktop-only {
+        display: block !important;
+    }
+}
+
+/* ============================================================================
+   5. ADMIN PANEL RESPONSIVE STYLES
+   ============================================================================ */
+
+@media (max-width: 767px) {
+    /* Admin Dashboard - Mobile */
+    .dashboard-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .sidebar {
+        width: var(--sidebar-width-mobile) !important;
+        left: -100% !important;
+    }
+
+    .main-content {
+        grid-column: 1 !important;
+        padding: 15px !important;
+        margin-left: 0 !important;
+    }
+
+    .header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .header h1 {
+        font-size: 1.6rem !important;
+    }
+
+    .header-actions {
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .stat-card {
+        padding: 15px !important;
+    }
+
+    .stat-card h3 {
+        font-size: 0.9rem !important;
+    }
+
+    .stat-card .value {
+        font-size: 1.8rem !important;
+    }
+
+    /* Admin Tables */
+    .admin-table {
+        font-size: 0.8rem !important;
+    }
+
+    .admin-table thead {
+        display: none !important;
+    }
+
+    .admin-table tbody tr {
+        display: block !important;
+        margin-bottom: 12px !important;
+        border: 1px solid #ddd !important;
+        border-radius: 6px !important;
+        padding: 12px !important;
+    }
+
+    .admin-table td {
+        display: block !important;
+        text-align: right !important;
+        padding-left: 50% !important;
+        position: relative !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .admin-table td::before {
+        content: attr(data-label) !important;
+        position: absolute !important;
+        left: 12px !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: 40% !important;
+    }
+
+    /* Admin Forms */
+    .admin-form {
+        max-width: 100% !important;
+    }
+
+    .form-group {
+        margin-bottom: 12px !important;
+    }
+
+    .form-group label {
+        display: block !important;
+        margin-bottom: 6px !important;
+        font-size: 0.95rem !important;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100% !important;
+        padding: 10px !important;
+        font-size: 1rem !important;
+    }
+
+    /* Modal - Mobile */
+    .modal {
+        padding: 0 !important;
+    }
+
+    .modal-dialog {
+        width: 100% !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        height: 100vh !important;
+    }
+
+    .modal-content {
+        border-radius: 0 !important;
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Admin Dashboard - Tablet */
+    .dashboard-container {
+        grid-template-columns: 300px 1fr !important;
+    }
+
+    .sidebar {
+        width: 300px !important;
+    }
+
+    .main-content {
+        grid-column: 2 !important;
+        padding: 20px !important;
+    }
+
+    .header h1 {
+        font-size: 1.8rem !important;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    .admin-table {
+        font-size: 0.85rem !important;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* Admin Dashboard - Desktop */
+    .dashboard-container {
+        grid-template-columns: 250px 1fr !important;
+    }
+
+    .sidebar {
+        width: 250px !important;
+    }
+
+    .main-content {
+        grid-column: 2 !important;
+        padding: 30px !important;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 20px !important;
+    }
+
+    .admin-table thead {
+        display: table-header-group !important;
+    }
+
+    .admin-table tbody tr {
+        display: table-row !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+    }
+
+    .admin-table td {
+        display: table-cell !important;
+        text-align: left !important;
+        padding: 12px !important;
+        padding-left: 0 !important;
+    }
+
+    .admin-table td::before {
+        display: none !important;
+    }
+
+    .form-row {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+}
+
+/* ============================================================================
+   6. UTILITY CLASSES FOR RESPONSIVE DESIGN
+   ============================================================================ */
+
+/* Display Utilities */
+.show-mobile {
+    display: block;
+}
+
+.show-tablet {
+    display: none;
+}
+
+.show-desktop {
+    display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .show-mobile {
+        display: none;
+    }
+
+    .show-tablet {
+        display: block;
+    }
+
+    .show-desktop {
+        display: none;
+    }
+}
+
+@media (min-width: 1025px) {
+    .show-mobile {
+        display: none;
+    }
+
+    .show-tablet {
+        display: none;
+    }
+
+    .show-desktop {
+        display: block;
+    }
+}
+
+/* Responsive Text Utilities */
+.text-mobile {
+    font-size: 0.85rem;
+}
+
+.text-tablet {
+    font-size: 0.95rem;
+}
+
+.text-desktop {
+    font-size: 1rem;
+}
+
+/* Responsive Padding */
+@media (max-width: 767px) {
+    .p-responsive {
+        padding: 12px;
+    }
+
+    .p-responsive-lg {
+        padding: 15px;
+    }
+
+    .m-responsive {
+        margin: 8px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .p-responsive {
+        padding: 15px;
+    }
+
+    .p-responsive-lg {
+        padding: 20px;
+    }
+
+    .m-responsive {
+        margin: 12px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .p-responsive {
+        padding: 20px;
+    }
+
+    .p-responsive-lg {
+        padding: 30px;
+    }
+
+    .m-responsive {
+        margin: 15px;
+    }
+}
+
+/* ============================================================================
+   7. TOUCH-FRIENDLY BUTTONS FOR MOBILE
+   ============================================================================ */
+
+@media (max-width: 767px) {
+    /* .newsletter-btn (Mail/Bell floating buttons) excluded: it already
+       defines its own responsive round sizing per breakpoint in
+       footer.html (44px -> 38px -> 34px as the screen shrinks), which
+       this generic rule would otherwise override/enlarge. */
+    /* .detail-modal-close (the round "X" close button on the Read More
+       project/learning detail modal) is also excluded: it has its own
+       fixed 38x38 circular sizing, which this generic rule would
+       otherwise stretch into a non-round shape via the !important
+       min-height/min-width + padding combination. */
+    button:not(.newsletter-btn):not(.detail-modal-close),
+    a.btn,
+    input[type="button"],
+    input[type="submit"] {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        padding: 12px 16px !important;
+        touch-action: manipulation !important;
+    }
+
+    .newsletter-btn {
+        touch-action: manipulation !important;
+    }
+
+    a, button {
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    /* Increase tap target sizes */
+    .nav-link {
+        padding: 15px !important;
+    }
+
+    .card-link,
+    .interactive-element {
+        padding: 15px !important;
+    }
+}
+
+/* ============================================================================
+   8. SMOOTH SCROLLING & ANIMATIONS FOR MOBILE
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================================================
+   9. PRINT STYLES
+   ============================================================================ */
+
+@media print {
+    .sidebar,
+    .mobile-menu-btn,
+    .mobile-overlay,
+    .top-header,
+    footer {
+        display: none !important;
+    }
+
+    .main-content,
+    .page-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+}
+
+/* ============================================================================
+   10. LANDSCAPE MODE ADJUSTMENTS
+   ============================================================================ */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .sidebar {
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .main-content {
+        overflow-y: auto;
+    }
+
+    .page-content {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+/* ============================================================================
+   11. SUPPORT FOR HIGH DPI DISPLAYS
+   ============================================================================ */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* ============================================================================
+   12. DARK MODE FOR MOBILE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--darker);
+        color: var(--light);
+    }
+
+    input,
+    textarea,
+    select {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: var(--light);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: #f5f7fa;
+        color: #333;
+    }
+
+    input,
+    textarea,
+    select {
+        background-color: white;
+        color: #333;
+        border-color: #ddd;
+    }
+}

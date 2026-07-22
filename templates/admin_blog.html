@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Blog Posts</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+{% extends "admin_base.html" %}
+
+{% block title %}Manage Blog Posts - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<style>
+
         * {
             margin: 0;
             padding: 0;
@@ -362,8 +361,9 @@
             }
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="page-container">
         <a href="/admin/dashboard" class="back-link">
             <i class="fas fa-arrow-left"></i> Back to Dashboard
@@ -417,9 +417,11 @@
                 <i class="fas fa-plus"></i> New Post
             </a>
         </div>
-    </div>
+    </div>{% endblock %}
 
-    <script>
+{% block extra_js %}
+<script>
+
         let allPosts = [];
         let filteredPosts = [];
         let currentFilter = 'all';
@@ -558,5 +560,4 @@
 
         loadPosts();
     </script>
-</body>
-</html>
+{% endblock %}

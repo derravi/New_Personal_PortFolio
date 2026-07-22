@@ -423,324 +423,43 @@
             </div>
         </div>
         <div class="row">
-            
-            <!-- Card 1: Feature Engineering -->
+            {% for item in learning_items %}
             <div class="col-md-6 col-lg-4">
                 <div class="learning-card">
                     <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/feture_engineering.png"
-                        alt="Window Functions MySQL"
+                        <img src="{{ item.image_url }}"
+                        alt="{{ item.title }}"
                         loading="lazy"
                         onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
                         <div class="img-placeholder">
-                            <i class="fas fa-database"></i>
-                            <span>Feature Engineering</span>
+                            <i class="{{ item.icon }}"></i>
+                            <span>{{ item.title }}</span>
                         </div>
                     </div>
                     <div class="learning-content">
-                        <span class="learning-tag"><i class="fas fa-database"></i>AI/ML</span>
-                        <h3 class="learning-title">Feature Engineering</h3>
-                        <div class="learning-description">Create meaningful features, remove irrelevant ones, and identify the most important variables to improve data quality and model learning.</div>
-                        <div class="full-text" id="fullText0">Well-engineered features help increase accuracy, reduce overfitting, speed up training, and make Machine Learning models more reliable.Feature Engineering transforms raw data into valuable insights, enabling models to deliver better predictions and real-world business value.</div>
-                        <button class="read-more-btn" data-target="fullText0">Read More <i class="fas fa-chevron-down"></i></button>
+                        {% for tag in item.tags %}<span class="learning-tag"><i class="{{ item.icon }}"></i> {{ tag }}</span>{% endfor %}
+                        <h3 class="learning-title">{{ item.title }}</h3>
+                        <div class="learning-description">{{ item.description }}</div>
+                        {% if item.full_text %}
+                        <div class="full-text" id="fullText{{ loop.index0 }}">{{ item.full_text }}</div>
+                        <button class="read-more-btn" data-target="fullText{{ loop.index0 }}">Read More <i class="fas fa-chevron-down"></i></button>
+                        {% endif %}
                         <div>
-                            <a href="https://www.linkedin.com/posts/ravi-der_machinelearning-artificialintelligence-featureengineering-activity-7478431826966147072-yAgT?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE-fhkcB96hONfHtYNilNy2eN4jm8f6hO9A" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
+                            {% if item.link_type == 'github' %}
+                            <a href="{{ item.link_url }}" target="_blank" class="btn-github"><i class="fab fa-github"></i> View on GitHub</a>
+                            {% else %}
+                            <a href="{{ item.link_url }}" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Card 1: ML for Buisness -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/buisness_before_ml.png"
-                        alt="Window Functions MySQL"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-database"></i>
-                            <span>Business First in ML</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fas fa-database"></i> AI/ML</span>
-                        <h3 class="learning-title">Business First in ML</h3>
-                        <div class="learning-description">Start by understanding the business problem, project goals, and available data before selecting any Machine Learning algorithm.</div>
-                        <div class="full-text" id="fullText1">Analyze the dataset, identify the right features and target variable, then choose the model that best fits the problem—not just the one with the highest accuracy.The true success of a Machine Learning project lies in delivering business value by solving real-world problems with meaningful and reliable predictions.</div>
-                        <button class="read-more-btn" data-target="fullText1">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="https://www.linkedin.com/posts/ravi-der_machinelearning-artificialintelligence-datascience-activity-7477341417254764544-Hwg_?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE-fhkcB96hONfHtYNilNy2eN4jm8f6hO9A" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
+            {% else %}
+            <div class="col-12 text-center" style="padding: 60px 20px; color: rgba(226,241,248,0.6);">
+                <i class="fas fa-graduation-cap" style="font-size: 2.5rem; margin-bottom: 15px; display:block;"></i>
+                No learning items yet. Check back soon!
             </div>
-
-            <!-- Card 1: ML Lifecycle -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/mllifecycle.png"
-                        alt="Window Functions MySQL"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-database"></i>
-                            <span>ML Lifecycle</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fas fa-database"></i> MySQL</span>
-                        <h3 class="learning-title">ML Lifecycle</h3>
-                        <div class="learning-description">Define the problem, collect quality data, and use EDA to transform raw data into actionable insights.</div>
-                        <div class="full-text" id="fullText2">Prepare the data, build and compare multiple Machine Learning models, and select the best one using proper evaluation metrics.Fine-tune, deploy, and monitor the model to ensure accurate, scalable, and reliable real-world predictions.</div>
-                        <button class="read-more-btn" data-target="fullText2">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="https://www.linkedin.com/posts/ravi-der_machinelearning-datascience-artificialintelligence-activity-7475394975451660288-GsEm?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE-fhkcB96hONfHtYNilNy2eN4jm8f6hO9A" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Card 1: Window Functions -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/Windows_function.jpg"
-                        alt="Window Functions MySQL"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-database"></i>
-                            <span>Window Functions</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fas fa-database"></i> MySQL</span>
-                        <h3 class="learning-title">Window Functions</h3>
-                        <div class="learning-description">Window Functions in MySQL make data analysis more powerful by allowing calculations like ranking, running totals, and row comparisons without losing original rows.</div>
-                        <div class="full-text" id="fullText3">They are widely used in dashboards, reports, and business analysis to solve complex problems with cleaner and smarter SQL queries. Examples: ROW_NUMBER(), RANK(), SUM() OVER() etc. Highly efficient for analytical queries and performance optimization.</div>
-                        <button class="read-more-btn" data-target="fullText3">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="https://www.linkedin.com/posts/ravi-der_mysql-sql-windowfunctions-activity-7458827166093393920-cRa4?utm_source=share&utm_medium=member_desktop" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2: Hypothesis Testing (FIXED: forward slash + URL-encoded space) -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/hypothesis%20testing.jpg"
-                        alt="Hypothesis Testing Statistics"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Hypothesis Testing</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fab fa-python"></i> Statistics</span>
-                        <h3 class="learning-title">Hypothesis Testing</h3>
-                        <div class="learning-description">Hypothesis Testing is a statistical technique used to check whether an assumption is true or false using real data.</div>
-                        <div class="full-text" id="fullText4">It helps us make decisions based on evidence instead of guesswork. By analyzing sample data and calculating probability (p-value), we decide whether to accept or reject the assumption. It is widely used in Machine Learning, Business Analytics, Healthcare, and A/B Testing. Core concepts: Null vs Alternate hypothesis, significance level, p-value interpretation.</div>
-                        <button class="read-more-btn" data-target="fullText4">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="https://www.linkedin.com/posts/ravi-der_datascience-machinelearning-artificialintelligence-activity-7454391165308751872-Pgq8?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE-fhkcB96hONfHtYNilNy2eN4jm8f6hO9A" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3: Imbalanced Data -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/imbalance%20datasets.jpg
-"
-                        alt="Hypothesis Testing Statistics"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-balance-scale"></i>
-                            <span>Imbalanced Data</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fab fa-python"></i> Machine Learning</span>
-                        <h3 class="learning-title">Imbalanced Data in ML</h3>
-                        <div class="learning-description">In machine learning, not all classes have equal data distribution.</div>
-                        <div class="full-text" id="fullText5">When one class has significantly more samples than another, it creates an imbalanced dataset. This can make models biased toward the majority class and reduce performance on important minority cases like fraud detection or disease prediction. Techniques: resampling (SMOTE), class weights, anomaly detection frameworks, and ensemble methods.</div>
-                        <button class="read-more-btn" data-target="fullText5">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="https://www.linkedin.com/posts/ravi-der_machinelearning-datascience-artificialintelligence-activity-7452603451261460480-H9H_?utm_source=share&utm_medium=member_desktop" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4: Precision vs Recall -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/precision%20vs%20recall.jpg
-"
-                        alt="Hypothesis Testing Statistics"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-crosshairs"></i>
-                            <span>Precision vs Recall</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fas fa-chart-simple"></i> Maths-ML</span>
-                        <h3 class="learning-title">Precision vs Recall</h3>
-                        <div class="learning-description">Precision → Measures how many predicted positive cases are actually correct.</div>
-                        <div class="full-text" id="fullText6">Recall → Measures how many actual positive cases the model successfully identifies. Balance Matters → A good ML model often needs the right balance between Precision and Recall depending on the problem (F1 Score, PR curve). High precision = low false positives; high recall = low false negatives.</div>
-                        <button class="read-more-btn" data-target="fullText6">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="https://www.linkedin.com/posts/ravi-der_machinelearning-artificialintelligence-ai-activity-7452229914386259968-dkOj?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE-fhkcB96hONfHtYNilNy2eN4jm8f6hO9A" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 5: Cheat Sheet Pandas Numpy Matplotlib -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/cheet_sheet_pandas_numpy_matplotlib.png
-"
-                        alt="Python Data Science Cheat Sheets"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fab fa-python"></i>
-                            <span>Cheat Sheets</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fab fa-python"></i> Pandas</span>
-                        <span class="learning-tag"><i class="fab fa-python"></i> NumPy</span>
-                        <span class="learning-tag"><i class="fab fa-python"></i> Matplotlib</span>
-                        <h3 class="learning-title">Cheat Sheets</h3>
-                        <div class="learning-description">I created these cheat sheets to serve as a quick-reference resource for Data Science learners.</div>
-                        <div class="full-text" id="fullText7">My goal is to make commonly used concepts, functions, and visualizations easier to understand and revise. Feel free to explore, use, and share them with others in the community.</div>
-                        <button class="read-more-btn" data-target="fullText7">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="https://www.linkedin.com/posts/ravi-der_github-derravi-python-data-science-cheat-sheets-basics-of-pandas-numpy-matplotlib-activity-7369035981334683650-jkVz?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE-fhkcB96hONfHtYNilNy2eN4jm8f6hO9A" target="_blank" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 6: Star Patterns using Python -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://cdn.jsdelivr.net/gh/derravi/Portfolio_images@main/patterns_of_python.png
-"
-                        alt="Python Star Patterns"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-star"></i>
-                            <span>Star Patterns</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fab fa-python"></i> Python</span>
-                        <h3 class="learning-title">Star Patterns Collection</h3>
-                        <div class="learning-description">A curated collection of Python patterns, from basic to advanced, designed to help beginners and learners improve coding skills,</div>
-                        <div class="full-text" id="fullText8">understand programming concepts, and enhance problem-solving abilities. A practical resource for mastering Python step by step.</div>
-                        <button class="read-more-btn" data-target="fullText8">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="https://github.com/derravi/Creative_Python_Pattern_Printing_Collection" target="_blank" class="btn-github"><i class="fab fa-github"></i> View on GitHub</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 7: Generative AI -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop"
-                        alt="Generative AI"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-robot"></i>
-                            <span>Generative AI</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fas fa-robot"></i> Generative AI</span>
-                        <h3 class="learning-title">Prompt Engineering & LLM Apps</h3>
-                        <div class="learning-description">Built intelligent assistants using OpenAI, LangChain, vector databases, and RAG pipelines.</div>
-                        <div class="full-text" id="fullText9">Developed Q&A chatbot over custom documents using ChromaDB, semantic search, and agent-based workflows. Implemented retrieval-augmented generation (RAG) for domain-specific knowledge. Explored chain-of-thought prompting and fine-tuning LLMs for specialized tasks.</div>
-                        <button class="read-more-btn" data-target="fullText9">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="#" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 8: Cloud DevOps -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop"
-                        alt="Cloud DevOps"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>Cloud DevOps</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fas fa-cloud-upload-alt"></i> Cloud/DevOps</span>
-                        <h3 class="learning-title">AWS & DevOps Essentials</h3>
-                        <div class="learning-description">Hands-on with EC2, S3, Lambda, CI/CD pipelines, and infrastructure as code (Terraform).</div>
-                        <div class="full-text" id="fullText10">Deployed serverless apps using Lambda + API Gateway, automated with GitHub Actions, managed ECS, Terraform provisioning. Configured monitoring with CloudWatch, optimized cost and performance. Built end-to-end deployment pipelines for containerized apps.</div>
-                        <button class="read-more-btn" data-target="fullText10">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="#" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 9: Data Visualization -->
-            <div class="col-md-6 col-lg-4">
-                <div class="learning-card">
-                    <div class="learning-img">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop"
-                        alt="Data Visualization"
-                        loading="lazy"
-                        onerror="this.classList.add('error'); this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Data Visualization</span>
-                        </div>
-                    </div>
-                    <div class="learning-content">
-                        <span class="learning-tag"><i class="fas fa-chart-line"></i> Data Visualization</span>
-                        <h3 class="learning-title">Dashboard Design & Storytelling</h3>
-                        <div class="learning-description">Mastered Tableau, Power BI, and advanced matplotlib/seaborn for interactive dashboards.</div>
-                        <div class="full-text" id="fullText11">Built executive dashboards uncovering sales insights, KPI tracking, real-time data integration, and predictive analytics views. Storytelling with data, creating compelling narratives that drive business decisions. Advanced DAX and calculated fields.</div>
-                        <button class="read-more-btn" data-target="fullText11">Read More <i class="fas fa-chevron-down"></i></button>
-                        <div>
-                            <a href="#" class="btn-linkedin"><i class="fab fa-linkedin"></i> View LinkedIn Post</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
         <div class="learning-footer">
             <i class="fas fa-chalkboard-teacher"></i> Always learning, always growing — one concept at a time.

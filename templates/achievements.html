@@ -842,37 +842,37 @@ body::before {
         
         
 
-        <h3 class="section-title">Internship</h3>
+        {% for group in achievement_groups %}
+        <h3 class="section-title">{{ group.label }}</h3>
         <div class="row g-3">
+            {% for item in group.achievements %}
             <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="achievement-card">
                     <div class="achievement-header">
                         <div class="achievement-badge">
                             <div class="achievement-icon">
-                                <i class="fas fa-graduation-cap"></i>
+                                <i class="{{ item.icon }}"></i>
                             </div>
                             <div class="badge-glow"></div>
                         </div>
                         <div class="achievement-meta">
-                            <span class="achievement-date">July - 2025</span>
-                            <span class="achievement-type">Internship</span>
+                            <span class="achievement-date">{{ item.date_label }}</span>
+                            <span class="achievement-type">{{ item.achievement_type }}</span>
                         </div>
                     </div>
 
                     <div class="achievement-content">
-                        <h3 class="achievement-title">IBM CSRBOX</h3>
-                        <h4 class="achievement-issuer">AI Intern</h4>
-                        
-                        <p class="achievement-description">I Am completed 5 Week of the internship From the IMB as a AI Intern.</p>
+                        <h3 class="achievement-title">{{ item.title }}</h3>
+                        <h4 class="achievement-issuer">{{ item.issuer }}</h4>
+
+                        <p class="achievement-description">{{ item.description }}</p>
 
                         <div class="achievement-skills">
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">AI Agent(Basics)</span>
-                            <span class="skill-tag">Multi Agent(Basics)</span>
+                            {% for skill in item.skills %}<span class="skill-tag">{{ skill }}</span>{% endfor %}
                         </div>
 
                         <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/IBM%20CSRBOX%20Ai%20Intern%20Internship%20Certifictes.jpg?raw=true" class="certificate-link" target="_blank">
+                            <a href="{{ item.certificate_url }}" class="certificate-link" target="_blank">
                                 <span>View Certificate</span>
                                 <i class="fas fa-external-link-alt"></i>
                             </a>
@@ -882,348 +882,12 @@ body::before {
                     <div class="achievement-glow"></div>
                 </div>
             </div>
-
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">June - 2025</span>
-                            <span class="achievement-type">Internship</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Imbuesoft LLP</h3>
-                        <h4 class="achievement-issuer">Python Developer</h4>
-                        
-                        <p class="achievement-description">I Am completed 6 Moth of the internship as a Python Developer.</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">RAG</span>
-                            <span class="skill-tag">Web Scraping</span>
-                        </div>
-
-                        <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/Imbuesoft%20LLP%20Internship%202025.jpg?raw=true" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
-            
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">Dec - 2023</span>
-                            <span class="achievement-type">Internship</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Bharat Intern</h3>
-                        <h4 class="achievement-issuer">Web Developer</h4>
-                        
-                        <p class="achievement-description">I Am completed 1 Moth of the internship from the Bharat intern as a Web Developer.</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">HTML</span>
-                            <span class="skill-tag">CSS</span>
-                        </div>
-
-                        <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/Bharat%20Intern%202023.jpg?raw=true" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-award"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">Aug - 2025</span>
-                            <span class="achievement-type">Data Science Bootcamp</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Data Science Bootcamp</h3>
-                        <h4 class="achievement-issuer">CodingWise</h4>
-                        
-                        <p class="achievement-description">AProudly completed the 5-Day Python for Data Science Bootcamp by CodingWise, gaining hands-on experience in Python, NumPy, and Pandas to strengthen my foundation in Data Science and AI.</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">React</span>
-                            <span class="skill-tag">UI/UX</span>
-                            <span class="skill-tag">Innovation</span>
-                        </div>
-
-                        <div class="achievement-actions">
-                            <a href="#" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
-        
-        <h3 class="section-title">Certifications</h3>
-        <div class="row g-3">
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-certificate"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">Mar - 2025</span>
-                            <span class="achievement-type">Certification</span>
-                        </div>
-                    </div>
+        {% else %}
+        <p class="text-center" style="opacity:0.6; padding: 40px 20px;">No achievements yet. Check back soon!</p>
+        {% endfor %}
 
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Introduction To Python</h3>
-                        <h4 class="achievement-issuer">Infosys Springboard</h4>
-                        <p class="achievement-description">Successfully completed the 24-hour Advanced Python course from Infosys Springboard, enhancing my skills in writing efficient, scalable Python applications through hands-on coding and real-world problem-solving.</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">Python</span>
-                        </div>
-
-                        <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/Infosys%20Springbord%20Introduction%20to%20python%20march%202025.jpg?raw=true" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-certificate"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">Feb - 2025</span>
-                            <span class="achievement-type">Certification</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Basics of Python</h3>
-                        <h4 class="achievement-issuer">Infosys Springboard</h4>
-                        <p class="achievement-description">Successfully completed the Basic Python Course on Infosys Springboard, building a strong foundation in Python fundamentals, programming concepts, and data handling techniques.</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">Basic Python</span>
-                        </div>
-
-                        <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/Infosys%20Spring%20bord%20Basics%20of%20python%20february%202025.jpg?raw=true" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-certificate"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">Apr - 2025</span>
-                            <span class="achievement-type">Certification</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Introduction To MySQL</h3>
-                        <h4 class="achievement-issuer">Infosys Springboard</h4>
-                        <p class="achievement-description">Successfully completed the "Introduction to MySQL" course from Infosys Springboard, gaining hands-on knowledge of SQL queries, joins, and real-world database operations.</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">MySQL</span>
-                        </div>
-
-                        <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/Infosys%20Spring%20bord%20Basics%20of%20python%20february%202025.jpg?raw=true" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-code"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">Jan - 2024</span>
-                            <span class="achievement-type">Certification</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Machine Learning</h3>
-                        <h4 class="achievement-issuer">AWS ML Certificate</h4>
-                        
-                        <p class="achievement-description">Successfully completed the AWS Academy Machine Learning Foundation Course, gaining essential knowledge in ML concepts and earning my AWS certification.</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">Basics of ML</span>
-                        </div>
-                        
-                        <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/AWS%20Machine%20learning%202024.jpg?raw=true" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-code"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">Feb - 2023</span>
-                            <span class="achievement-type">Certification</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Abhigyan Event</h3>
-                        <h4 class="achievement-issuer">Atmiya University</h4>
-                        
-                        <p class="achievement-description">Excited to have volunteered at a 3 days of event, contributing to a meaningful cause and looking forward to more opportunities to make a positive impact</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">Leadership</span>
-                            <span class="skill-tag">Time Management</span>
-                        </div>
-                        
-                        <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/Abhigyan%20event%202023.jpg?raw=true" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="achievement-card">
-                    <div class="achievement-header">
-                        <div class="achievement-badge">
-                            <div class="achievement-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="badge-glow"></div>
-                        </div>
-                        <div class="achievement-meta">
-                            <span class="achievement-date">June - 2022</span>
-                            <span class="achievement-type">Certification</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-content">
-                        <h3 class="achievement-title">Design Thinking</h3>
-                        <h4 class="achievement-issuer">Atmiya University</h4>
-                        
-                        <p class="achievement-description">Successfully completed the Design Thinking Course and earned my certificate, enhancing my creative problem-solving and innovation skills!</p>
-
-                        <div class="achievement-skills">
-                            <span class="skill-tag">Problem Solving</span>
-                            <span class="skill-tag">Imagination</span>
-                        </div>
-
-                        <div class="achievement-actions">
-                            <a href="https://github.com/derravi/demo/blob/main/SDG%20Course%202021%20.jpg?raw=true" class="certificate-link" target="_blank">
-                                <span>View Certificate</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="achievement-glow"></div>
-                </div>
-            </div>
-        </div>
-        
         <!-- Stats Bar -->
         <div class="achievements-stats">
             <div class="row g-3">
@@ -1233,7 +897,7 @@ body::before {
                             <i class="fas fa-trophy"></i>
                         </div>
                         <div class="stat-info">
-                            <div class="stat-number">10</div>
+                            <div class="stat-number">{{ total_achievements }}</div>
                             <div class="stat-label">Total Achievements</div>
                         </div>
                     </div>

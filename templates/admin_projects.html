@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Projects</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+{% extends "admin_base.html" %}
+
+{% block title %}Manage Projects - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<style>
+
         * {
             margin: 0;
             padding: 0;
@@ -462,8 +461,9 @@
             }
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="page-container">
         <a href="/admin/dashboard" class="page-header back-link">
             <i class="fas fa-arrow-left"></i> Back to Dashboard
@@ -547,9 +547,11 @@
                 <i class="fas fa-plus"></i> Create Project
             </a>
         </div>
-    </div>
+    </div>{% endblock %}
 
-    <script>
+{% block extra_js %}
+<script>
+
         let allProjects = [];
         let filteredProjects = [];
         let currentFilter = 'all';
@@ -846,5 +848,4 @@
         // Load projects on page load
         loadProjects();
     </script>
-</body>
-</html>
+{% endblock %}

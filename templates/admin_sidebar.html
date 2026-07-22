@@ -1,0 +1,39 @@
+<!-- ==================== SHARED ADMIN SIDEBAR ====================
+     Included on every admin page via admin_base.html so the panel
+     navigation is always visible and consistent, no matter which
+     admin screen is open. -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <i class="fas fa-chart-line"></i>
+            Admin Panel
+        </div>
+        <div class="sidebar-user">
+            <i class="fas fa-user-circle"></i> {{ session.get('admin_email', 'Admin') }}
+        </div>
+    </div>
+
+    <nav>
+        <ul class="sidebar-nav">
+            <li><a href="/admin/dashboard" class="{% if request.path == '/admin/dashboard' %}active{% endif %}"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="/admin/projects" class="{% if request.path.startswith('/admin/project') %}active{% endif %}"><i class="fas fa-folder"></i> Projects</a></li>
+            <!-- <li><a href="/admin/project/new" class="{% if request.path == '/admin/project/new' %}active{% endif %}"><i class="fas fa-plus-circle"></i> New Project</a></li> -->
+            <li><a href="/admin/learning" class="{% if request.path.startswith('/admin/learning') %}active{% endif %}"><i class="fas fa-graduation-cap"></i> My Learning</a></li>
+            <!-- <li><a href="/admin/learning/new" class="{% if request.path == '/admin/learning/new' %}active{% endif %}"><i class="fas fa-plus-circle"></i> New Learning Item</a></li> -->
+            <li><a href="/admin/achievements" class="{% if request.path.startswith('/admin/achievement') %}active{% endif %}"><i class="fas fa-trophy"></i> Achievements</a></li>
+            <!-- <li><a href="/admin/achievement/new" class="{% if request.path == '/admin/achievement/new' %}active{% endif %}"><i class="fas fa-plus-circle"></i> New Achievement</a></li> -->
+            <li><a href="/admin/blog" class="{% if request.path.startswith('/admin/blog') %}active{% endif %}"><i class="fas fa-newspaper"></i> Blog Posts</a></li>
+            <!-- <li><a href="/admin/blog/new" class="{% if request.path == '/admin/blog/new' %}active{% endif %}"><i class="fas fa-feather-alt"></i> New Post</a></li> -->
+            <li><a href="/admin/reviews" class="{% if request.path.startswith('/admin/reviews') %}active{% endif %}"><i class="fas fa-star"></i> Reviews</a></li>
+            <li><a href="/admin/subscribers" class="{% if request.path.startswith('/admin/subscribers') %}active{% endif %}"><i class="fas fa-envelope-open-text"></i> Subscribers</a></li>
+            <li><a href="/admin/analytics" class="{% if request.path.startswith('/admin/analytics') %}active{% endif %}"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="/admin/settings" class="{% if request.path.startswith('/admin/settings') %}active{% endif %}"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="/admin/logout" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+</aside>
