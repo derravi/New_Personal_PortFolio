@@ -34,6 +34,11 @@ def get_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
+    # ⚡ OPTIMIZATION: WAL mode lets reads and writes happen concurrently
+    # instead of the whole DB locking on every write. Big win once
+    # analytics logging is writing on every request.
+    conn.execute("PRAGMA journal_mode = WAL")
+    conn.execute("PRAGMA synchronous = NORMAL")
     return conn
 
 
@@ -97,6 +102,16 @@ CREATE TABLE IF NOT EXISTS page_visits (
     user_agent TEXT,
     visited_at TEXT NOT NULL
 );
+
+-- ⚡ OPTIMIZATION: indexes for the columns that are actually queried on.
+-- Without these, every lookup below was a full table scan.
+CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON blog_posts(slug);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_published_at ON blog_posts(published_at);
+CREATE INDEX IF NOT EXISTS idx_project_reviews_slug ON project_reviews(project_slug);
+CREATE INDEX IF NOT EXISTS idx_project_reviews_status ON project_reviews(status);
+CREATE INDEX IF NOT EXISTS idx_page_visits_path ON page_visits(path);
+CREATE INDEX IF NOT EXISTS idx_page_visits_visited_at ON page_visits(visited_at);
+CREATE INDEX IF NOT EXISTS idx_page_visits_id_desc ON page_visits(id DESC);
 """
 
 SEED_POSTS = [
