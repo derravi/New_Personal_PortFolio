@@ -355,11 +355,15 @@
         min-height: calc(100vh - 80px);
     }
 
-    /* Mobile Responsive */
+    /* ============ Mobile Sidebar (<=768px) ============
+       Narrow, short drawer + a hamburger button that opens it and an
+       in-sidebar "X" button that closes it. The close button lives
+       inside .sidebar (not fixed to the viewport), so it sits at the
+       panel's own top-left corner and slides with it. */
     @media (max-width: 768px) {
         .sidebar {
+            width: 230px;
             transform: translateX(-100%);
-            width: 280px;
         }
 
         .sidebar.mobile-open {
@@ -372,22 +376,63 @@
 
         .top-header {
             left: 0;
-            height: 70px;
-            padding: 0 25px;
+            height: 64px;
+            padding: 0 20px;
+        }
+
+        .header-name {
+            font-size: 1.5rem;
+        }
+
+        .page-content {
+            margin-top: 64px;
+            padding: 18px;
+        }
+
+        .sidebar-header {
+            height: auto;
+            padding: 20px 15px 14px;
+        }
+
+        .profile-photo-sidebar {
+            width: 52px;
+            height: 52px;
+        }
+
+        .brand-text {
+            font-size: 1.2rem;
+        }
+
+        .sidebar-nav {
+            height: calc(100vh - 86px);
+            padding: 10px 0;
+        }
+
+        .nav-item {
+            margin: 5px 12px;
+        }
+
+        .nav-link {
+            padding: 11px 16px;
+            font-size: 0.92rem;
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            font-size: 1rem;
+            margin-right: 12px;
         }
 
         .mobile-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
             z-index: 999;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
         }
 
         .mobile-overlay.active {
@@ -395,103 +440,66 @@
             visibility: visible;
         }
 
-        .header-name {
-            font-size: 1.6rem;
-        }
-
-        .page-content {
-            margin-top: 70px;
-            padding: 20px;
-        }
-
-        .sidebar-header {
-            height: 140px;
-            padding: 25px 20px 15px 20px;
-        }
-
-        .profile-photo-sidebar {
-            width: 60px;
-            height: 60px;
-        }
-
-        .sidebar.collapsed .profile-photo-sidebar {
-            width: 45px;
-            height: 45px;
-        }
-
-        .brand-text {
-            font-size: 1.4rem;
-        }
-        
-        /* Tablet-specific adjustments */
-        @media (min-width: 576px) and (max-width: 768px) {
-            .sidebar {
-                width: 320px;
-            }
-            
-            .header-name {
-                font-size: 2rem;
-            }
-            
-            .page-content {
-                padding: 30px;
-            }
-        }
-    }
-
-    /* Mobile Menu Button - Updated Position */
-    .mobile-menu-btn {
-        position: fixed;
-        top: 40%; /* Positioned right below the top header */
-        left: 8%;
-        transform: translateX(-50%);
-        z-index: 1100;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        border: none;
-        color: var(--darker);
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.3rem;
-        box-shadow: 0 4px 20px rgba(0, 243, 255, 0.4);
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .mobile-menu-btn:hover {
-        transform: translateX(-50%) scale(1.1);
-        box-shadow: 0 6px 25px rgba(0, 243, 255, 0.5);
-    }
-
-    /* Mobile Menu Button Icon Animation */
-    .mobile-menu-btn .fa-bars {
-        transition: all 0.3s ease;
-        opacity: 1;
-        transform: rotate(0deg);
-    }
-    .mobile-menu-btn .fa-times {
-        transition: all 0.3s ease;
-        opacity: 0;
-        transform: rotate(-90deg);
-        position: absolute;
-    }
-
-    .mobile-menu-btn.active .fa-bars {
-        opacity: 0;
-        transform: rotate(90deg);
-    }
-
-    .mobile-menu-btn.active .fa-times {
-        opacity: 1;
-        transform: rotate(0deg);
-    }
-
-    @media (max-width: 768px) {
+        /* Hamburger: fixed to the viewport, opens the sidebar */
         .mobile-menu-btn {
             display: flex;
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: var(--darker);
+            font-size: 1.2rem;
+            z-index: 1001;
+            box-shadow: 0 4px 15px rgba(0, 243, 255, 0.35);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            padding: 0;
+        }
+
+        .mobile-menu-btn.active {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.7);
+        }
+
+        /* "X" close button: a child of .sidebar itself (see markup),
+           so it's pinned to the sidebar panel's own top-left corner
+           and travels with it, not the screen. */
+        .sidebar-close-btn {
+            display: flex;
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 243, 255, 0.35);
+            background: rgba(0, 243, 255, 0.08);
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 5;
+            padding: 0;
+            transition: all 0.25s ease;
+        }
+
+        .sidebar-close-btn:hover {
+            background: rgba(0, 243, 255, 0.2);
+            transform: rotate(90deg);
+        }
+    }
+
+    /* Close button only ever makes sense on the collapsible mobile drawer */
+    @media (min-width: 769px) {
+        .sidebar-close-btn {
+            display: none;
         }
     }
 
@@ -647,9 +655,10 @@
         }
         
         .mobile-menu-btn {
-            top: 78px; /* Adjusted for smaller header height */
-            width: 45px;
-            height: 45px;
+            top: 14px;
+            left: 14px;
+            width: 40px;
+            height: 40px;
             font-size: 1.2rem;
         }
     }
@@ -657,10 +666,11 @@
     /* Landscape orientation for mobile */
     @media (max-height: 500px) and (max-width: 768px) {
         .mobile-menu-btn {
-            top: 60px; /* Adjust for shorter header in landscape */
-            width: 40px;
-            height: 40px;
-            font-size: 1.1rem;
+            top: 10px;
+            left: 10px;
+            width: 36px;
+            height: 36px;
+            font-size: 1rem;
         }
         .sidebar-header {
             height: 100px;
@@ -695,10 +705,9 @@
     </style>
 </head>
 <body>
-    <!-- Mobile Menu Button (for mobile only) -->
-    <button class="mobile-menu-btn" id="mobileMenuBtn">
+    <!-- Mobile Menu Button (mobile only): opens the sidebar -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
         <i class="fas fa-bars"></i>
-        <i class="fas fa-times"></i>
     </button>
 
     <!-- Mobile Overlay -->
@@ -706,6 +715,11 @@
 
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
+        <!-- Closes the sidebar; sits at the panel's own top-left corner (mobile only) -->
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+
         <div class="sidebar-header">
             <div class="profile-section">
                 <a class="header-name" href="{{ url_for('home') }}">
@@ -713,7 +727,7 @@
                 </a> 
             </div>
         </div>
-        
+
         <!-- Floating Elements -->
         <div class="floating-elements">
             <div class="floating-element" style="width: 100px; height: 100px; top: 15%; left: 5%; animation-delay: 0s;"></div>
@@ -828,63 +842,36 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
         const mobileOverlay = document.getElementById('mobileOverlay');
-        
+
         let isSidebarOpen = false;
 
-        // Mobile menu toggle function
-        function toggleMobileMenu() {
-            isSidebarOpen = !isSidebarOpen;
-            
-            if (isSidebarOpen) {
-                // Open sidebar
-                sidebar.classList.add('mobile-open');
-                mobileOverlay.classList.add('active');
-                mobileMenuBtn.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            } else {
-                // Close sidebar
-                sidebar.classList.remove('mobile-open');
-                mobileOverlay.classList.remove('active');
-                mobileMenuBtn.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+        function setSidebar(open) {
+            isSidebarOpen = open;
+            sidebar.classList.toggle('mobile-open', open);
+            mobileOverlay.classList.toggle('active', open);
+            mobileMenuBtn.classList.toggle('active', open);
+            document.body.style.overflow = open ? 'hidden' : '';
         }
 
-        // Mobile menu toggle
-        mobileMenuBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleMobileMenu();
-        });
-
-        // Close sidebar when clicking overlay
-        mobileOverlay.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleMobileMenu();
-        });
+        // Hamburger opens, the sidebar's own "X" and the overlay close
+        mobileMenuBtn.addEventListener('click', e => { e.stopPropagation(); setSidebar(true); });
+        sidebarCloseBtn.addEventListener('click', e => { e.stopPropagation(); setSidebar(false); });
+        mobileOverlay.addEventListener('click', e => { e.stopPropagation(); setSidebar(false); });
 
         // Close sidebar when clicking nav links on mobile
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768 && isSidebarOpen) {
-                    toggleMobileMenu();
-                }
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768 && isSidebarOpen) setSidebar(false);
             });
         });
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                // Reset mobile menu state on desktop
-                sidebar.classList.remove('mobile-open');
-                mobileOverlay.classList.remove('active');
-                mobileMenuBtn.classList.remove('active');
-                document.body.style.overflow = '';
-                isSidebarOpen = false;
-            }
+        // Reset mobile menu state when resizing up to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && isSidebarOpen) setSidebar(false);
         });
 
         // Add hover effects to nav links
@@ -949,7 +936,7 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 if (window.innerWidth <= 768 && isSidebarOpen) {
-                    toggleMobileMenu();
+                    setSidebar(false);
                 }
             }
         });
