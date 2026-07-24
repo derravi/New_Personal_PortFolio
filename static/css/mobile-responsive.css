@@ -27,7 +27,301 @@
 }
 
 /* ============================================================================
-   2. MOBILE SIDEBAR (320px - 767px)
+   2. FLOATING MOBILE MENU BUTTON (Overrides from navbar.html for fallback)
+   ============================================================================ */
+
+.floating-mobile-btn {
+    display: none;
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border: none;
+    color: var(--darker);
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 3000;
+    box-shadow: 0 8px 30px rgba(0, 243, 255, 0.35);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.floating-mobile-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 40px rgba(0, 243, 255, 0.5);
+}
+
+.floating-mobile-btn:active {
+    transform: scale(0.92);
+}
+
+.floating-mobile-btn i {
+    transition: transform 0.3s ease;
+}
+
+.floating-mobile-btn.active i {
+    transform: rotate(90deg);
+}
+
+/* ============================================================================
+   3. MOBILE SIDEBAR (320px - 767px) - Overrides for fallback
+   ============================================================================ */
+
+@media (max-width: 767px) {
+    /* Floating button visible on mobile */
+    .floating-mobile-btn {
+        display: flex !important;
+    }
+    
+    /* Sidebar - off-canvas from right */
+    .mobile-sidebar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 300px;
+        max-width: 85vw;
+        height: 100vh;
+        background: linear-gradient(160deg, rgba(10, 10, 26, 0.98), rgba(5, 5, 16, 0.99));
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(0, 243, 255, 0.2);
+        z-index: 3001;
+        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0;
+        overflow-y: auto;
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-sidebar.open {
+        right: 0;
+    }
+
+    .mobile-sidebar-header {
+        padding: 30px 24px 20px;
+        border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .mobile-sidebar-brand {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        font-size: 1.4rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .mobile-sidebar-close {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+        background: rgba(0, 243, 255, 0.08);
+        color: var(--primary);
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s ease;
+        touch-action: manipulation;
+    }
+
+    .mobile-sidebar-close:hover {
+        background: rgba(0, 243, 255, 0.2);
+        transform: rotate(90deg);
+    }
+
+    .mobile-sidebar-close:active {
+        transform: rotate(90deg) scale(0.92);
+    }
+
+    .mobile-sidebar-nav {
+        padding: 16px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .mobile-sidebar-nav a {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 18px;
+        border-radius: 12px;
+        color: rgba(226, 241, 248, 0.8);
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: all 0.25s ease;
+        position: relative;
+        border: 1px solid transparent;
+    }
+
+    .mobile-sidebar-nav a i {
+        width: 22px;
+        font-size: 1.1rem;
+        text-align: center;
+        color: var(--primary);
+        opacity: 0.7;
+        transition: all 0.25s ease;
+    }
+
+    .mobile-sidebar-nav a span {
+        flex: 1;
+    }
+
+    .mobile-sidebar-nav a:hover {
+        background: rgba(0, 243, 255, 0.08);
+        color: var(--light);
+        border-color: rgba(0, 243, 255, 0.15);
+        transform: translateX(4px);
+    }
+
+    .mobile-sidebar-nav a:hover i {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .mobile-sidebar-nav a.active {
+        background: linear-gradient(135deg, rgba(0, 243, 255, 0.15), rgba(123, 0, 255, 0.1));
+        color: var(--primary);
+        border-color: rgba(0, 243, 255, 0.2);
+    }
+
+    .mobile-sidebar-nav a.active i {
+        opacity: 1;
+    }
+
+    .mobile-sidebar-nav a:active {
+        transform: scale(0.97);
+    }
+
+    /* Sidebar Overlay */
+    .mobile-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        visibility: hidden;
+        z-index: 3000;
+        transition: all 0.35s ease;
+    }
+
+    .mobile-sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Hide desktop navbar collapse on mobile */
+    .navbar-collapse {
+        display: none !important;
+    }
+    
+    .navbar-toggler {
+        display: none !important;
+    }
+}
+
+/* Small Mobile Devices (up to 575px) */
+@media (max-width: 575px) {
+    .floating-mobile-btn {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 1.3rem;
+        border-radius: 14px;
+    }
+    
+    .mobile-sidebar {
+        width: 280px;
+        max-width: 90vw;
+    }
+    
+    .mobile-sidebar-header {
+        padding: 24px 18px 16px;
+    }
+    
+    .mobile-sidebar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .mobile-sidebar-nav a {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+        gap: 14px;
+    }
+    
+    .mobile-sidebar-nav a i {
+        font-size: 1rem;
+        width: 20px;
+    }
+}
+
+/* Extra Small Devices (up to 375px) */
+@media (max-width: 375px) {
+    .floating-mobile-btn {
+        width: 44px;
+        height: 44px;
+        bottom: 16px;
+        right: 16px;
+        font-size: 1.1rem;
+        border-radius: 12px;
+    }
+    
+    .mobile-sidebar {
+        width: 260px;
+        max-width: 92vw;
+    }
+    
+    .mobile-sidebar-nav a {
+        padding: 10px 14px;
+        font-size: 0.88rem;
+        gap: 12px;
+    }
+}
+
+/* Landscape Mode for Mobile */
+@media (max-height: 500px) and (max-width: 991px) {
+    .mobile-sidebar {
+        padding-bottom: 20px;
+    }
+    
+    .mobile-sidebar-nav {
+        gap: 2px;
+        padding: 10px 12px;
+    }
+    
+    .mobile-sidebar-nav a {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .floating-mobile-btn:active {
+        transform: scale(0.92);
+    }
+    
+    .mobile-sidebar-nav a:active {
+        background: rgba(0, 243, 255, 0.12);
+        transform: scale(0.97);
+    }
+}
+
+/* ============================================================================
+   4. LEGACY ADMIN SIDEBAR STYLES (Keep for compatibility)
    ============================================================================ */
 
 @media (max-width: 767px) {
@@ -166,7 +460,7 @@
 
     .page-content {
         padding: 15px !important;
-        padding-bottom: 60px !important; /* Space for FAB */
+        padding-bottom: 80px !important; /* Space for FAB */
     }
 
     /* Mobile Typography */
@@ -218,7 +512,7 @@
        (used by the footer's Mail and Bell floating buttons) and must
        keep its fixed round dimensions instead of being stretched
        full-width like regular CTA buttons. */
-    button:not(.newsletter-btn),
+    button:not(.newsletter-btn):not(.floating-mobile-btn):not(.mobile-sidebar-close),
     .btn:not(.newsletter-btn) {
         width: 100% !important;
         padding: 12px 16px !important;
@@ -324,12 +618,17 @@
 }
 
 /* ============================================================================
-   3. TABLET STYLES (768px - 1024px)
+   5. TABLET STYLES (768px - 1024px)
    ============================================================================ */
 
 @media (min-width: 768px) and (max-width: 1024px) {
     :root {
         --sidebar-width: var(--sidebar-width-tablet);
+    }
+
+    /* Floating button visible on tablet too */
+    .floating-mobile-btn {
+        display: flex !important;
     }
 
     /* Sidebar - Collapsible on Tablet */
@@ -366,6 +665,7 @@
 
     .page-content {
         padding: 20px !important;
+        padding-bottom: 90px !important;
     }
 
     /* Tablet Typography */
@@ -434,10 +734,19 @@
     .tablet-visible {
         display: block !important;
     }
+
+    /* Hide desktop navbar collapse on tablet */
+    .navbar-collapse {
+        display: none !important;
+    }
+    
+    .navbar-toggler {
+        display: none !important;
+    }
 }
 
 /* ============================================================================
-   4. DESKTOP STYLES (1025px+)
+   6. DESKTOP STYLES (1025px+)
    ============================================================================ */
 
 @media (min-width: 1025px) {
@@ -517,7 +826,7 @@
     /* .newsletter-btn (Mail/Bell floating buttons) excluded so it keeps
        its fixed round dimensions on desktop/laptop instead of stretching
        into a pill/oval shape. */
-    button:not(.newsletter-btn),
+    button:not(.newsletter-btn):not(.floating-mobile-btn):not(.mobile-sidebar-close),
     .btn:not(.newsletter-btn) {
         width: auto !important;
         padding: 12px 24px !important;
@@ -526,7 +835,10 @@
     /* Hide mobile elements on desktop */
     .mobile-only,
     .mobile-menu-btn,
-    .mobile-overlay {
+    .mobile-overlay,
+    .floating-mobile-btn,
+    .mobile-sidebar,
+    .mobile-sidebar-overlay {
         display: none !important;
     }
 
@@ -537,7 +849,7 @@
 }
 
 /* ============================================================================
-   5. ADMIN PANEL RESPONSIVE STYLES
+   7. ADMIN PANEL RESPONSIVE STYLES
    ============================================================================ */
 
 @media (max-width: 767px) {
@@ -746,7 +1058,7 @@
 }
 
 /* ============================================================================
-   6. UTILITY CLASSES FOR RESPONSIVE DESIGN
+   8. UTILITY CLASSES FOR RESPONSIVE DESIGN
    ============================================================================ */
 
 /* Display Utilities */
@@ -847,7 +1159,7 @@
 }
 
 /* ============================================================================
-   7. TOUCH-FRIENDLY BUTTONS FOR MOBILE
+   9. TOUCH-FRIENDLY BUTTONS FOR MOBILE
    ============================================================================ */
 
 @media (max-width: 767px) {
@@ -860,7 +1172,7 @@
        fixed 38x38 circular sizing, which this generic rule would
        otherwise stretch into a non-round shape via the !important
        min-height/min-width + padding combination. */
-    button:not(.newsletter-btn):not(.detail-modal-close),
+    button:not(.newsletter-btn):not(.detail-modal-close):not(.floating-mobile-btn):not(.mobile-sidebar-close),
     a.btn,
     input[type="button"],
     input[type="submit"] {
@@ -890,7 +1202,7 @@
 }
 
 /* ============================================================================
-   8. SMOOTH SCROLLING & ANIMATIONS FOR MOBILE
+   10. SMOOTH SCROLLING & ANIMATIONS FOR MOBILE
    ============================================================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -902,7 +1214,7 @@
 }
 
 /* ============================================================================
-   9. PRINT STYLES
+   11. PRINT STYLES
    ============================================================================ */
 
 @media print {
@@ -910,7 +1222,10 @@
     .mobile-menu-btn,
     .mobile-overlay,
     .top-header,
-    footer {
+    footer,
+    .floating-mobile-btn,
+    .mobile-sidebar,
+    .mobile-sidebar-overlay {
         display: none !important;
     }
 
@@ -927,7 +1242,7 @@
 }
 
 /* ============================================================================
-   10. LANDSCAPE MODE ADJUSTMENTS
+   12. LANDSCAPE MODE ADJUSTMENTS
    ============================================================================ */
 
 @media (max-height: 500px) and (orientation: landscape) {
@@ -948,7 +1263,7 @@
 }
 
 /* ============================================================================
-   11. SUPPORT FOR HIGH DPI DISPLAYS
+   13. SUPPORT FOR HIGH DPI DISPLAYS
    ============================================================================ */
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
@@ -959,7 +1274,7 @@
 }
 
 /* ============================================================================
-   12. DARK MODE FOR MOBILE
+   14. DARK MODE FOR MOBILE
    ============================================================================ */
 
 @media (prefers-color-scheme: dark) {

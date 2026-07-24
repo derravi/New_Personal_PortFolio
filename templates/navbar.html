@@ -6,8 +6,8 @@
             <div class="brand-glow"></div>
         </a>
         
-        <!-- Animated Toggle Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <!-- Desktop Toggle Button (Hidden on Mobile) -->
+        <button class="navbar-toggler d-lg-none" type="button" id="mobileNavToggle">
             <div class="hamburger">
                 <span></span>
                 <span></span>
@@ -86,6 +86,60 @@
     </div>
 </nav>
 
+<!-- Mobile Off-Canvas Sidebar -->
+<div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+<div class="mobile-sidebar" id="mobileSidebar">
+    <div class="mobile-sidebar-header">
+        <div class="mobile-sidebar-brand">Ravi Der</div>
+        <button class="mobile-sidebar-close" id="mobileSidebarClose" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <nav class="mobile-sidebar-nav">
+        <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">
+            <i class="fas fa-user"></i>
+            <span>About</span>
+        </a>
+        <a href="{{ url_for('projects') }}" class="{% if request.endpoint == 'projects' %}active{% endif %}">
+            <i class="fas fa-code"></i>
+            <span>Projects</span>
+        </a>
+        <a href="{{ url_for('skills') }}" class="{% if request.endpoint == 'skills' %}active{% endif %}">
+            <i class="fas fa-cogs"></i>
+            <span>Skills</span>
+        </a>
+        <a href="{{ url_for('achievements') }}" class="{% if request.endpoint == 'achievements' %}active{% endif %}">
+            <i class="fas fa-trophy"></i>
+            <span>Achievements</span>
+        </a>
+        <a href="{{ url_for('experience') }}" class="{% if request.endpoint == 'experience' %}active{% endif %}">
+            <i class="fas fa-briefcase"></i>
+            <span>Experience</span>
+        </a>
+        <a href="{{ url_for('education') }}" class="{% if request.endpoint == 'education' %}active{% endif %}">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Education</span>
+        </a>
+        <a href="{{ url_for('blog') }}" class="{% if request.endpoint == 'blog' %}active{% endif %}">
+            <i class="fas fa-blog"></i>
+            <span>Blog</span>
+        </a>
+        <a href="{{ url_for('contact') }}" class="{% if request.endpoint == 'contact' %}active{% endif %}">
+            <i class="fas fa-envelope"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
+</div>
+
+<!-- Floating Mobile Menu Button -->
+<button class="floating-mobile-btn" id="floatingMobileBtn" aria-label="Toggle navigation menu">
+    <i class="fas fa-bars"></i>
+</button>
+
 <style>
 :root {
     --primary: #00f3ff;
@@ -96,7 +150,7 @@
     --accent: #ff00c8;
 }
 
-/* Navbar Styles */
+/* Navbar Styles - Desktop Only */
 .navbar {
     background: linear-gradient(135deg, 
         rgba(10, 10, 26, 0.95) 0%, 
@@ -147,7 +201,7 @@
     opacity: 0.6;
 }
 
-/* Navigation Links */
+/* Navigation Links - Desktop */
 .navbar-nav {
     gap: 5px;
 }
@@ -231,7 +285,7 @@
     width: 30px;
 }
 
-/* Custom Hamburger Menu */
+/* Desktop Toggle - Hidden on Mobile */
 .navbar-toggler {
     border: none;
     padding: 8px;
@@ -294,27 +348,201 @@
     transform: rotate(-135deg);
 }
 
-/* ========== RESPONSIVE DESIGN ========== */
-
-/* Large Tablets (992px - 1199px) */
-@media (max-width: 1199px) {
-    .nav-link {
-        padding: 10px 16px !important;
-        font-size: 0.85rem;
-    }
-    
-    .navbar-brand {
-        font-size: 1.6rem;
-    }
-    
-    .nav-link i {
-        font-size: 0.9rem;
-        width: 18px;
-    }
+/* ========== FLOATING MOBILE BUTTON ========== */
+.floating-mobile-btn {
+    display: none;
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border: none;
+    color: var(--darker);
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 3000;
+    box-shadow: 0 8px 30px rgba(0, 243, 255, 0.35);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Tablets and Small Desktops (768px - 991px) */
+.floating-mobile-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 40px rgba(0, 243, 255, 0.5);
+}
+
+.floating-mobile-btn:active {
+    transform: scale(0.92);
+}
+
+.floating-mobile-btn i {
+    transition: transform 0.3s ease;
+}
+
+.floating-mobile-btn.active i {
+    transform: rotate(90deg);
+}
+
+/* ========== MOBILE SIDEBAR ========== */
+.mobile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    max-width: 85vw;
+    height: 100vh;
+    background: linear-gradient(160deg, rgba(10, 10, 26, 0.98), rgba(5, 5, 16, 0.99));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(0, 243, 255, 0.2);
+    z-index: 3001;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+    overflow-y: auto;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-sidebar.open {
+    right: 0;
+}
+
+.mobile-sidebar-header {
+    padding: 30px 24px 20px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mobile-sidebar-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.mobile-sidebar-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    background: rgba(0, 243, 255, 0.08);
+    color: var(--primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    touch-action: manipulation;
+}
+
+.mobile-sidebar-close:hover {
+    background: rgba(0, 243, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.mobile-sidebar-close:active {
+    transform: rotate(90deg) scale(0.92);
+}
+
+.mobile-sidebar-nav {
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mobile-sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    color: rgba(226, 241, 248, 0.8);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.mobile-sidebar-nav a i {
+    width: 22px;
+    font-size: 1.1rem;
+    text-align: center;
+    color: var(--primary);
+    opacity: 0.7;
+    transition: all 0.25s ease;
+}
+
+.mobile-sidebar-nav a span {
+    flex: 1;
+}
+
+.mobile-sidebar-nav a:hover {
+    background: rgba(0, 243, 255, 0.08);
+    color: var(--light);
+    border-color: rgba(0, 243, 255, 0.15);
+    transform: translateX(4px);
+}
+
+.mobile-sidebar-nav a:hover i {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.mobile-sidebar-nav a.active {
+    background: linear-gradient(135deg, rgba(0, 243, 255, 0.15), rgba(123, 0, 255, 0.1));
+    color: var(--primary);
+    border-color: rgba(0, 243, 255, 0.2);
+}
+
+.mobile-sidebar-nav a.active i {
+    opacity: 1;
+}
+
+.mobile-sidebar-nav a:active {
+    transform: scale(0.97);
+}
+
+/* Sidebar Overlay */
+.mobile-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 3000;
+    transition: all 0.35s ease;
+}
+
+.mobile-sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablets and below - Show floating button & hide desktop toggle */
 @media (max-width: 991px) {
+    .navbar-toggler {
+        display: none !important;
+    }
+    
+    .floating-mobile-btn {
+        display: flex !important;
+    }
+    
     .navbar {
         padding: 10px 0;
     }
@@ -324,221 +552,95 @@
     }
     
     .navbar-collapse {
-        background: linear-gradient(135deg, 
-            rgba(10, 10, 26, 0.98) 0%, 
-            rgba(5, 5, 16, 0.98) 100%);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 15px;
-        margin-top: 15px;
-        padding: 20px;
-        border: 1px solid rgba(0, 243, 255, 0.2);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-    
-    .navbar-nav {
-        gap: 0;
-    }
-    
-    .nav-item {
-        margin: 0;
-    }
-    
-    .nav-link {
-        padding: 15px 20px !important;
-        margin: 5px 0;
-        border-radius: 12px;
-        justify-content: flex-start;
-        font-size: 0.95rem;
-        border: 1px solid transparent;
-    }
-    
-    .nav-link:hover {
-        transform: translateX(5px);
-        border-color: rgba(0, 243, 255, 0.2);
-    }
-    
-    .nav-link.active {
-        background: linear-gradient(135deg, 
-            rgba(0, 243, 255, 0.2), 
-            rgba(123, 0, 255, 0.15));
-        border-color: rgba(0, 243, 255, 0.3);
-    }
-    
-    .nav-indicator {
-        display: none;
-    }
-    
-    .nav-link i {
-        font-size: 1rem;
-        width: 22px;
-    }
-    
-    /* Larger touch target for mobile */
-    .navbar-toggler {
-        width: 46px;
-        height: 46px;
-    }
-    
-    .hamburger {
-        width: 26px;
-        height: 20px;
-    }
-    
-    .hamburger span {
-        height: 2.5px;
-    }
-    
-    .hamburger span:nth-child(2) {
-        top: 9px;
-    }
-    
-    .hamburger span:nth-child(3) {
-        top: 18px;
-    }
-}
-
-/* Mobile Devices (576px - 767px) */
-@media (max-width: 767px) {
-    .navbar {
-        padding: 8px 0;
-    }
-    
-    .container {
-        padding: 0 15px;
-    }
-    
-    .navbar-brand {
-        font-size: 1.4rem;
-    }
-    
-    .navbar-collapse {
-        margin-top: 12px;
-        padding: 15px;
-        border-radius: 12px;
-        max-height: 65vh;
-    }
-    
-    .nav-link {
-        padding: 14px 18px !important;
-        margin: 4px 0;
-        font-size: 0.92rem;
-    }
-    
-    .nav-link i {
-        font-size: 0.95rem;
-        width: 20px;
-    }
-    
-    .navbar-toggler {
-        width: 44px;
-        height: 44px;
-        padding: 6px;
-    }
-    
-    .hamburger {
-        width: 24px;
-        height: 18px;
+        display: none !important;
     }
 }
 
 /* Small Mobile Devices (up to 575px) */
 @media (max-width: 575px) {
-    .navbar {
-        padding: 6px 0;
-    }
-    
-    .container {
-        padding: 0 12px;
-    }
-    
-    .navbar-brand {
+    .floating-mobile-btn {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
         font-size: 1.3rem;
+        border-radius: 14px;
     }
     
-    .navbar-collapse {
-        margin-top: 10px;
-        padding: 12px;
-        border-radius: 10px;
-        max-height: 60vh;
+    .mobile-sidebar {
+        width: 280px;
+        max-width: 90vw;
     }
     
-    .nav-link {
-        padding: 12px 16px !important;
-        margin: 3px 0;
+    .mobile-sidebar-header {
+        padding: 24px 18px 16px;
+    }
+    
+    .mobile-sidebar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .mobile-sidebar-nav a {
+        padding: 12px 16px;
         font-size: 0.9rem;
+        gap: 14px;
     }
     
-    .nav-link i {
-        font-size: 0.9rem;
-        width: 18px;
-        margin-right: 12px;
-    }
-    
-    .navbar-toggler {
-        width: 40px;
-        height: 40px;
-        padding: 5px;
-    }
-    
-    .hamburger {
-        width: 22px;
-        height: 16px;
-    }
-    
-    .hamburger span {
-        height: 2px;
-    }
-    
-    .hamburger span:nth-child(2) {
-        top: 7px;
-    }
-    
-    .hamburger span:nth-child(3) {
-        top: 14px;
+    .mobile-sidebar-nav a i {
+        font-size: 1rem;
+        width: 20px;
     }
 }
 
 /* Extra Small Devices (up to 375px) */
 @media (max-width: 375px) {
-    .navbar-brand {
-        font-size: 1.2rem;
+    .floating-mobile-btn {
+        width: 44px;
+        height: 44px;
+        bottom: 16px;
+        right: 16px;
+        font-size: 1.1rem;
+        border-radius: 12px;
     }
     
-    .container {
-        padding: 0 10px;
+    .mobile-sidebar {
+        width: 260px;
+        max-width: 92vw;
     }
     
-    .navbar-collapse {
-        padding: 10px;
-        margin-top: 8px;
-    }
-    
-    .nav-link {
-        padding: 10px 14px !important;
+    .mobile-sidebar-nav a {
+        padding: 10px 14px;
         font-size: 0.88rem;
-    }
-    
-    .nav-link i {
-        font-size: 0.88rem;
-        width: 16px;
-        margin-right: 10px;
+        gap: 12px;
     }
 }
 
-/* Landscape Orientation for Mobile */
+/* Landscape Mode for Mobile */
 @media (max-height: 500px) and (max-width: 991px) {
-    .navbar-collapse {
-        max-height: 50vh;
-        margin-top: 10px;
-        padding: 15px;
+    .mobile-sidebar {
+        padding-bottom: 20px;
     }
     
-    .nav-link {
-        padding: 10px 16px !important;
-        margin: 2px 0;
+    .mobile-sidebar-nav {
+        gap: 2px;
+        padding: 10px 12px;
+    }
+    
+    .mobile-sidebar-nav a {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .floating-mobile-btn:active {
+        transform: scale(0.92);
+    }
+    
+    .mobile-sidebar-nav a:active {
+        background: rgba(0, 243, 255, 0.12);
+        transform: scale(0.97);
     }
 }
 
@@ -549,60 +651,10 @@
     }
 }
 
-/* Touch device optimizations */
-@media (hover: none) and (pointer: coarse) {
-    .nav-link:hover {
-        transform: none;
-        background: rgba(0, 243, 255, 0.03);
-    }
-    
-    .nav-link:active {
-        background: rgba(0, 243, 255, 0.1);
-        transform: scale(0.98);
-    }
-    
-    .navbar-toggler:active {
-        transform: scale(0.95);
-    }
-}
-
-/* Scroll Behavior Enhancement */
-.navbar {
-    transition: all 0.4s ease;
-}
-
-/* Dropdown Animation */
-.navbar-collapse.collapsing {
-    transition: height 0.35s ease;
-}
-
-.navbar-collapse.show {
-    animation: slideDown 0.4s ease;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 /* Prevent horizontal scroll on mobile */
 @media (max-width: 991px) {
     body {
         overflow-x: hidden;
-    }
-    
-    .navbar-collapse {
-        position: fixed;
-        top: 70px;
-        left: 15px;
-        right: 15px;
-        z-index: 1000;
     }
 }
 
@@ -619,12 +671,18 @@ html {
 </style>
 
 <script>
-// Enhanced Navbar Script with Mobile Optimizations
+// Enhanced Navbar Script with Floating Mobile Button
 document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.querySelector('.navbar');
     const navLinks = document.querySelectorAll('.nav-link');
-    const navbarToggler = document.querySelector('.navbar-toggler');
-    const navbarCollapse = document.querySelector('.navbar-collapse');
+    
+    // Floating mobile elements
+    const floatingBtn = document.getElementById('floatingMobileBtn');
+    const sidebar = document.getElementById('mobileSidebar');
+    const sidebarOverlay = document.getElementById('mobileSidebarOverlay');
+    const sidebarClose = document.getElementById('mobileSidebarClose');
+    const sidebarLinks = document.querySelectorAll('.mobile-sidebar-nav a');
+    const icon = floatingBtn ? floatingBtn.querySelector('i') : null;
     
     // Navbar scroll effect
     function handleScroll() {
@@ -650,81 +708,95 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Mobile menu close on click
-    const navItems = document.querySelectorAll('.nav-item');
+    // ========== FLOATING MOBILE MENU FUNCTIONS ==========
     
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            if (window.innerWidth < 992) {
-                const bsCollapse = new bootstrap.Collapse(navbarCollapse);
-                bsCollapse.hide();
-            }
-        });
-    });
+    function openSidebar() {
+        sidebar.classList.add('open');
+        sidebarOverlay.classList.add('active');
+        floatingBtn.classList.add('active');
+        if (icon) {
+            icon.className = 'fas fa-times';
+        }
+        document.body.style.overflow = 'hidden';
+        floatingBtn.setAttribute('aria-label', 'Close navigation menu');
+    }
     
-    // Touch feedback for mobile
-    if (window.innerWidth < 992) {
-        navLinks.forEach(link => {
-            link.addEventListener('touchstart', function() {
-                this.style.transform = 'scale(0.98)';
-                this.style.background = 'rgba(0, 243, 255, 0.1)';
-            });
-            
-            link.addEventListener('touchend', function() {
-                this.style.transform = 'scale(1)';
-                if (!this.classList.contains('active')) {
-                    this.style.background = 'transparent';
-                }
-            });
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+        floatingBtn.classList.remove('active');
+        if (icon) {
+            icon.className = 'fas fa-bars';
+        }
+        document.body.style.overflow = '';
+        floatingBtn.setAttribute('aria-label', 'Toggle navigation menu');
+    }
+    
+    function toggleSidebar() {
+        if (sidebar.classList.contains('open')) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+    
+    // Floating button click
+    if (floatingBtn) {
+        floatingBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleSidebar();
         });
         
-        // Touch feedback for navbar toggler
-        navbarToggler.addEventListener('touchstart', function() {
-            this.style.transform = 'scale(0.95)';
+        // Touch feedback
+        floatingBtn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.92)';
         });
         
-        navbarToggler.addEventListener('touchend', function() {
-            this.style.transform = 'scale(1)';
+        floatingBtn.addEventListener('touchend', function() {
+            this.style.transform = '';
         });
     }
     
-    // Handle window resize
-    window.addEventListener('resize', function() {
-        // Close mobile menu when switching to desktop
-        if (window.innerWidth >= 992) {
-            const bsCollapse = new bootstrap.Collapse(navbarCollapse);
-            bsCollapse.hide();
-        }
-    });
+    // Close button in sidebar
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeSidebar();
+        });
+    }
     
-    // Prevent body scroll when mobile menu is open
-    navbarToggler.addEventListener('click', function() {
-        if (window.innerWidth < 992) {
-            if (navbarCollapse.classList.contains('show')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
+    // Overlay click to close
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSidebar();
             }
-        }
-    });
+        });
+    }
     
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(event) {
-        if (window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
-            if (!navbar.contains(event.target)) {
-                const bsCollapse = new bootstrap.Collapse(navbarCollapse);
-                bsCollapse.hide();
-                document.body.style.overflow = '';
-            }
-        }
-    });
+    // Sidebar links - close on click
+    if (sidebarLinks) {
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Allow the click to navigate, then close after a tiny delay
+                setTimeout(closeSidebar, 100);
+            });
+        });
+    }
     
-    // Handle escape key to close mobile menu
+    // Escape key to close
     document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
-            const bsCollapse = new bootstrap.Collapse(navbarCollapse);
-            bsCollapse.hide();
-            document.body.style.overflow = '';
+        if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+            closeSidebar();
+        }
+    });
+    
+    // Handle resize - close sidebar when going to desktop
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 992 && sidebar.classList.contains('open')) {
+            closeSidebar();
         }
     });
     

@@ -67,7 +67,7 @@
         height: 100%;
     }
 
-    /* Sidebar Styles */
+    /* Sidebar Styles - Desktop */
     .sidebar {
         position: fixed;
         top: 0;
@@ -132,16 +132,12 @@
     }
 
     .profile-photo-sidebar:hover {
-    border-color: var(--accent);
-    box-shadow:
-        0 0 20px rgba(0, 243, 255, 0.6),
-        0 0 40px rgba(0, 243, 255, 0.4),
-        0 0 60px rgba(0, 243, 255, 0.2);
-    filter: brightness(1.15);
-    rotate: 2deg;
-    transition: all 0.4s ease-in-out;
+        border-color: var(--accent);
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.6), 0 0 40px rgba(0, 243, 255, 0.4), 0 0 60px rgba(0, 243, 255, 0.2);
+        filter: brightness(1.15);
+        rotate: 2deg;
+        transition: all 0.4s ease-in-out;
     }
-
 
     .brand-text {
         font-family: 'Orbitron', sans-serif;
@@ -295,7 +291,7 @@
     }
 
     .header-name {
-       font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', sans-serif;
         font-weight: 900;
         font-size: 3rem;
         background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
@@ -306,16 +302,17 @@
         letter-spacing: 1px;
         transition: all 0.4s ease-in-out;
         cursor: pointer;
+        text-decoration: none;
     }
 
     .header-name:hover {
-    background: linear-gradient(135deg, var(--accent), var(--secondary), var(--primary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0 0 20px rgba(0, 243, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.5);
-    transform: scale(1);
-    letter-spacing: 1px;
+        background: linear-gradient(135deg, var(--accent), var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 20px rgba(0, 243, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.5);
+        transform: scale(1);
+        letter-spacing: 1px;
     }
 
     .header-right {
@@ -355,15 +352,175 @@
         min-height: calc(100vh - 80px);
     }
 
-    /* ============ Mobile Sidebar (<=768px) ============
-       Narrow, short drawer + a hamburger button that opens it and an
-       in-sidebar "X" button that closes it. The close button lives
-       inside .sidebar (not fixed to the viewport), so it sits at the
-       panel's own top-left corner and slides with it. */
+    /* ===== FLOATING MOBILE BUTTON - BOTTOM RIGHT (SMALL SQUARE) ===== */
+    .floating-mobile-btn {
+        display: none;
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        width: 100px;
+        height: 100px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border: none;
+        color: var(--darker);
+        font-size: 1.2rem;
+        cursor: pointer;
+        z-index: 3000;
+        box-shadow: 0 6px 24px rgba(0, 243, 255, 0.35);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        align-items: center;
+        justify-content: center;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .floating-mobile-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 32px rgba(0, 243, 255, 0.5);
+    }
+
+    .floating-mobile-btn:active {
+        transform: scale(0.92);
+    }
+
+    .floating-mobile-btn i {
+        transition: transform 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    .floating-mobile-btn.active i {
+        transform: rotate(90deg);
+    }
+
+    /* Mobile Sidebar - Off-canvas from LEFT */
+    .mobile-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        max-width: 85vw;
+        height: 100vh;
+        background: linear-gradient(160deg, rgba(10, 10, 26, 0.98), rgba(5, 5, 16, 0.99));
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-right: 1px solid rgba(0, 243, 255, 0.2);
+        z-index: 3001;
+        transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0;
+        overflow-y: auto;
+        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-sidebar.open {
+        left: 0;
+    }
+
+    .mobile-sidebar-header {
+        padding: 28px 20px 18px;
+        border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .mobile-sidebar-brand {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        font-size: 1.3rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* Remove the close button from sidebar - we use the floating button for both open/close */
+    .mobile-sidebar-close {
+        display: none;
+    }
+
+    .mobile-sidebar-nav {
+        padding: 14px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .mobile-sidebar-nav a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        color: rgba(226, 241, 248, 0.8);
+        text-decoration: none;
+        font-size: 1.3rem;
+        font-weight: 500;
+        transition: all 0.25s ease;
+        position: relative;
+        border: 1px solid transparent;
+    }
+
+    .mobile-sidebar-nav a i {
+        width: 20px;
+        font-size: 1rem;
+        text-align: center;
+        color: var(--primary);
+        opacity: 0.7;
+        transition: all 0.25s ease;
+    }
+
+    .mobile-sidebar-nav a span {
+        flex: 1;
+    }
+
+    .mobile-sidebar-nav a:hover {
+        background: rgba(0, 243, 255, 0.08);
+        color: var(--light);
+        border-color: rgba(0, 243, 255, 0.15);
+        transform: translateX(4px);
+    }
+
+    .mobile-sidebar-nav a:hover i {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .mobile-sidebar-nav a.active {
+        background: linear-gradient(135deg, rgba(0, 243, 255, 0.15), rgba(123, 0, 255, 0.1));
+        color: var(--primary);
+        border-color: rgba(0, 243, 255, 0.2);
+    }
+
+    .mobile-sidebar-nav a.active i {
+        opacity: 1;
+    }
+
+    .mobile-sidebar-nav a:active {
+        transform: scale(0.97);
+    }
+
+    .mobile-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        visibility: hidden;
+        z-index: 3000;
+        transition: all 0.35s ease;
+    }
+
+    .mobile-sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* ============ Mobile Styles ============ */
     @media (max-width: 768px) {
+        /* Hide the desktop sidebar on mobile */
         .sidebar {
-            width: 230px;
             transform: translateX(-100%);
+            width: 260px;
         }
 
         .sidebar.mobile-open {
@@ -387,6 +544,7 @@
         .page-content {
             margin-top: 64px;
             padding: 18px;
+            padding-bottom: 80px;
         }
 
         .sidebar-header {
@@ -440,36 +598,11 @@
             visibility: visible;
         }
 
-        /* Hamburger: fixed to the viewport, opens the sidebar */
+        /* Hide the old top-left hamburger */
         .mobile-menu-btn {
-            display: flex;
-            position: fixed;
-            top: 14px;
-            left: 14px;
-            width: 40px;
-            height: 40px;
-            border-radius: 4px;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none;
-            color: var(--darker);
-            font-size: 1.2rem;
-            z-index: 1001;
-            box-shadow: 0 4px 15px rgba(0, 243, 255, 0.35);
-            transition: opacity 0.25s ease, transform 0.25s ease;
-            padding: 0;
+            display: none !important;
         }
 
-        .mobile-menu-btn.active {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.7);
-        }
-
-        /* "X" close button: a child of .sidebar itself (see markup),
-           so it's pinned to the sidebar panel's own top-left corner
-           and travels with it, not the screen. */
         .sidebar-close-btn {
             display: flex;
             position: absolute;
@@ -494,12 +627,212 @@
             background: rgba(0, 243, 255, 0.2);
             transform: rotate(90deg);
         }
+
+        /* Show floating button on mobile - BOTTOM RIGHT */
+        .floating-mobile-btn {
+            display: flex !important;
+        }
     }
 
-    /* Close button only ever makes sense on the collapsible mobile drawer */
     @media (min-width: 769px) {
         .sidebar-close-btn {
             display: none;
+        }
+        .mobile-menu-btn {
+            display: none;
+        }
+        .floating-mobile-btn {
+            display: none !important;
+        }
+        .mobile-sidebar,
+        .mobile-sidebar-overlay {
+            display: none !important;
+        }
+    }
+
+    /* Tablet-specific styles */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .sidebar {
+            width: 260px;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+        }
+        
+        .top-header {
+            left: 260px;
+        }
+        
+        .header-name {
+            font-size: 2.2rem;
+        }
+        
+        .page-content {
+            padding: 30px;
+        }
+        
+        .nav-link {
+            padding: 12px 20px;
+        }
+        
+        .profile-photo-sidebar {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .sidebar.collapsed .profile-photo-sidebar {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .sidebar-header {
+            padding: 25px 20px 15px 20px;
+            height: 140px;
+        }
+    }
+    
+    /* Small mobile devices */
+    @media (max-width: 576px) {
+        .floating-mobile-btn {
+            width: 40px;
+            height: 40px;
+            bottom: 18px;
+            right: 18px;
+            font-size: 1rem;
+            border-radius: 8px;
+        }
+
+        .floating-mobile-btn i {
+            font-size: 0.95rem;
+        }
+        
+        .mobile-sidebar {
+            width: 260px;
+            max-width: 90vw;
+        }
+        
+        .mobile-sidebar-header {
+            padding: 20px 16px 14px;
+        }
+        
+        .mobile-sidebar-brand {
+            font-size: 1.1rem;
+        }
+        
+        .mobile-sidebar-nav a {
+            padding: 10px 14px;
+            font-size: 1.2rem;
+            gap: 12px;
+        }
+        
+        .mobile-sidebar-nav a i {
+            font-size: 0.9rem;
+            width: 18px;
+        }
+
+        .header-name {
+            font-size: 1.3rem;
+        }
+        
+        .page-content {
+            padding: 14px;
+            padding-bottom: 75px;
+        }
+        
+        .sidebar {
+            width: 240px;
+        }
+        
+        .sidebar-header {
+            padding: 16px 12px 10px 12px;
+            height: 120px;
+        }
+        
+        .profile-photo-sidebar {
+            width: 48px;
+            height: 48px;
+        }
+        
+        .nav-link {
+            padding: 10px 16px;
+            font-size: 0.85rem;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+    }
+
+    /* Extra Small Devices */
+    @media (max-width: 375px) {
+        .floating-mobile-btn {
+            width: 36px;
+            height: 36px;
+            bottom: 14px;
+            right: 14px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+        }
+
+        .floating-mobile-btn i {
+            font-size: 0.85rem;
+        }
+        
+        .mobile-sidebar {
+            width: 240px;
+            max-width: 92vw;
+        }
+        
+        .mobile-sidebar-nav a {
+            padding: 8px 12px;
+            font-size: 1rem;
+            gap: 10px;
+        }
+    }
+    
+    /* Landscape orientation for mobile */
+    @media (max-height: 500px) and (max-width: 768px) {
+        .sidebar-header {
+            height: 90px;
+            padding: 12px 16px 8px 16px;
+        }
+        
+        .profile-photo-sidebar {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .brand-text {
+            font-size: 1rem;
+        }
+        
+        .sidebar-nav {
+            height: calc(100vh - 90px);
+        }
+        
+        .nav-link {
+            padding: 8px 16px;
+        }
+
+        .floating-mobile-btn {
+            width: 36px;
+            height: 36px;
+            bottom: 12px;
+            right: 12px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+        }
+    }
+    
+    /* High-resolution displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        .profile-photo-sidebar,
+        .profile-photo-main {
+            border-width: 2.5px;
         }
     }
 
@@ -556,9 +889,7 @@
         pointer-events: none;
     }
 
-    /* Footer adjustments: give the footer breathing room from page content
-       instead of forcing it flush (was margin-top: 0 !important, which made
-       the footer look broken/cramped against the content above it). */
+    /* Footer adjustments */
     .footer-futuristic {
         margin-top: 60px;
     }
@@ -573,157 +904,22 @@
     * {
         transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
     }
-    
-    /* Tablet-specific styles */
-    @media (min-width: 769px) and (max-width: 1024px) {
-        .mobile-menu-btn {
-            display: none; /* Hide on tablets as sidebar is visible */
-        }
-        .sidebar {
-            width: 260px;
-        }
-        
-        .main-content {
-            margin-left: 260px;
-        }
-        
-        .top-header {
-            left: 260px;
-        }
-        
-        .header-name {
-            font-size: 2.2rem;
-        }
-        
-        .page-content {
-            padding: 30px;
-        }
-        
-        .nav-link {
-            padding: 12px 20px;
-        }
-        
-        .profile-photo-sidebar {
-            width: 60px;
-            height: 60px;
-        }
-        
-        .sidebar.collapsed .profile-photo-sidebar {
-            width: 45px;
-            height: 45px;
-        }
-        
-        .sidebar-header {
-            padding: 25px 20px 15px 20px;
-            height: 140px;
-        }
-    }
-    
-    /* Small mobile devices */
-    @media (max-width: 576px) {
-        .header-name {
-            font-size: 1.4rem;
-        }
-        
-        .page-content {
-            padding: 15px;
-        }
-        
-        .sidebar {
-            width: 260px;
-        }
-        
-        .sidebar-header {
-            padding: 20px 15px 10px 15px;
-            height: 130px;
-        }
-        
-        .profile-photo-sidebar {
-            width: 55px;
-            height: 55px;
-        }
-        
-        .nav-link {
-            padding: 12px 18px;
-        }
-        
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            font-size: 1.1rem;
-            margin-right: 15px;
-        }
-        
-        .mobile-menu-btn {
-            top: 14px;
-            left: 14px;
-            width: 40px;
-            height: 40px;
-            font-size: 1.2rem;
-        }
-    }
-    
-    /* Landscape orientation for mobile */
-    @media (max-height: 500px) and (max-width: 768px) {
-        .mobile-menu-btn {
-            top: 10px;
-            left: 10px;
-            width: 36px;
-            height: 36px;
-            font-size: 1rem;
-        }
-        .sidebar-header {
-            height: 100px;
-            padding: 15px 20px 10px 20px;
-        }
-        
-        .profile-photo-sidebar {
-            width: 45px;
-            height: 45px;
-        }
-        
-        .brand-text {
-            font-size: 1.2rem;
-        }
-        
-        .sidebar-nav {
-            height: calc(100vh - 100px);
-        }
-        
-        .nav-link {
-            padding: 10px 20px;
-        }
-    }
-    
-    /* High-resolution displays */
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-        .profile-photo-sidebar,
-        .profile-photo-main {
-            border-width: 2.5px;
-        }
-    }
     </style>
 </head>
 <body>
-    <!-- Mobile Menu Button (mobile only): opens the sidebar -->
-    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Mobile Overlay -->
+    <!-- Mobile Overlay (for desktop sidebar) -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar Navigation (Desktop) -->
     <nav class="sidebar" id="sidebar">
-        <!-- Closes the sidebar; sits at the panel's own top-left corner (mobile only) -->
         <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close menu">
             <i class="fas fa-times"></i>
         </button>
 
         <div class="sidebar-header">
             <div class="profile-section">
-                <a class="header-name" href="{{ url_for('home') }}">
-                <img src="https://res.cloudinary.com/g3cjpmly/image/upload/Profile_image_-_Copy_ko8kx3.jpg" alt="Ravi Der" class="profile-photo-sidebar"> 
+                <a href="{{ url_for('home') }}">
+                    <img src="https://res.cloudinary.com/g3cjpmly/image/upload/Profile_image_-_Copy_ko8kx3.jpg" alt="Ravi Der" class="profile-photo-sidebar"> 
                 </a> 
             </div>
         </div>
@@ -813,13 +1009,68 @@
         </div>
     </nav>
 
+    <!-- ===== MOBILE SIDEBAR (opens from LEFT) ===== -->
+    <!-- Mobile Sidebar Overlay -->
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+    
+    <!-- Mobile Sidebar (slides from left) -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="mobile-sidebar-header">
+            <div class="mobile-sidebar-brand">Ravi Der</div>
+            <!-- No close button here - we use the floating button -->
+        </div>
+        <nav class="mobile-sidebar-nav">
+            <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="{{ url_for('projects') }}" class="{% if request.endpoint == 'projects' %}active{% endif %}">
+                <i class="fas fa-code"></i>
+                <span>Projects</span>
+            </a>
+            <a href="{{ url_for('skills') }}" class="{% if request.endpoint == 'skills' %}active{% endif %}">
+                <i class="fas fa-cogs"></i>
+                <span>Skills</span>
+            </a>
+            <a href="{{ url_for('achievements') }}" class="{% if request.endpoint == 'achievements' %}active{% endif %}">
+                <i class="fas fa-trophy"></i>
+                <span>Achievements</span>
+            </a>
+            <a href="{{ url_for('experience') }}" class="{% if request.endpoint == 'experience' %}active{% endif %}">
+                <i class="fas fa-briefcase"></i>
+                <span>Experience</span>
+            </a>
+            <a href="{{ url_for('my_learning') }}" class="{% if request.endpoint == 'my_learning' %}active{% endif %}">
+                <i class="fas fa-code"></i>
+                <span>My Learning</span>
+            </a>
+            <a href="{{ url_for('education') }}" class="{% if request.endpoint == 'education' %}active{% endif %}">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Education</span>
+            </a>
+            <a href="{{ url_for('blog') }}" class="{% if request.endpoint == 'blog' %}active{% endif %}">
+                <i class="fas fa-blog"></i>
+                <span>Blog</span>
+            </a>
+            <a href="{{ url_for('contact') }}" class="{% if request.endpoint == 'contact' %}active{% endif %}">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Floating Mobile Button - BOTTOM RIGHT (Small Square) -->
+    <button class="floating-mobile-btn" id="floatingMobileBtn" aria-label="Toggle navigation menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
         <!-- Top Header -->
         <div class="top-header">
             <div class="header-left">
                 <a class="header-name" href="{{ url_for('home') }}">
-                    <div class="header-name">Ravi Der</div>
+                    Ravi Der
                 </a>
             </div>
         </div>
@@ -838,11 +1089,8 @@
     
     <!-- Sidebar Script -->
     <script>
-
-
     document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.getElementById('sidebar');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
         const mobileOverlay = document.getElementById('mobileOverlay');
 
@@ -852,12 +1100,10 @@
             isSidebarOpen = open;
             sidebar.classList.toggle('mobile-open', open);
             mobileOverlay.classList.toggle('active', open);
-            mobileMenuBtn.classList.toggle('active', open);
             document.body.style.overflow = open ? 'hidden' : '';
         }
 
-        // Hamburger opens, the sidebar's own "X" and the overlay close
-        mobileMenuBtn.addEventListener('click', e => { e.stopPropagation(); setSidebar(true); });
+        // Sidebar close button
         sidebarCloseBtn.addEventListener('click', e => { e.stopPropagation(); setSidebar(false); });
         mobileOverlay.addEventListener('click', e => { e.stopPropagation(); setSidebar(false); });
 
@@ -913,23 +1159,25 @@
 
         // Add more floating elements dynamically
         const floatingContainer = document.querySelector('.floating-elements');
-        for (let i = 0; i < 8; i++) {
-            const size = Math.random() * 100 + 50;
-            const top = Math.random() * 100;
-            const left = Math.random() * 100;
-            const delay = Math.random() * 20;
-            
-            const element = document.createElement('div');
-            element.className = 'floating-element';
-            element.style.width = `${size}px`;
-            element.style.height = `${size}px`;
-            element.style.top = `${top}%`;
-            element.style.left = `${left}%`;
-            element.style.animationDelay = `${delay}s`;
-            element.style.opacity = Math.random() * 0.15 + 0.05;
-            element.style.background = `rgba(${Math.random() * 100}, ${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 0.1 + 0.05})`;
-            
-            floatingContainer.appendChild(element);
+        if (floatingContainer) {
+            for (let i = 0; i < 8; i++) {
+                const size = Math.random() * 100 + 50;
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.top = `${top}%`;
+                element.style.left = `${left}%`;
+                element.style.animationDelay = `${delay}s`;
+                element.style.opacity = Math.random() * 0.15 + 0.05;
+                element.style.background = `rgba(${Math.random() * 100}, ${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 0.1 + 0.05})`;
+                
+                floatingContainer.appendChild(element);
+            }
         }
 
         // Keyboard shortcut for sidebar (ESC key)
@@ -937,6 +1185,10 @@
             if (e.key === 'Escape') {
                 if (window.innerWidth <= 768 && isSidebarOpen) {
                     setSidebar(false);
+                }
+                // Also close the floating mobile sidebar
+                if (document.getElementById('mobileSidebar').classList.contains('open')) {
+                    closeFloatingSidebar();
                 }
             }
         });
@@ -955,9 +1207,85 @@
         `;
         document.head.appendChild(style);
 
-        // NOTE: Swipe-to-open/close gesture support has been intentionally removed.
-        // The sidebar must only be toggled via the hamburger menu button (#mobileMenuBtn),
-        // the overlay click, nav link click, or the ESC key handlers above.
+        // ===== FLOATING MOBILE MENU FUNCTIONS (BOTTOM RIGHT) =====
+        const floatingBtn = document.getElementById('floatingMobileBtn');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const mobileSidebarOverlay = document.getElementById('mobileSidebarOverlay');
+        const mobileSidebarLinks = document.querySelectorAll('.mobile-sidebar-nav a');
+        const icon = floatingBtn ? floatingBtn.querySelector('i') : null;
+
+        function openFloatingSidebar() {
+            mobileSidebar.classList.add('open');
+            mobileSidebarOverlay.classList.add('active');
+            floatingBtn.classList.add('active');
+            if (icon) {
+                icon.className = 'fas fa-times';
+            }
+            document.body.style.overflow = 'hidden';
+            floatingBtn.setAttribute('aria-label', 'Close navigation menu');
+        }
+
+        function closeFloatingSidebar() {
+            mobileSidebar.classList.remove('open');
+            mobileSidebarOverlay.classList.remove('active');
+            floatingBtn.classList.remove('active');
+            if (icon) {
+                icon.className = 'fas fa-bars';
+            }
+            document.body.style.overflow = '';
+            floatingBtn.setAttribute('aria-label', 'Toggle navigation menu');
+        }
+
+        function toggleFloatingSidebar() {
+            if (mobileSidebar.classList.contains('open')) {
+                closeFloatingSidebar();
+            } else {
+                openFloatingSidebar();
+            }
+        }
+
+        // Floating button click
+        if (floatingBtn) {
+            floatingBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFloatingSidebar();
+            });
+            
+            // Touch feedback
+            floatingBtn.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.92)';
+            });
+            
+            floatingBtn.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        }
+
+        // Overlay click to close
+        if (mobileSidebarOverlay) {
+            mobileSidebarOverlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeFloatingSidebar();
+                }
+            });
+        }
+
+        // Sidebar links - close on click
+        if (mobileSidebarLinks) {
+            mobileSidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    setTimeout(closeFloatingSidebar, 150);
+                });
+            });
+        }
+
+        // Handle resize - close sidebar when going to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 769 && mobileSidebar.classList.contains('open')) {
+                closeFloatingSidebar();
+            }
+        });
     });
     </script>
     
