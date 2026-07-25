@@ -24,8 +24,8 @@
             if (!wrap || wrap.classList.contains("img-skeleton-wrap")) return;
             wrap.classList.add("img-skeleton-wrap");
             const skel = document.createElement("div");
-            skel.className = "skeleton";
-            wrap.insertBefore(skel, img);
+                skel.className = "skeleton";
+                wrap.insertBefore(skel, img);
 
             function markLoaded() {
                 img.classList.add("loaded");
