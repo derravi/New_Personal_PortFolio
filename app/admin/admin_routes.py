@@ -17,7 +17,8 @@ from app.admin.admin_db import (
     reorder_projects, bulk_update_status, bulk_delete_projects, duplicate_project,
     get_all_blog_posts, get_blog_post_by_id, get_blog_post_by_slug,
     create_blog_post, update_blog_post, delete_blog_post, get_blog_stats,
-    search_blog_posts, get_all_reviews, get_reviews_by_project, update_review_status,
+    search_blog_posts, reorder_blog_posts,
+    get_all_reviews, get_reviews_by_project, update_review_status,
     delete_review, get_review_stats, get_site_review_summary,
     get_all_subscribers, get_subscriber_stats, delete_subscriber,
     get_all_learning_items, get_learning_item_by_slug, get_learning_item_by_id,
@@ -427,8 +428,9 @@ def api_delete_project(project_id):
     }), (200 if success else 400)
 
 @admin_bp.route('/api/projects/reorder', methods=['POST'])
+@login_required
 def api_reorder_projects():
-    """API: Reorder projects (public endpoint for drag-and-drop)"""
+    """API: Reorder projects (drag-and-drop hierarchy adjustment)"""
     try:
         data = request.get_json()
         order_list = data.get('order', [])
@@ -614,6 +616,7 @@ def api_delete_learning_item(item_id):
     }), (200 if success else 400)
 
 @admin_bp.route('/api/learning/reorder', methods=['POST'])
+@login_required
 def api_reorder_learning_items():
     """API: Reorder learning items (public endpoint for drag-and-drop)"""
     try:
@@ -809,6 +812,7 @@ def api_delete_achievement(item_id):
     }), (200 if success else 400)
 
 @admin_bp.route('/api/achievements/reorder', methods=['POST'])
+@login_required
 def api_reorder_achievements():
     """API: Reorder achievements (public endpoint for drag-and-drop)"""
     try:
@@ -1001,6 +1005,28 @@ def api_delete_blog_post(post_id):
         'success': success,
         'message': message
     }), (200 if success else 400)
+
+@admin_bp.route('/api/blog/reorder', methods=['POST'])
+@login_required
+def api_reorder_blog_posts():
+    """API: Reorder blog posts (drag-and-drop hierarchy adjustment)"""
+    try:
+        data = request.get_json()
+        order_list = data.get('order', [])
+
+        if not order_list:
+            return jsonify({'success': False, 'message': 'No order data provided'}), 400
+
+        success, message = reorder_blog_posts(order_list)
+        return jsonify({
+            'success': success,
+            'message': message
+        }), (200 if success else 400)
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Error reordering blog posts: {str(e)}'
+        }), 400
 
 # ==================== REVIEWS MANAGEMENT ====================
 

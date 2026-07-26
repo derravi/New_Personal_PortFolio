@@ -66,6 +66,8 @@ def init_admin_tables():
         cursor.execute("ALTER TABLE blog_posts ADD COLUMN status TEXT DEFAULT 'published'")
     if 'updated_at' not in existing_columns:
         cursor.execute("ALTER TABLE blog_posts ADD COLUMN updated_at TIMESTAMP")
+    if 'display_order' not in existing_columns:
+        cursor.execute("ALTER TABLE blog_posts ADD COLUMN display_order INTEGER DEFAULT 0")
 
     # Add order column to admin_projects table if it doesn't exist
     cursor.execute("PRAGMA table_info(admin_projects)")
@@ -153,9 +155,9 @@ def get_all_blog_posts(status='all'):
     cursor = conn.cursor()
 
     if status == 'all':
-        cursor.execute('SELECT * FROM blog_posts ORDER BY published_at DESC')
+        cursor.execute('SELECT * FROM blog_posts ORDER BY display_order ASC, published_at DESC')
     else:
-        cursor.execute('SELECT * FROM blog_posts WHERE status = ? ORDER BY published_at DESC', (status,))
+        cursor.execute('SELECT * FROM blog_posts WHERE status = ? ORDER BY display_order ASC, published_at DESC', (status,))
 
     posts = [_row_to_blog_post(row) for row in cursor.fetchall()]
     conn.close()
@@ -444,6 +446,32 @@ def delete_project(project_id):
     except Exception as e:
         conn.close()
         return False, f"Error deleting project: {str(e)}"
+
+def reorder_blog_posts(order_list):
+    """Update blog post display order (hierarchy)
+    order_list: list of dicts with 'id' and 'position' keys
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        for item in order_list:
+            post_id = item.get('id')
+            position = item.get('position', 0)
+            cursor.execute(
+                'UPDATE blog_posts SET display_order = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+                (position, post_id)
+            )
+        conn.commit()
+
+        # Log activity
+        log_activity('REORDER', None, f'Reordered {len(order_list)} blog posts')
+
+        conn.close()
+        return True, "Blog post order updated successfully"
+    except Exception as e:
+        conn.close()
+        return False, f"Error reordering blog posts: {str(e)}"
 
 def reorder_projects(order_list):
     """Update project display order

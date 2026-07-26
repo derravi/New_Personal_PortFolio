@@ -253,6 +253,137 @@
             cursor: pointer;
         }
 
+        /* ==================== HIERARCHY / REORDER FEATURE ==================== */
+        .reorder-btn {
+            padding: 8px 16px;
+            border: 1px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .reorder-btn:hover {
+            background: #f0f1fe;
+        }
+
+        .reorder-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .reorder-toolbar {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            color: #7a4a00;
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .reorder-toolbar.active {
+            display: flex;
+        }
+
+        .reorder-toolbar .reorder-info {
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reorder-toolbar .reorder-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .reorder-save-btn, .reorder-cancel-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .reorder-save-btn {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .reorder-cancel-btn {
+            background: rgba(0,0,0,0.08);
+            color: #7a4a00;
+        }
+
+        .projects-grid.reorder-active .project-card {
+            cursor: grab;
+        }
+
+        .projects-grid.reorder-active .project-card:active {
+            cursor: grabbing;
+        }
+
+        .projects-grid.reorder-active .project-card.dragging {
+            opacity: 0.4;
+        }
+
+        .projects-grid.reorder-active .card-select,
+        .projects-grid.reorder-active .project-footer {
+            display: none !important;
+        }
+
+        .drag-handle {
+            display: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.55);
+            color: white;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .order-badge {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+            min-width: 26px;
+            height: 26px;
+            padding: 0 6px;
+            border-radius: 13px;
+            background: #667eea;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .projects-grid.reorder-active .drag-handle,
+        .projects-grid.reorder-active .order-badge {
+            display: flex;
+        }
+
         .project-card:hover {
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
             transform: translateY(-5px);
@@ -503,6 +634,19 @@
                     <option value="title">Title (A-Z)</option>
                     <option value="views">Most Viewed</option>
                 </select>
+                <button class="reorder-btn" id="reorderBtn" onclick="toggleReorderMode()" title="Drag and drop to set the display order of your learning items">
+                    <i class="fas fa-arrows-alt"></i> Adjust Hierarchy
+                </button>
+            </div>
+        </div>
+
+        <div class="reorder-toolbar" id="reorderToolbar">
+            <div class="reorder-info">
+                <i class="fas fa-arrows-alt"></i> Drag cards to set the order learning items appear in on your site
+            </div>
+            <div class="reorder-actions">
+                <button class="reorder-save-btn" onclick="saveOrder()"><i class="fas fa-check"></i> Save Order</button>
+                <button class="reorder-cancel-btn" onclick="toggleReorderMode()"><i class="fas fa-times"></i> Cancel</button>
             </div>
         </div>
 
@@ -557,6 +701,7 @@
         let currentFilter = 'all';
         let currentSort = 'newest';
         let selectedIds = new Set();
+        let reorderMode = false;
 
         // Load learning items on page load
         async function loadProjects() {
@@ -625,8 +770,10 @@
             grid.style.display = 'grid';
             emptyState.style.display = 'none';
 
-            grid.innerHTML = filteredLearningItems.map(item => `
-                <div class="project-card ${selectedIds.has(item.id) ? 'selected' : ''}" data-project-id="${item.id}">
+            grid.innerHTML = filteredLearningItems.map((item, idx) => `
+                <div class="project-card ${selectedIds.has(item.id) ? 'selected' : ''}" data-project-id="${item.id}" ${reorderMode ? 'draggable="true"' : ''}>
+                    <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
+                    <div class="order-badge">${idx + 1}</div>
                     <input type="checkbox" class="card-select" ${selectedIds.has(item.id) ? 'checked' : ''}
                         onchange="toggleSelect(${item.id}, this.checked)" title="Select for bulk actions">
                     <div class="project-image">
@@ -829,6 +976,111 @@
         }
 
         // Event listeners
+        // ==================== HIERARCHY / REORDER ====================
+
+        function toggleReorderMode() {
+            reorderMode = !reorderMode;
+            const btn = document.getElementById('reorderBtn');
+            const toolbar = document.getElementById('reorderToolbar');
+            const searchInput = document.getElementById('searchInput');
+            const sortSelect = document.getElementById('sortSelect');
+
+            if (reorderMode) {
+                btn.classList.add('active');
+                toolbar.classList.add('active');
+                searchInput.value = '';
+                searchInput.disabled = true;
+                sortSelect.disabled = true;
+                currentFilter = 'all';
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allBtn) allBtn.classList.add('active');
+                clearSelection();
+                filteredLearningItems = [...allLearningItems].sort((a, b) =>
+                    (a.display_order ?? 0) - (b.display_order ?? 0) || a.id - b.id
+                );
+                renderProjects();
+                document.getElementById('learningGrid').classList.add('reorder-active');
+            } else {
+                btn.classList.remove('active');
+                toolbar.classList.remove('active');
+                searchInput.disabled = false;
+                sortSelect.disabled = false;
+                document.getElementById('learningGrid').classList.remove('reorder-active');
+                applyFiltersAndSort();
+            }
+        }
+
+        function getDragAfterElement(container, y) {
+            const cards = [...container.querySelectorAll('.project-card:not(.dragging)')];
+            return cards.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset, element: child };
+                }
+                return closest;
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function updateOrderBadges() {
+            document.querySelectorAll('#learningGrid .project-card').forEach((card, idx) => {
+                const badge = card.querySelector('.order-badge');
+                if (badge) badge.textContent = idx + 1;
+            });
+        }
+
+        const learningGridEl = document.getElementById('learningGrid');
+
+        learningGridEl.addEventListener('dragstart', (e) => {
+            const card = e.target.closest('.project-card');
+            if (!card || !reorderMode) return;
+            card.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+
+        learningGridEl.addEventListener('dragend', (e) => {
+            const card = e.target.closest('.project-card');
+            if (card) card.classList.remove('dragging');
+            updateOrderBadges();
+        });
+
+        learningGridEl.addEventListener('dragover', (e) => {
+            if (!reorderMode) return;
+            e.preventDefault();
+            const dragging = learningGridEl.querySelector('.dragging');
+            if (!dragging) return;
+            const afterElement = getDragAfterElement(learningGridEl, e.clientY);
+            if (afterElement == null) {
+                learningGridEl.appendChild(dragging);
+            } else {
+                learningGridEl.insertBefore(dragging, afterElement);
+            }
+        });
+
+        async function saveOrder() {
+            const cards = Array.from(document.querySelectorAll('#learningGrid .project-card'));
+            const order = cards.map((card, idx) => ({ id: parseInt(card.dataset.projectId), position: idx }));
+
+            try {
+                const response = await fetch('/admin/api/learning/reorder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ order })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    toggleReorderMode();
+                    loadProjects();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error saving order: ' + error.message);
+            }
+        }
+
         document.getElementById('searchInput').addEventListener('input', () => applyFiltersAndSort());
 
         document.querySelectorAll('.filter-btn').forEach(btn => {
