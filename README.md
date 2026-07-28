@@ -1,6 +1,6 @@
 # File Tree: New_Personal_portfoLio
 
-**Generated:** 7/22/2026, 10:11:56 PM
+**Generated:** 7/28/2026, 11:36:53 PM
 **Root Path:** `d:\E drive\Github Projects\New_Personal_portfoLio`
 
 ```
@@ -91,12 +91,8 @@
 │   └── 🐍 test_app.py
 ├── ⚙️ .dockerignore
 ├── ⚙️ .env.example
-├── 📝 ADMIN_PANEL_DOCS.md
 ├── 🐳 Dockerfile
-├── 📝 FEATURES_UPDATE.md
-├── 📝 IMPLEMENTATION_SUMMARY.md
 ├── 📝 README.md
-├── 📝 RESPONSIVE_DESIGN_GUIDE.md
 ├── ⚙️ docker-compose.yml
 ├── 🐍 flask_app.py
 ├── 📄 requirements-dev.txt
