@@ -563,54 +563,125 @@ body::before {
 {% block content %}
 <!-- Projects Section -->
 <section class="section" id="projects">
-<div class="container">
-<div class="section-header">
-<div class="section-icon">
-<i class="fas fa-code"></i>
-</div>
-<h2 class="section-title">My Projects</h2>
-<div class="section-subtitle">
-<p>Showcasing innovative solutions and creative implementations</p>
-</div>
-</div>
-<div class="row" id="projectsRow">
-{% for p in projects %}
-<div class="col-md-6 col-lg-4" data-category="{{ p.category }}" data-tags="{{ p.tags|join(',') }}" data-project-id="{{ p.id or loop.index }}">
-<div class="project-card" data-project-slug="{{ p.slug }}" draggable="true" data-project-id="{{ p.id or loop.index }}">
-<div class="drag-hint">⋮⋮ Drag to reorder</div>
-<div class="project-img">
-<img alt="{{ p.title }}" class="img-fluid" src="{{ p.image_url or 'https://via.placeholder.com/600x400?text=No+Image' }}"/>
-</div>
-<div class="project-content">
-<h3 class="project-title">{{ p.title }}</h3>
-<p>{{ p.description }}</p>
-<div class="project-badges">
-{% for tag in p.tags %}<span class="badge bg-primary">{{ tag }}</span>
-{% endfor %}
-</div><div class="rating-widget" data-project-slug="{{ p.slug }}">
-<span class="rating-stars">☆☆☆☆☆</span>
-<span class="rating-summary">No reviews yet</span>
-<span class="review-toggle-link">Rate this project</span>
-<div class="rating-form">
-<div class="star-picker" data-value="0">
-<span data-star="1"><i class="fas fa-star"></i></span><span data-star="2"><i class="fas fa-star"></i></span><span data-star="3"><i class="fas fa-star"></i></span><span data-star="4"><i class="fas fa-star"></i></span><span data-star="5"><i class="fas fa-star"></i></span>
-</div>
-<input class="review-name" maxlength="80" placeholder="Your name" type="text"/>
-<textarea class="review-comment" maxlength="500" placeholder="Optional comment" rows="2"></textarea>
-<button class="btn btn-futuristic btn-sm submit-review-btn" type="button">Submit Review</button>
-</div>
-</div>
-<div class="mt-3">
-<a class="btn btn-futuristic" href="{{ p.github_url }}" target="_blank" rel="noopener">Github Link</a>
-{% if p.demo_url %}<a class="btn btn-futuristic" href="{{ p.demo_url }}" target="_blank" rel="noopener">Live Demo</a>{% endif %}
-</div>
-</div>
-</div>
-</div>
-{% else %}
-<p style="opacity:.7">No projects yet. Add your first one from the <a href="/admin/login">admin dashboard</a>.</p>
-{% endfor %}
-</div>
+    <div class="container">
+        <div class="section-header">
+
+            <h1 class="section-title">My Projects</h1>
+
+            <div class="section-subtitle">
+                <p>Showcasing innovative solutions and creative implementations</p>
+            </div>
+        </div>
+
+        <div class="row" id="projectsRow">
+            {% for p in projects %}
+            <div class="col-md-6 col-lg-4"
+                 data-category="{{ p.category }}"
+                 data-tags="{{ p.tags|join(',') }}"
+                 data-project-id="{{ p.id or loop.index }}">
+
+                <div class="project-card"
+                     data-project-slug="{{ p.slug }}"
+                     draggable="true"
+                     data-project-id="{{ p.id or loop.index }}">
+
+                    <div class="drag-hint">⋮⋮ Drag to reorder</div>
+
+                    <div class="project-img">
+                        <img
+                            class="img-fluid"
+                            src="{{ p.image_url or 'https://via.placeholder.com/600x400?text=No+Image' }}"
+                            alt="{{ p.title }}"
+                        />
+                    </div>
+
+                    <div class="project-content">
+                        <h3 class="project-title">{{ p.title }}</h3>
+
+                        <p>{{ p.description }}</p>
+
+                        <div class="project-badges">
+                            {% for tag in p.tags %}
+                            <span class="badge bg-primary">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="rating-widget" data-project-slug="{{ p.slug }}">
+                            <span class="rating-stars">☆☆☆☆☆</span>
+                            <span class="rating-summary">No reviews yet</span>
+                            <span class="review-toggle-link">Rate this project</span>
+
+                            <div class="rating-form">
+                                <div class="star-picker" data-value="0">
+                                    <span data-star="1">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span data-star="2">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span data-star="3">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span data-star="4">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span data-star="5">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                </div>
+
+                                <input
+                                    class="review-name"
+                                    type="text"
+                                    maxlength="80"
+                                    placeholder="Your name"
+                                />
+
+                                <textarea
+                                    class="review-comment"
+                                    rows="2"
+                                    maxlength="500"
+                                    placeholder="Optional comment"
+                                ></textarea>
+
+                                <button
+                                    class="btn btn-futuristic btn-sm submit-review-btn"
+                                    type="button">
+                                    Submit Review
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <a
+                                class="btn btn-futuristic"
+                                href="{{ p.github_url }}"
+                                target="_blank"
+                                rel="noopener">
+                                Github Link
+                            </a>
+
+                            {% if p.demo_url %}
+                            <a
+                                class="btn btn-futuristic"
+                                href="{{ p.demo_url }}"
+                                target="_blank"
+                                rel="noopener">
+                                Live Demo
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p style="opacity:.7">
+                No projects yet. Add your first one from the
+                <a href="/admin/login">admin dashboard</a>.
+            </p>
+            {% endfor %}
+        </div>
+    </div>
 </section>
 {% endblock %}
 
