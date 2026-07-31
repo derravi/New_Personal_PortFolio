@@ -50,9 +50,7 @@ try:
 except ImportError:
     pass  # python-dotenv not installed — fine in prod where real env vars are set directly
 
-# =========================
 # Optional Sentry error tracking
-# =========================
 SENTRY_DSN = os.environ.get("SENTRY_DSN")
 if SENTRY_DSN:
     try:
