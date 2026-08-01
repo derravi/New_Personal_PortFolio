@@ -2,3 +2,5 @@
 2026-07-30 22:36:38,360 INFO [flask_app] 404: /patterns_of_python.png
 2026-07-30 22:36:38,394 INFO [flask_app] 404: /imbalance datasets.jpg
 2026-08-01 22:49:49,926 INFO [flask_app] 404: /.well-known/appspecific/com.chrome.devtools.json
+2026-08-01 23:02:19,521 INFO [flask_app] 404: /.well-known/appspecific/com.chrome.devtools.json
+2026-08-01 23:07:16,463 INFO [flask_app] 404: /favicon.ico
