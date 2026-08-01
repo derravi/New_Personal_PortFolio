@@ -860,17 +860,9 @@
             display: flex !important;
         }
 
-        /* Site search collapses to an icon that opens an overlay bar */
+        /* Site search - FIXED mobile behavior */
         .search-box {
             display: none;
-        }
-
-        .search-toggle-btn {
-            display: flex;
-        }
-
-        .site-search.mobile-active .search-box {
-            display: flex;
             position: fixed;
             top: 64px;
             left: 12px;
@@ -878,15 +870,48 @@
             width: auto;
             z-index: 1100;
             background: rgba(10, 10, 26, 0.98);
+            border: 1px solid rgba(0, 243, 255, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 12px 16px;
+            border-radius: 12px;
         }
 
-        .site-search.mobile-active .search-results {
+        .search-box.mobile-visible {
+            display: flex !important;
+        }
+
+        .search-toggle-btn {
+            display: flex;
+        }
+
+        .search-results.mobile-visible {
+            display: block !important;
             position: fixed;
-            top: 118px;
+            top: 120px;
             left: 12px;
             right: 12px;
             width: auto;
+            max-height: 60vh;
+            z-index: 1101;
+        }
+
+        /* Ensure search input is visible and working on mobile */
+        .search-input {
+            font-size: 1rem !important;
+            color: var(--light) !important;
+            -webkit-text-fill-color: var(--light) !important;
+            background: transparent !important;
+            width: 100% !important;
+        }
+
+        .search-input:focus {
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        .search-box .search-input {
+            flex: 1;
         }
     }
 
@@ -1568,7 +1593,7 @@
     });
     </script>
 
-    <!-- Site Search Script -->
+    <!-- Site Search Script - FIXED for mobile -->
     <script>
     (function() {
         // Every page on the site that should be crawled for full-text search.
@@ -1589,14 +1614,11 @@
         const searchInput = document.getElementById('siteSearchInput');
         const searchResults = document.getElementById('searchResults');
         const searchClearBtn = document.getElementById('searchClearBtn');
+        const searchBox = document.getElementById('searchBox');
 
         if (!siteSearch || !searchInput || !searchResults) return;
 
         // searchIndex entries: { page, url, icon, text }
-        // One entry per heading/paragraph/list-item/etc. found inside
-        // each page's <div class="page-content">, so literally every
-        // title, subtitle, heading and line of text on the site is
-        // covered — not just API-provided fields.
         let searchIndex = null;
         let indexBuildingPromise = null;
         let debounceTimer = null;
@@ -1611,7 +1633,6 @@
             const root = doc.querySelector('.page-content') || doc.body;
             if (!root) return [];
 
-            // Strip elements we never want to search inside.
             root.querySelectorAll('script, style, noscript, svg').forEach(el => el.remove());
 
             const SELECTOR = 'h1, h2, h3, h4, h5, h6, p, li, td, th, blockquote, ' +
@@ -1620,9 +1641,6 @@
             const chunks = [];
 
             root.querySelectorAll(SELECTOR).forEach(el => {
-                // Only index "leaf-ish" nodes: skip elements whose text is
-                // entirely made up of a matching child element's text, to
-                // avoid indexing the same sentence 4 times (e.g. <li><a>..</a></li>).
                 const hasMatchingChild = el.querySelector(SELECTOR);
                 const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
                 if (!text || text.length < 2) return;
@@ -1654,7 +1672,7 @@
                             index.push({ page: page.title, url: page.url, icon: page.icon, text });
                         });
                     } catch (e) {
-                        // Skip pages that fail to load — don't block the rest of the index.
+                        // Skip pages that fail to load
                     }
                 }));
 
@@ -1684,17 +1702,15 @@
             const q = query.trim().toLowerCase();
             if (!q) {
                 searchResults.classList.remove('active');
+                searchResults.classList.remove('mobile-visible');
                 searchResults.innerHTML = '';
                 return;
             }
 
-            // Page-name matches always show first (quick navigation).
             const pageMatches = SEARCHABLE_PAGES.filter(p =>
                 p.title.toLowerCase().includes(q)
             );
 
-            // Full-text matches across every crawled page, grouped by page,
-            // best (shortest / most relevant) snippet per page shown first.
             const textMatches = (searchIndex || []).filter(entry =>
                 entry.text.toLowerCase().includes(q)
             );
@@ -1742,6 +1758,10 @@
 
             searchResults.innerHTML = html;
             searchResults.classList.add('active');
+            // For mobile, also add mobile-visible class if search box is visible
+            if (searchBox.classList.contains('mobile-visible')) {
+                searchResults.classList.add('mobile-visible');
+            }
         }
 
         function onInput() {
@@ -1749,8 +1769,6 @@
             searchClearBtn.classList.toggle('visible', val.length > 0);
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(async () => {
-                // Show what we already have instantly, then re-render once
-                // the full crawl (if still in progress) finishes.
                 renderResults(val);
                 if (!searchIndex) {
                     await buildIndex();
@@ -1759,7 +1777,15 @@
             }, 150);
         }
 
-        searchInput.addEventListener('focus', buildIndex);
+        // FIXED: Ensure input events work properly on mobile
+        searchInput.addEventListener('focus', function() {
+            buildIndex();
+            // If there's already text, show results
+            if (this.value.trim()) {
+                renderResults(this.value);
+            }
+        });
+
         searchInput.addEventListener('input', onInput);
 
         searchInput.addEventListener('keydown', function(e) {
@@ -1767,9 +1793,13 @@
                 searchInput.value = '';
                 searchClearBtn.classList.remove('visible');
                 searchResults.classList.remove('active');
+                searchResults.classList.remove('mobile-visible');
                 searchResults.innerHTML = '';
                 searchInput.blur();
-                siteSearch.classList.remove('mobile-active');
+                searchBox.classList.remove('mobile-visible');
+                if (window.innerWidth <= 768) {
+                    siteSearch.classList.remove('mobile-active');
+                }
             }
             if (e.key === 'Enter') {
                 const firstResult = searchResults.querySelector('.search-result-item');
@@ -1784,6 +1814,7 @@
                 searchInput.value = '';
                 searchClearBtn.classList.remove('visible');
                 searchResults.classList.remove('active');
+                searchResults.classList.remove('mobile-visible');
                 searchResults.innerHTML = '';
                 searchInput.focus();
             });
@@ -1792,28 +1823,55 @@
         document.addEventListener('click', function(e) {
             if (!siteSearch.contains(e.target)) {
                 searchResults.classList.remove('active');
+                searchResults.classList.remove('mobile-visible');
+                if (window.innerWidth <= 768) {
+                    searchBox.classList.remove('mobile-visible');
+                    siteSearch.classList.remove('mobile-active');
+                }
             }
         });
 
+        // FIXED: Mobile search toggle - properly shows search box and makes input work
         if (searchToggleBtn) {
             searchToggleBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                siteSearch.classList.toggle('mobile-active');
-                if (siteSearch.classList.contains('mobile-active')) {
-                    buildIndex();
-                    setTimeout(() => searchInput.focus(), 50);
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    // Toggle mobile search visibility
+                    const isVisible = searchBox.classList.contains('mobile-visible');
+                    
+                    if (isVisible) {
+                        // Close search
+                        searchBox.classList.remove('mobile-visible');
+                        searchResults.classList.remove('active');
+                        searchResults.classList.remove('mobile-visible');
+                        searchResults.innerHTML = '';
+                        searchInput.value = '';
+                        searchClearBtn.classList.remove('visible');
+                        siteSearch.classList.remove('mobile-active');
+                    } else {
+                        // Open search
+                        searchBox.classList.add('mobile-visible');
+                        siteSearch.classList.add('mobile-active');
+                        buildIndex();
+                        setTimeout(() => {
+                            searchInput.focus();
+                            // If there's already text, show results
+                            if (searchInput.value.trim()) {
+                                renderResults(searchInput.value);
+                            }
+                        }, 100);
+                    }
                 } else {
-                    searchResults.classList.remove('active');
-                    searchResults.innerHTML = '';
-                    searchInput.value = '';
-                    searchClearBtn.classList.remove('visible');
+                    // Desktop: just focus the input
+                    searchInput.focus();
+                    buildIndex();
                 }
             });
         }
 
         // ===== Arrive-from-search highlighting =====
-        // If we navigated here via a search result (?q=...), find the first
-        // matching text on THIS page, scroll to it, and flash-highlight it.
         (function highlightIncomingQuery() {
             const params = new URLSearchParams(window.location.search);
             const q = (params.get('q') || '').trim();
@@ -1841,6 +1899,15 @@
                 }
             });
         })();
+
+        // FIXED: Handle resize to reset mobile search state
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                searchBox.classList.remove('mobile-visible');
+                searchResults.classList.remove('mobile-visible');
+                siteSearch.classList.remove('mobile-active');
+            }
+        });
     })();
     </script>
 
