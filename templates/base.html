@@ -358,8 +358,8 @@
         border: none !important;
         outline: none !important;
         box-shadow: none !important;
-        color: var(--light) !important;
-        -webkit-text-fill-color: var(--light);
+        color: #e2f1f8 !important;
+        -webkit-text-fill-color: #e2f1f8 !important;
         caret-color: var(--primary);
         font-family: 'Exo 2', sans-serif;
         font-size: 0.9rem !important;
@@ -369,10 +369,13 @@
         border-radius: 0 !important;
         -webkit-appearance: none;
         appearance: none;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     .search-input::placeholder {
         color: rgba(226, 241, 248, 0.4);
+        opacity: 1;
     }
 
     .search-clear-btn {
@@ -895,23 +898,43 @@
             z-index: 1101;
         }
 
-        /* Ensure search input is visible and working on mobile */
+        /* FIXED: Ensure search input is visible and working on mobile */
         .search-input {
             font-size: 1rem !important;
-            color: var(--light) !important;
-            -webkit-text-fill-color: var(--light) !important;
+            color: #e2f1f8 !important;
+            -webkit-text-fill-color: #e2f1f8 !important;
             background: transparent !important;
             width: 100% !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
         }
 
         .search-input:focus {
             outline: none !important;
             box-shadow: none !important;
             border: none !important;
+            color: #e2f1f8 !important;
+            -webkit-text-fill-color: #e2f1f8 !important;
         }
 
         .search-box .search-input {
             flex: 1;
+        }
+
+        /* FIXED: Make sure the search icon and clear button are visible */
+        .search-box-icon {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .search-clear-btn {
+            color: rgba(226, 241, 248, 0.6);
+            font-size: 1rem;
+        }
+
+        .search-clear-btn.visible {
+            display: flex;
         }
     }
 
