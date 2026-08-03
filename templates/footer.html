@@ -1,86 +1,59 @@
 <footer class="footer-futuristic">
     <div class="container">
         <!-- Main Footer Content -->
-        <div class="row align-items-center">
-            <!-- Quick Links -->
-            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                <div class="footer-section text-center text-md-start">
-                    <h4 class="footer-title">Quick Links</h4>
-                    <div class="quick-links">
-                        <a href="{{ url_for('projects') }}" class="quick-link">Projects</a>
-                        <a href="{{ url_for('skills') }}" class="quick-link">Skills</a>
-                        <a href="{{ url_for('my_learning') }}" class="quick-link">My Learning</a>
-                        <a href="{{ url_for('experience') }}" class="quick-link">Experience</a>
-                        <a href="{{ url_for('achievements') }}" class="quick-link">Achievements</a>
-                    </div>
+        <div class="footer-top-row">
+            <!-- Quick Links Dropdown - Top Left -->
+            <div class="quick-links-wrapper">
+                <div class="quick-links-dropdown">
+                    <button class="dropdown-toggle-btn" id="quickLinksToggle" aria-expanded="false">
+                        <span>Quick Links</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <ul class="dropdown-menu-vertical" id="quickLinksMenu">
+                        <li><a href="{{ url_for('projects') }}" class="quick-link">Projects</a></li>
+                        <li><a href="{{ url_for('skills') }}" class="quick-link">Skills</a></li>
+                        <li><a href="{{ url_for('my_learning') }}" class="quick-link">My Learning</a></li>
+                        <li><a href="{{ url_for('experience') }}" class="quick-link">Experience</a></li>
+                        <li><a href="{{ url_for('achievements') }}" class="quick-link">Achievements</a></li>
+                    </ul>
                 </div>
             </div>
 
-             <!-- Newsletter Signup -->
-            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                <div class="footer-section text-center text-md-start">
-                    <h4 class="footer-title">Newsletter</h4>
-                    <p style="color: var(--light); opacity: 0.75; font-size: 0.9rem; margin-bottom: 12px;">
-                        Get an email when a new project or article goes live.
-                    </p>
-                    <form id="newsletterForm" class="newsletter-form" novalidate>
-                        <div class="newsletter-input-group">
-                            <input type="email" id="newsletterEmail" class="newsletter-input"
-                                   placeholder="you@example.com" required>
-                            <button type="submit" class="newsletter-btn" id="newsletterBtn">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        <div id="newsletterMsg" class="newsletter-msg"></div>
-                    </form>
-                    <a href="#" class="quick-link" style="display:inline-block; margin-top:10px;">
-                        <i class="fas fa-file-alt"></i> View / Download Resume
+            <!-- Connect Tools - Horizontal Line -->
+            <div class="connect-tools-wrapper">
+                <div class="connect-tools">
+                    <span class="connect-label">Connect with me:</span>
+                    <a href="https://www.linkedin.com/in/ravi-der/" class="connect-link" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                        <span class="connect-text">LinkedIn</span>
                     </a>
-                </div>
-            </div>
-
-            <!-- Social Links -->
-            <div class="col-lg-4 col-md-12">
-                <div class="footer-section text-center text-lg-end">
-                    <h4 class="footer-title">Connect With Me</h4>
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/ravi-der/" class="social-link" target="_blank">
-                            <div class="social-icon">
-                                <i class="fab fa-linkedin"></i>
-                            </div>
-                            <span class="social-text">LinkedIn</span>
-                        </a>
-                        <a href="https://github.com/derravi" class="social-link" target="_blank">
-                            <div class="social-icon">
-                                <i class="fab fa-github"></i>
-                            </div>
-                            <span class="social-text">GitHub</span>
-                        </a>
-                        <a href="https://hub.docker.com/repositories/ravider" class="social-link" target="_blank">
-                            <div class="social-icon">
-                                <i class="fab fa-docker"></i>
-                            </div>
-                            <span class="social-text">Docker HUB</span>
-                        </a>
-                        <a href="#" class="social-link" target="_blank">
-                            <div class="social-icon">
-                                <i class="fab fa-facebook"></i>
-                            </div>
-                            <span class="social-text">Facebook</span>
-                        </a>
-                    </div>
+                    <span class="connect-divider">|</span>
+                    <a href="https://github.com/derravi" class="connect-link" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                        <span class="connect-text">GitHub</span>
+                    </a>
+                    <span class="connect-divider">|</span>
+                    <a href="https://hub.docker.com/repositories/ravider" class="connect-link" target="_blank" title="Docker Hub">
+                        <i class="fab fa-docker"></i>
+                        <span class="connect-text">Docker</span>
+                    </a>
+                    <span class="connect-divider">|</span>
+                    <a href="#" class="connect-link" target="_blank" title="Facebook">
+                        <i class="fab fa-facebook"></i>
+                        <span class="connect-text">Facebook</span>
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- Overall Reviews & Ratings -->
-        <div class="row">
+        <!-- Overall Reviews Section -->
+        <div class="row reviews-row">
             <div class="col-12">
                 <div class="footer-section reviews-section">
-                    <h4 class="footer-title text-center text-lg-start">Overall Reviews</h4>
+                    <h4 class="footer-title text-center">Review</h4>
 
                     <div class="reviews-grid">
-                        <!-- Average rating + Subscribe -->
+                        <!-- Average rating -->
                         <div class="reviews-rating-block">
                             <div class="avg-stars" id="avgStars" aria-label="Average rating">
                                 <span class="star" data-index="1">&#9734;</span>
@@ -93,17 +66,6 @@
                                 <span id="avgRatingValue">0.0</span> / 5
                                 <span class="avg-rating-count">(<span id="avgRatingCount">0</span> reviews)</span>
                             </div>
-
-                            <form id="footerSubscribeForm" class="newsletter-form" novalidate>
-                                <div class="newsletter-input-group">
-                                    <input type="email" id="footerSubscribeEmail" class="newsletter-input"
-                                           placeholder="you@example.com" required>
-                                    <button type="submit" class="newsletter-btn" id="footerSubscribeBtn" title="Subscribe">
-                                        <i class="fas fa-bell"></i>
-                                    </button>
-                                </div>
-                                <div id="footerSubscribeMsg" class="newsletter-msg"></div>
-                            </form>
 
                             <button type="button" class="read-comments-btn" id="readAllCommentsBtn">
                                 <i class="fas fa-comments"></i> Read All Comments
@@ -212,9 +174,187 @@
     margin-top: 80px;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Footer Top Row - Quick Links + Connect Tools */
+.footer-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.quick-links-wrapper {
+    flex: 0 0 auto;
+}
+
+.connect-tools-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Quick Links Dropdown */
+.quick-links-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle-btn {
+    padding: 10px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    border-radius: 12px;
+    color: var(--light);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.dropdown-toggle-btn:hover {
+    border-color: var(--primary);
+    background: rgba(0, 243, 255, 0.05);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+}
+
+.dropdown-toggle-btn i {
+    transition: transform 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.dropdown-toggle-btn.active i {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu-vertical {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 200px;
+    background: linear-gradient(135deg, rgba(10, 10, 26, 0.98), rgba(5, 5, 16, 0.98));
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    border-radius: 12px;
+    padding: 8px 0;
+    list-style: none;
+    margin: 0;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.dropdown-menu-vertical.open {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-menu-vertical li {
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu-vertical .quick-link {
+    display: block;
+    padding: 10px 20px;
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.dropdown-menu-vertical .quick-link:hover {
+    color: var(--primary);
+    background: rgba(0, 243, 255, 0.05);
+    border-left-color: var(--primary);
+    padding-left: 25px;
+}
+
+/* Connect Tools - Horizontal */
+.connect-tools {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.connect-label {
+    color: rgba(226, 241, 248, 0.6);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.connect-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--light);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+}
+
+.connect-link:hover {
+    color: var(--primary);
+    background: rgba(0, 243, 255, 0.08);
+    border-color: rgba(0, 243, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 243, 255, 0.15);
+}
+
+.connect-link i {
+    font-size: 1.2rem;
+    color: var(--primary);
+    transition: transform 0.3s ease;
+}
+
+.connect-link:hover i {
+    transform: scale(1.2) rotate(-5deg);
+}
+
+.connect-divider {
+    color: rgba(226, 241, 248, 0.2);
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+.connect-text {
+    font-size: 0.85rem;
+}
+
 /* Footer Sections */
 .footer-section {
-    padding: 20px;
+    padding: 20px 0;
 }
 
 .footer-title {
@@ -234,185 +374,19 @@
     content: '';
     position: absolute;
     bottom: -8px;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 40px;
     height: 2px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     border-radius: 1px;
 }
 
-
-/* Quick Links */
-.quick-links {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+/* Reviews Section */
+.reviews-row {
+    padding: 0 20px;
 }
 
-.quick-link {
-    color: var(--light);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 8px 15px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.quick-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(0, 243, 255, 0.1), 
-        transparent);
-    transition: left 0.6s ease;
-}
-
-.quick-link:hover::before {
-    left: 100%;
-}
-
-.quick-link:hover {
-    color: var(--primary);
-    background: rgba(0, 243, 255, 0.05);
-    transform: translateX(5px);
-}
-
-/* Social Links */
-.social-links {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.social-link {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    color: var(--light);
-    text-decoration: none;
-    padding: 12px 20px;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(0, 243, 255, 0.1);
-}
-
-.social-link:hover {
-    color: var(--primary);
-    background: rgba(0, 243, 255, 0.05);
-    transform: translateX(-5px);
-    border-color: var(--primary);
-    box-shadow: 0 5px 15px rgba(0, 243, 255, 0.2);
-}
-
-.social-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--darker);
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-}
-
-.social-link:hover .social-icon {
-    transform: scale(1.1) rotate(5deg);
-}
-
-.social-text {
-    font-weight: 500;
-    font-size: 0.95rem;
-}
-
-/* Newsletter Styles - Enhanced for mobile */
-.newsletter-input-group {
-    display: flex;
-    gap: 10px;
-    max-width: 320px;
-    margin: 0 auto;
-    align-items: center;
-}
-
-@media (min-width: 768px) { 
-    .newsletter-input-group { 
-        margin: 0; 
-    }
-}
-
-.newsletter-input {
-    flex: 1;
-    padding: 10px 16px;
-    border-radius: 30px;
-    border: 1px solid rgba(0, 243, 255, 0.3);
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--light);
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.3s ease;
-    min-width: 0; /* Prevents overflow */
-}
-
-.newsletter-input:focus { 
-    border-color: var(--primary); 
-}
-
-.newsletter-input::placeholder {
-    color: rgba(226, 241, 248, 0.5);
-}
-
-.newsletter-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: none;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: #05050f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: transform 0.2s ease;
-    font-size: 1.1rem;
-    padding: 0;
-}
-
-.newsletter-btn:hover { 
-    transform: scale(1.08); 
-}
-
-.newsletter-btn:disabled { 
-    opacity: 0.6; 
-    cursor: not-allowed; 
-}
-
-.newsletter-msg { 
-    margin-top: 8px; 
-    font-size: 0.82rem; 
-    min-height: 18px; 
-}
-
-.newsletter-msg.success { 
-    color: #2effb0; 
-}
-
-.newsletter-msg.error { 
-    color: #ff5c7c; 
-}
-
-/* ============================= */
-/* Overall Reviews & Ratings     */
-/* ============================= */
 .reviews-section {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -423,6 +397,8 @@
     grid-template-columns: minmax(220px, 1fr) minmax(260px, 1.4fr);
     gap: 30px;
     align-items: start;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .reviews-rating-block,
@@ -430,14 +406,11 @@
     text-align: center;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .reviews-rating-block { text-align: left; }
     .reviews-comment-block { text-align: left; }
 }
 
-/* Average stars — plain unicode characters, no icon-font dependency so
-   the widget always renders and is clickable even if a third-party
-   font CDN is blocked, slow, or offline. */
 .avg-stars {
     display: flex;
     justify-content: center;
@@ -448,7 +421,7 @@
     color: rgba(226, 241, 248, 0.25);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .avg-stars { justify-content: flex-start; }
 }
 
@@ -499,12 +472,6 @@
     margin-left: 2px;
 }
 
-/* Subscribe button sits right under the stars */
-.reviews-rating-block .newsletter-form {
-    margin-bottom: 14px;
-}
-
-/* Read All Comments small button */
 .read-comments-btn {
     display: inline-flex;
     align-items: center;
@@ -552,7 +519,7 @@
     color: var(--primary);
 }
 
-/* Comment composer form (revealed on click) */
+/* Comment composer form */
 .add-comment-form {
     display: none;
     flex-direction: column;
@@ -598,9 +565,6 @@
     color: rgba(226, 241, 248, 0.5);
 }
 
-/* Star picker used for submitting a new review — plain unicode
-   characters with an explicit hit area, so it is always visible and
-   clickable/tappable/keyboard-operable regardless of icon-font load state. */
 .star-picker {
     display: flex;
     justify-content: center;
@@ -610,7 +574,7 @@
     color: rgba(226, 241, 248, 0.35);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .star-picker { justify-content: flex-start; }
 }
 
@@ -657,7 +621,7 @@
     transition: transform 0.2s ease;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .comment-submit-btn { align-self: flex-start; }
 }
 
@@ -670,7 +634,21 @@
     cursor: not-allowed;
 }
 
-/* Read-all-comments modal */
+.newsletter-msg { 
+    margin-top: 8px; 
+    font-size: 0.82rem; 
+    min-height: 18px; 
+}
+
+.newsletter-msg.success { 
+    color: #2effb0; 
+}
+
+.newsletter-msg.error { 
+    color: #ff5c7c; 
+}
+
+/* Comments Modal */
 .comments-modal-overlay {
     display: none;
     position: fixed;
@@ -798,36 +776,10 @@
     font-size: 0.9rem;
 }
 
-/* Mobile responsiveness for reviews section */
-@media (max-width: 991px) {
-    .reviews-grid {
-        grid-template-columns: 1fr;
-        gap: 26px;
-    }
-}
-
-@media (max-width: 576px) {
-    .avg-stars { font-size: 1.35rem; gap: 4px; }
-    .star-picker { font-size: 1.25rem; gap: 6px; }
-    .read-comments-btn { font-size: 0.8rem; padding: 7px 14px; }
-    .add-comment-line { font-size: 0.82rem; padding: 10px 14px; }
-    .comments-modal { max-width: 100%; max-height: 85vh; border-radius: 14px; }
-    .comments-modal-header { padding: 14px 16px; }
-    .comments-modal-body { padding: 10px 16px 16px; }
-    .comment-submit-btn { width: 100%; }
-}
-
-@media (max-width: 400px) {
-    .avg-stars { font-size: 1.15rem; }
-    .avg-rating-meta { font-size: 0.85rem; }
-    .comment-card-name { font-size: 0.85rem; }
-    .comment-card-text { font-size: 0.82rem; }
-}
-
 /* Footer Divider */
 .footer-divider {
     position: relative;
-    margin: 40px 0 30px;
+    margin: 30px 0 30px;
 }
 
 .divider-line {
@@ -949,192 +901,154 @@
 
 /* ========== RESPONSIVE DESIGN ========== */
 
-/* Tablet Devices (768px - 1024px) */
+/* Tablet Devices */
 @media (max-width: 1024px) {
     .footer-futuristic {
         padding: 50px 0 25px;
     }
     
-    .footer-section {
-        padding: 15px;
-    }
-    
     .footer-title {
         font-size: 1.2rem;
-        margin-bottom: 20px;
-    }
-    
-    .social-links {
-        gap: 12px;
-    }
-    
-    .social-link {
-        padding: 10px 15px;
-        gap: 12px;
-    }
-    
-    .social-icon {
-        width: 35px;
-        height: 35px;
-        font-size: 1.1rem;
-    }
-    
-    .quick-links {
-        gap: 10px;
-    }
-    
-    .quick-link {
-        padding: 6px 12px;
-        font-size: 0.9rem;
     }
 }
 
-/* ===== MOBILE LAYOUT (≤ 768px) ===== */
+/* Mobile Layout */
 @media (max-width: 768px) {
     .footer-futuristic {
         padding: 40px 0 20px;
-        text-align: center;
         margin-top: 60px;
     }
-
-    .footer-section {
-        padding: 12px 8px;
-        margin-bottom: 8px;
+    
+    .footer-top-row {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 10px 20px;
+        gap: 15px;
     }
     
-    .footer-title {
-        font-size: 1.1rem;
-        margin-bottom: 14px;
-    }
-    
-    .footer-title::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    /* --- ROW 1: Quick Links + Newsletter (side by side) --- */
-    .row.align-items-center {
+    .quick-links-wrapper {
+        width: 100%;
         display: flex;
-        flex-wrap: wrap;
         justify-content: center;
     }
     
-    .row.align-items-center > .col-lg-4,
-    .row.align-items-center > .col-md-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-        margin-bottom: 0;
+    .quick-links-dropdown {
+        width: 100%;
+        max-width: 280px;
     }
     
-    /* third column (Connect) becomes full width on row 2 */
-    .row.align-items-center > .col-lg-4.col-md-12 {
-        flex: 0 0 100%;
-        max-width: 100%;
-        margin-top: 12px;
+    .dropdown-toggle-btn {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.95rem;
+        padding: 12px 20px;
     }
     
-    /* align text in first two columns to center (mobile friendly) */
-    .footer-section.text-md-start {
+    .dropdown-menu-vertical {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .dropdown-menu-vertical.open {
+        transform: translateX(-50%) translateY(0);
+    }
+    
+    .dropdown-menu-vertical .quick-link {
+        text-align: center;
+        border-left: none;
+        border-bottom: 1px solid rgba(0, 243, 255, 0.05);
+    }
+    
+    .dropdown-menu-vertical .quick-link:hover {
+        padding-left: 20px;
+        border-left: none;
+        border-bottom-color: var(--primary);
+    }
+    
+    .connect-tools-wrapper {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .connect-tools {
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .connect-label {
+        font-size: 0.8rem;
+        margin-right: 4px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 4px;
+    }
+    
+    .connect-link {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        gap: 5px;
+    }
+    
+    .connect-link i {
+        font-size: 1rem;
+    }
+    
+    .connect-text {
+        font-size: 0.75rem;
+    }
+    
+    .connect-divider {
+        font-size: 1rem;
+    }
+    
+    .reviews-grid {
+        grid-template-columns: 1fr;
+        gap: 26px;
+    }
+    
+    .avg-stars {
+        justify-content: center !important;
+        font-size: 1.4rem;
+    }
+    
+    .star-picker {
+        justify-content: center !important;
+        font-size: 1.25rem;
+    }
+    
+    .reviews-rating-block {
         text-align: center !important;
     }
     
-    /* Quick links: smaller & centered */
-    .quick-links {
-        align-items: center;
-        gap: 6px;
+    .reviews-comment-block {
+        text-align: center !important;
     }
     
-    .quick-link {
-        width: auto;
-        padding: 4px 12px;
-        font-size: 0.85rem;
-        display: inline-block;
-        white-space: nowrap;
+    .add-comment-line {
+        justify-content: center;
+        font-size: 0.82rem;
     }
     
-    /* ===== IMPROVED NEWSLETTER FOR MOBILE ===== */
-    .newsletter-input-group {
-        max-width: 260px;
-        margin: 0 auto;
-        gap: 8px;
-        padding: 0 4px;
+    .comment-submit-btn {
+        width: 100%;
+        max-width: 200px;
+        justify-content: center;
     }
     
-    .newsletter-input {
-        padding: 10px 14px;
-        font-size: 0.85rem;
-        min-width: 80px;
-        border-radius: 25px;
-    }
-    
-    .newsletter-btn {
-        width: 44px;
-        height: 44px;
-        font-size: 1rem;
-        flex-shrink: 0;
-        min-width: 44px;
-    }
-    
-    .newsletter-msg {
-        font-size: 0.78rem;
-        min-height: 16px;
-        padding: 0 8px;
-    }
-    
-    /* resume link inline */
-    .quick-link[style*="display:inline-block"] {
-        font-size: 0.8rem;
-        padding: 4px 10px;
-    }
-    
-    /* Social links: display as 2‑column grid on mobile (row 2) */
-    .social-links {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px 12px;
-        max-width: 380px;
-        margin: 0 auto;
-    }
-    
-    .social-link {
-        padding: 8px 10px;
-        gap: 8px;
-        border-radius: 20px;
-        justify-content: flex-start;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(0, 243, 255, 0.1);
-    }
-    
-    .social-icon {
-        width: 30px;
-        height: 30px;
-        font-size: 0.9rem;
-        flex-shrink: 0;
-    }
-    
-    .social-text {
-        font-size: 0.8rem;
-        white-space: nowrap;
-    }
-    
-    /* remove transform on hover for better touch */
-    .social-link:hover {
-        transform: none;
-    }
-    
-    /* footer divider */
     .footer-divider {
-        margin: 24px 0 16px;
+        margin: 20px 0 20px;
     }
     
     .footer-bottom {
-        margin-top: 16px;
+        margin-top: 20px;
     }
+    
     .copyright-text, .made-with {
         font-size: 0.8rem;
     }
     
-    /* floating elements smaller */
     .footer-floating-elements .floating-element:nth-child(1) {
         width: 50px;
         height: 50px;
@@ -1149,159 +1063,113 @@
     }
 }
 
-/* Small Mobile (≤ 576px) – fine-tune */
+/* Small Mobile */
 @media (max-width: 576px) {
     .footer-futuristic {
         padding: 30px 0 12px;
         margin-top: 40px;
     }
-    .footer-section {
-        padding: 6px 4px;
-    }
+    
     .footer-title {
-        font-size: 0.95rem;
-        margin-bottom: 10px;
+        font-size: 1rem;
     }
     
-    .row.align-items-center > .col-lg-4,
-    .row.align-items-center > .col-md-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
+    .footer-title::after {
+        width: 30px;
     }
     
-    .quick-link {
-        font-size: 0.75rem;
-        padding: 3px 8px;
-        white-space: nowrap;
-    }
-    
-    /* Further improve newsletter for very small screens */
-    .newsletter-input-group {
+    .quick-links-dropdown {
         max-width: 220px;
-        gap: 6px;
     }
-    .newsletter-input {
-        font-size: 0.75rem;
-        padding: 8px 12px;
-        border-radius: 20px;
-        min-width: 60px;
-    }
-    .newsletter-btn {
-        width: 38px;
-        height: 38px;
+    
+    .dropdown-toggle-btn {
         font-size: 0.85rem;
-        min-width: 38px;
-    }
-    .newsletter-msg {
-        font-size: 0.7rem;
+        padding: 10px 16px;
     }
     
-    .social-links {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 6px 8px;
-        max-width: 300px;
-    }
-    .social-link {
-        padding: 6px 8px;
-        gap: 6px;
-        border-radius: 16px;
-    }
-    .social-icon {
-        width: 26px;
-        height: 26px;
-        font-size: 0.75rem;
-    }
-    .social-text {
-        font-size: 0.7rem;
-    }
-    
-    .footer-divider {
-        margin: 16px 0 10px;
-    }
-    .footer-bottom {
-        margin-top: 10px;
-    }
-    .copyright-text, .made-with {
-        font-size: 0.7rem;
-    }
-}
-
-/* Extra Small Mobile (≤ 400px) */
-@media (max-width: 400px) {
-    .newsletter-input-group {
-        max-width: 180px;
+    .connect-tools {
         gap: 4px;
     }
-    .newsletter-input {
+    
+    .connect-link {
+        padding: 4px 8px;
         font-size: 0.7rem;
-        padding: 6px 10px;
-    }
-    .newsletter-btn {
-        width: 34px;
-        height: 34px;
-        font-size: 0.75rem;
-        min-width: 34px;
     }
     
-    .social-links {
-        gap: 4px 6px;
-        max-width: 260px;
+    .connect-link i {
+        font-size: 0.85rem;
     }
-    .social-link {
-        padding: 4px 6px;
-        gap: 4px;
-    }
-    .social-icon {
-        width: 22px;
-        height: 22px;
+    
+    .connect-text {
         font-size: 0.65rem;
     }
-    .social-text {
-        font-size: 0.6rem;
+    
+    .connect-divider {
+        font-size: 0.85rem;
+    }
+    
+    .comments-modal {
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: 14px;
+    }
+    
+    .comments-modal-header {
+        padding: 14px 16px;
+    }
+    .comments-modal-body {
+        padding: 10px 16px 16px;
     }
 }
 
-/* Landscape Orientation for Mobile */
+/* Extra Small Mobile */
+@media (max-width: 400px) {
+    .quick-links-dropdown {
+        max-width: 180px;
+    }
+    
+    .dropdown-toggle-btn {
+        font-size: 0.75rem;
+        padding: 8px 12px;
+    }
+    
+    .connect-link {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+    }
+    
+    .connect-link i {
+        font-size: 0.75rem;
+    }
+    
+    .connect-text {
+        font-size: 0.6rem;
+    }
+    
+    .connect-divider {
+        font-size: 0.75rem;
+    }
+}
+
+/* Landscape Orientation */
 @media (max-height: 500px) and (max-width: 768px) {
     .footer-futuristic {
         padding: 20px 0 10px;
     }
-    .footer-section {
-        padding: 4px 6px;
-        margin-bottom: 4px;
+    
+    .footer-top-row {
+        padding: 0 10px 10px;
+        gap: 10px;
     }
-    .footer-title {
-        font-size: 0.9rem;
-        margin-bottom: 8px;
+    
+    .dropdown-toggle-btn {
+        padding: 6px 14px;
+        font-size: 0.8rem;
     }
-    .quick-link {
-        font-size: 0.7rem;
-        padding: 2px 8px;
-    }
-    .social-link {
+    
+    .connect-link {
         padding: 4px 8px;
-        gap: 6px;
-    }
-    .social-icon {
-        width: 22px;
-        height: 22px;
         font-size: 0.7rem;
-    }
-    .social-text {
-        font-size: 0.65rem;
-    }
-    .newsletter-input-group {
-        max-width: 200px;
-    }
-    .newsletter-input {
-        padding: 6px 10px;
-        font-size: 0.7rem;
-    }
-    .newsletter-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 0.7rem;
-        min-width: 32px;
     }
 }
 
@@ -1314,24 +1182,23 @@
 
 /* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
-    .quick-link:hover,
-    .social-link:hover {
+    .connect-link:hover,
+    .dropdown-menu-vertical .quick-link:hover {
         transform: none !important;
-        background: rgba(0, 243, 255, 0.03);
     }
-    .social-link:active,
-    .quick-link:active {
+    
+    .connect-link:active {
+        background: rgba(0, 243, 255, 0.12);
+        transform: scale(0.96);
+    }
+    
+    .dropdown-toggle-btn:active {
         background: rgba(0, 243, 255, 0.08);
-        transform: scale(0.98);
-    }
-    .newsletter-btn:active {
-        transform: scale(0.95);
     }
 }
 </style>
 
 <script>
-// Footer animations
 document.addEventListener('DOMContentLoaded', function() {
     // Animate elements on scroll
     const observerOptions = {
@@ -1357,82 +1224,40 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(section);
     });
 
-    // Add hover effects to social links
-    const socialLinks = document.querySelectorAll('.social-link');
-    socialLinks.forEach(link => {
-        link.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateX(-5px) scale(1.02)';
-        });
-        
-        link.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateX(0) scale(1)';
-        });
-        
-        // Touch feedback for mobile
-        link.addEventListener('touchstart', function() {
-            this.style.transform = 'scale(0.98)';
-            this.style.background = 'rgba(0, 243, 255, 0.1)';
-        });
-        
-        link.addEventListener('touchend', function() {
-            this.style.transform = 'scale(1)';
-            this.style.background = 'rgba(255, 255, 255, 0.02)';
-        });
-    });
+    // ===== QUICK LINKS DROPDOWN TOGGLE =====
+    const toggleBtn = document.getElementById('quickLinksToggle');
+    const dropdownMenu = document.getElementById('quickLinksMenu');
     
-    // Touch feedback for quick links
-    const quickLinks = document.querySelectorAll('.quick-link');
-    quickLinks.forEach(link => {
-        link.addEventListener('touchstart', function() {
-            this.style.background = 'rgba(0, 243, 255, 0.1)';
+    if (toggleBtn && dropdownMenu) {
+        toggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = dropdownMenu.classList.toggle('open');
+            this.classList.toggle('active');
+            this.setAttribute('aria-expanded', isOpen);
         });
         
-        link.addEventListener('touchend', function() {
-            this.style.background = 'rgba(0, 243, 255, 0.05)';
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.quick-links-dropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdownMenu.classList.remove('open');
+                toggleBtn.classList.remove('active');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
         });
-    });
-
-    // ===== Newsletter signup (Newsletter System feature) =====
-    const newsletterForm = document.getElementById('newsletterForm');
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const emailInput = document.getElementById('newsletterEmail');
-            const msg = document.getElementById('newsletterMsg');
-            const btn = document.getElementById('newsletterBtn');
-            const email = emailInput.value.trim();
-
-            msg.textContent = '';
-            msg.className = 'newsletter-msg';
-            btn.disabled = true;
-
-            try {
-                const res = await fetch('/api/newsletter', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    msg.textContent = data.status === 'already_subscribed'
-                        ? "You're already subscribed ✓"
-                        : 'Subscribed! Check your inbox ✓';
-                    msg.classList.add('success');
-                    emailInput.value = '';
-                } else {
-                    msg.textContent = data.error || 'Something went wrong.';
-                    msg.classList.add('error');
-                }
-            } catch (err) {
-                msg.textContent = 'Network error — please try again.';
-                msg.classList.add('error');
-            } finally {
-                btn.disabled = false;
+        
+        // Close dropdown when pressing Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && dropdownMenu.classList.contains('open')) {
+                dropdownMenu.classList.remove('open');
+                toggleBtn.classList.remove('active');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+                toggleBtn.focus();
             }
         });
     }
 
-    // ===== Overall Reviews & Ratings (footer) =====
+    // ===== Overall Reviews & Ratings =====
     (function () {
         const avgStarsEl = document.getElementById('avgStars');
         const avgValueEl = document.getElementById('avgRatingValue');
@@ -1449,9 +1274,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const commentMsg = document.getElementById('commentMsg');
         const commentSubmitBtn = document.getElementById('commentSubmitBtn');
 
-        const footerSubscribeForm = document.getElementById('footerSubscribeForm');
-
-        if (!avgStarsEl) return; // section not present on this page
+        if (!avgStarsEl) return;
 
         let cachedReviews = [];
         let pickedRating = 0;
@@ -1463,12 +1286,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 star.classList.remove('filled', 'half');
                 if (rating >= pos) {
                     star.classList.add('filled');
-                    star.textContent = '\u2605'; // filled star
+                    star.textContent = '\u2605';
                 } else if (rating >= pos - 0.5) {
                     star.classList.add('half');
-                    star.textContent = '\u2606'; // outline (half handled via ::before overlay)
+                    star.textContent = '\u2606';
                 } else {
-                    star.textContent = '\u2606'; // outline star
+                    star.textContent = '\u2606';
                 }
             });
         }
@@ -1522,7 +1345,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Open / close the "Read All Comments" modal
         if (readAllBtn) {
             readAllBtn.addEventListener('click', () => {
                 modalOverlay.classList.add('open');
@@ -1541,7 +1363,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.key === 'Escape' && modalOverlay) modalOverlay.classList.remove('open');
         });
 
-        // Reveal the "Add a comment" composer on click
         if (addCommentLine) {
             addCommentLine.addEventListener('click', () => {
                 addCommentForm.classList.add('open');
@@ -1550,7 +1371,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Star picker for the new-comment form
         if (starPicker) {
             const stars = starPicker.querySelectorAll('.star-pick');
             function paintPicker(rating) {
@@ -1572,7 +1392,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     pickRating(parseInt(star.dataset.value, 10));
                 });
                 star.addEventListener('mouseenter', () => paintPicker(parseInt(star.dataset.value, 10)));
-                // Keyboard support (Enter / Space) since these are plain <span>s acting as radio buttons
                 star.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
@@ -1583,7 +1402,6 @@ document.addEventListener('DOMContentLoaded', function() {
             starPicker.addEventListener('mouseleave', () => paintPicker(pickedRating));
         }
 
-        // Submit a new comment / review
         if (addCommentForm) {
             addCommentForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
@@ -1633,45 +1451,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     commentMsg.classList.add('error');
                 } finally {
                     commentSubmitBtn.disabled = false;
-                }
-            });
-        }
-
-        // Subscribe button under the average stars (reuses /api/newsletter)
-        if (footerSubscribeForm) {
-            footerSubscribeForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const emailInput = document.getElementById('footerSubscribeEmail');
-                const msg = document.getElementById('footerSubscribeMsg');
-                const btn = document.getElementById('footerSubscribeBtn');
-                const email = emailInput.value.trim();
-
-                msg.textContent = '';
-                msg.className = 'newsletter-msg';
-                btn.disabled = true;
-
-                try {
-                    const res = await fetch('/api/newsletter', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email })
-                    });
-                    const data = await res.json();
-                    if (res.ok) {
-                        msg.textContent = data.status === 'already_subscribed'
-                            ? "You're already subscribed ✓"
-                            : 'Subscribed! Check your inbox ✓';
-                        msg.classList.add('success');
-                        emailInput.value = '';
-                    } else {
-                        msg.textContent = data.error || 'Something went wrong.';
-                        msg.classList.add('error');
-                    }
-                } catch (err) {
-                    msg.textContent = 'Network error — please try again.';
-                    msg.classList.add('error');
-                } finally {
-                    btn.disabled = false;
                 }
             });
         }

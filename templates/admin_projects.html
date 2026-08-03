@@ -514,6 +514,48 @@
             color: white;
         }
 
+        .action-btn.live {
+            background: #e8f5e9;
+            color: #2e7d32;
+            flex: 0 0 auto;
+            padding: 8px 10px;
+        }
+
+        .action-btn.live:hover {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .action-btn.live.disabled {
+            background: #f5f5f5;
+            color: #bbb;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .meta-badge.live-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .meta-badge.live-badge .live-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #2e7d32;
+            display: inline-block;
+            animation: livePulse 1.6s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.5); }
+            70% { box-shadow: 0 0 0 5px rgba(46, 125, 50, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -788,6 +830,7 @@
                             <span class="meta-badge">${project.category}</span>
                             <span class="meta-badge status">${project.status}</span>
                             ${project.featured ? '<span class="meta-badge" style="background: #fff3e0; color: #f57c00;">⭐ Featured</span>' : ''}
+                            ${project.demo_url ? '<span class="meta-badge live-badge"><span class="live-dot"></span> Live</span>' : ''}
                         </div>
                         <p class="project-description">${project.description || 'No description'}</p>
                         <div style="font-size: 12px; color: #999; margin-top: auto; padding-top: 10px; border-top: 1px solid #f0f0f0;">
@@ -798,6 +841,14 @@
                         <a href="/admin/project/${project.id}" class="action-btn edit">
                             <i class="fas fa-edit"></i> Edit
                         </a>
+                        ${project.demo_url ?
+                            `<a href="${project.demo_url}" target="_blank" rel="noopener" class="action-btn live" title="Open live site">
+                                <i class="fas fa-external-link-alt"></i> Live
+                            </a>` :
+                            `<span class="action-btn live disabled" title="No live link added yet">
+                                <i class="fas fa-external-link-alt"></i> Live
+                            </span>`
+                        }
                         <button class="action-btn duplicate" onclick="duplicateProject(${project.id}, '${project.title.replace(/'/g, "\\'")}')" title="Duplicate project">
                             <i class="fas fa-copy"></i>
                         </button>

@@ -241,6 +241,48 @@ body::before {
     color: var(--darker);
 }
 
+.btn-live-demo {
+    background: rgba(0, 200, 83, 0.12);
+    border: 1px solid rgba(0, 200, 83, 0.6);
+    color: #00c853;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 8px 18px;
+    border-radius: 30px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-live-demo:hover {
+    background: #00c853;
+    color: #06120a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 200, 83, 0.4);
+}
+
+.btn-live-demo .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #00c853;
+    display: inline-block;
+    animation: liveDotPulse 1.6s infinite;
+}
+
+.btn-live-demo:hover .live-dot {
+    background: #06120a;
+}
+
+@keyframes liveDotPulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.6); }
+    70% { box-shadow: 0 0 0 6px rgba(0, 200, 83, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 200, 83, 0); }
+}
+
 /* ========== RESPONSIVE DESIGN ========== */
 
 /* Large Desktop */
@@ -663,11 +705,12 @@ body::before {
 
                             {% if p.demo_url %}
                             <a
-                                class="btn btn-futuristic"
+                                class="btn btn-live-demo"
                                 href="{{ p.demo_url }}"
                                 target="_blank"
-                                rel="noopener">
-                                Live Demo
+                                rel="noopener"
+                                title="Open the live version of this project">
+                                <span class="live-dot"></span> Live
                             </a>
                             {% endif %}
                         </div>
