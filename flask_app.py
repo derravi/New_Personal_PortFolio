@@ -346,13 +346,13 @@ try:
     def analytics_dashboard():
         return render_template('analytics.html', admin_token=ADMIN_TOKEN)
 
-    # @app.route('/contact')
-    # def contact():
-    #     return render_template('contact.html')
-
     @app.route('/contact')
     def contact():
-        return "Coming Soon..."
+        return render_template('contact.html')
+
+    # @app.route('/contact')
+    # def contact():
+    #     return "Coming Soon..."
 
     @app.route('/my_learning')
     def my_learning():
