@@ -107,7 +107,8 @@ app.wsgi_app = WhiteNoise(app.wsgi_app, root=STATIC_DIR, prefix="static/", max_a
 
 
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "change-this-admin-token")
-SITE_URL = os.environ.get("SITE_URL", "https://example.com")
+SITE_URL = os.environ.get("SITE_URL", "https://ravider.pythonanywhere.com")
+GOOGLE_SITE_VERIFICATION = os.environ.get("GOOGLE_SITE_VERIFICATION", "")
 
 
 # =========================
@@ -115,8 +116,11 @@ SITE_URL = os.environ.get("SITE_URL", "https://example.com")
 # =========================
 @app.context_processor
 def inject_seo_globals():
-    """Makes {{ site_url }} available in every template for canonical/OG URLs."""
-    return {"site_url": SITE_URL.rstrip('/')}
+    """Makes {{ site_url }} and {{ google_site_verification }} available in every template."""
+    return {
+        "site_url": SITE_URL.rstrip('/'),
+        "google_site_verification": GOOGLE_SITE_VERIFICATION,
+    }
 
 
 # =========================
@@ -131,6 +135,7 @@ file_handler.setFormatter(logging.Formatter(
 file_handler.setLevel(logging.INFO)
 app.logger.addHandler(file_handler)
 app.logger.setLevel(logging.INFO)
+
 
 @app.errorhandler(404)
 def not_found(e):

@@ -1,12 +1,1 @@
-2026-07-30 22:36:38,358 INFO [flask_app] 404: /mllifecycle.png
-2026-07-30 22:36:38,360 INFO [flask_app] 404: /patterns_of_python.png
-2026-07-30 22:36:38,394 INFO [flask_app] 404: /imbalance datasets.jpg
-2026-08-01 22:49:49,926 INFO [flask_app] 404: /.well-known/appspecific/com.chrome.devtools.json
-2026-08-01 23:02:19,521 INFO [flask_app] 404: /.well-known/appspecific/com.chrome.devtools.json
-2026-08-01 23:07:16,463 INFO [flask_app] 404: /favicon.ico
-2026-08-02 00:19:29,762 INFO [flask_app] 404: /.well-known/appspecific/com.chrome.devtools.json
-2026-08-03 17:42:06,768 INFO [flask_app] 404: /favicon.ico
-2026-08-03 18:30:58,252 INFO [flask_app] 404: /favicon.ico
-2026-08-03 23:47:14,076 INFO [flask_app] 404: /favicon.ico
-2026-08-07 04:17:26,954 INFO [flask_app] 404: /my-learning
-2026-08-07 10:13:50,181 INFO [flask_app] 404: /favicon.ico
+2026-08-07 22:24:33,129 INFO [flask_app] 404: /.well-known/appspecific/com.chrome.devtools.json
