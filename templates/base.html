@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="6ZH8zNprw5YCufbyO9QU8VNJW_X5UkOPU3bMqy1pNi0" />
     <title>{% block title %}Ravi Der - Portfolio{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
@@ -15,12 +16,45 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- SEO meta -->
-    <meta name="description" content="{% block meta_description %}Ravi Der — AI/ML & Python developer portfolio. Projects, skills, blog and more.{% endblock %}">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block meta_description %}Ravi Der — AI/ML & Python developer portfolio featuring real-world projects, technical blog articles, skills, and professional experience in artificial intelligence, machine learning, and full-stack development.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}Ravi Der, AI developer portfolio, Machine Learning engineer, Python developer, Data Science projects, AI/ML portfolio, software developer portfolio, full stack developer{% endblock %}">
+    <meta name="author" content="Ravi Der">
+    <meta name="robots" content="{% block meta_robots %}index, follow, max-image-preview:large{% endblock %}">
+    <link rel="canonical" href="{% block canonical_url %}{{ site_url }}{{ request.path }}{% endblock %}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content="Ravi Der – AI/ML Portfolio">
     <meta property="og:title" content="{% block og_title %}Ravi Der - Portfolio{% endblock %}">
     <meta property="og:description" content="{% block og_description %}AI/ML & Python developer portfolio — 20+ projects, articles, and more.{% endblock %}">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{{ site_url }}{{ request.path }}">
+    <meta property="og:image" content="{% block og_image %}https://res.cloudinary.com/g3cjpmly/image/upload/Profile_image_-_Copy_ko8kx3.jpg{% endblock %}">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ self.og_title() }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ self.og_description() }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ self.og_image() }}{% endblock %}">
+
+    <!-- Structured Data (JSON-LD) -->
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Ravi Der",
+      "url": "{{ site_url }}/",
+      "image": "https://res.cloudinary.com/g3cjpmly/image/upload/Profile_image_-_Copy_ko8kx3.jpg",
+      "jobTitle": "AI/ML & Python Developer",
+      "sameAs": [
+        "https://www.linkedin.com/in/ravi-der/",
+        "https://github.com/derravi"
+      ]
+    }
+    </script>
+    {% endblock %}
 
     <!-- Favicon & PWA manifest -->
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">

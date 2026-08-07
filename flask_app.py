@@ -111,6 +111,15 @@ SITE_URL = os.environ.get("SITE_URL", "https://example.com")
 
 
 # =========================
+# SEO: template globals (canonical URLs, Open Graph, etc.)
+# =========================
+@app.context_processor
+def inject_seo_globals():
+    """Makes {{ site_url }} available in every template for canonical/OG URLs."""
+    return {"site_url": SITE_URL.rstrip('/')}
+
+
+# =========================
 # Structured logging (rotating file, complements Sentry/perf monitoring)
 # =========================
 LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
@@ -122,7 +131,6 @@ file_handler.setFormatter(logging.Formatter(
 file_handler.setLevel(logging.INFO)
 app.logger.addHandler(file_handler)
 app.logger.setLevel(logging.INFO)
-
 
 @app.errorhandler(404)
 def not_found(e):
@@ -620,9 +628,19 @@ def api_analytics_summary():
 # =========================
 # SEO: sitemap & robots
 # =========================
+# (endpoint, changefreq, priority) — priority signals relative importance to crawlers
 STATIC_ROUTES = [
-    'home', 'projects', 'skills', 'achievements', 'experience',
-    'education', 'blog', 'contact', 'my_learning', 'quiz', 'resume_view',
+    ('home', 'weekly', '1.0'),
+    ('projects', 'weekly', '0.9'),
+    ('skills', 'monthly', '0.7'),
+    ('achievements', 'monthly', '0.6'),
+    ('experience', 'monthly', '0.7'),
+    ('education', 'monthly', '0.5'),
+    ('blog', 'weekly', '0.8'),
+    ('contact', 'monthly', '0.5'),
+    ('my_learning', 'monthly', '0.5'),
+    ('quiz', 'monthly', '0.5'),
+    ('resume_view', 'monthly', '0.6'),
 ]
 
 
@@ -634,19 +652,22 @@ def sitemap():
     ).fetchall()
     conn.close()
 
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     urls = []
-    for endpoint in STATIC_ROUTES:
-        urls.append((url_for(endpoint, _external=False), None))
+    for endpoint, changefreq, priority in STATIC_ROUTES:
+        urls.append((url_for(endpoint, _external=False), today, changefreq, priority))
     for post in posts:
-        urls.append((url_for('blog_post', slug=post['slug'], _external=False), post['published_at']))
+        lastmod = (post['published_at'] or today)[:10]
+        urls.append((url_for('blog_post', slug=post['slug'], _external=False), lastmod, 'monthly', '0.6'))
 
     xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>',
                  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for path, lastmod in urls:
+    for path, lastmod, changefreq, priority in urls:
         xml_parts.append("<url>")
         xml_parts.append(f"<loc>{SITE_URL.rstrip('/')}{path}</loc>")
-        if lastmod:
-            xml_parts.append(f"<lastmod>{lastmod[:10]}</lastmod>")
+        xml_parts.append(f"<lastmod>{lastmod}</lastmod>")
+        xml_parts.append(f"<changefreq>{changefreq}</changefreq>")
+        xml_parts.append(f"<priority>{priority}</priority>")
         xml_parts.append("</url>")
     xml_parts.append("</urlset>")
     return Response("\n".join(xml_parts), mimetype="application/xml")
@@ -660,7 +681,10 @@ def robots():
         "Disallow: /analytics",
         "Disallow: /admin",
         "Disallow: /api/",
+        "Disallow: /export/",
+        "",
         f"Sitemap: {SITE_URL.rstrip('/')}{url_for('sitemap')}",
+        f"Host: {SITE_URL.rstrip('/')}",
     ]
     return Response("\n".join(lines), mimetype="text/plain")
 

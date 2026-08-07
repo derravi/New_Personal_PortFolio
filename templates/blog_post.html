@@ -2,8 +2,33 @@
 
 {% block title %}{{ post.title }} - Ravi Der{% endblock %}
 {% block meta_description %}{{ post.summary }}{% endblock %}
+{% block meta_keywords %}{{ post.tags if post.tags else 'AI, machine learning, Python, Ravi Der blog' }}{% endblock %}
 {% block og_title %}{{ post.title }}{% endblock %}
 {% block og_description %}{{ post.summary }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{{ post.cover_image if post.cover_image else 'https://res.cloudinary.com/g3cjpmly/image/upload/Profile_image_-_Copy_ko8kx3.jpg' }}{% endblock %}
+{% block canonical_url %}{{ site_url }}{{ url_for('blog_post', slug=post.slug) }}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ post.title|tojson }},
+  "description": {{ post.summary|tojson }},
+  "image": {{ (post.cover_image if post.cover_image else 'https://res.cloudinary.com/g3cjpmly/image/upload/Profile_image_-_Copy_ko8kx3.jpg')|tojson }},
+  "author": {
+    "@type": "Person",
+    "name": {{ (post.author if post.author else 'Ravi Der')|tojson }}
+  },
+  "datePublished": {{ (post.published_at[:10] if post.published_at else '')|tojson }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ site_url }}{{ url_for('blog_post', slug=post.slug) }}"
+  }
+}
+</script>
+{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
