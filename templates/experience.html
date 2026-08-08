@@ -887,44 +887,69 @@ h1, h2, h3, h4, h5, h6 {
 
         <!-- Stats Section - Grid on mobile, row on desktop -->
         <div class="stats-section">
-            <div class="stats-row">
-                <a href="http://localhost:5000/experience" class="stat-card" onclick="return true;">
-                    <div class="stat-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="stat-number">4</div>
-                    <div class="stat-label">Internships</div>
-                </a>
-                <a href="http://localhost:5000/experience" class="stat-card" onclick="return true;">
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-number">9+</div>
-                    <div class="stat-label">Months Experience</div>
-                </a>
-                <a href="http://localhost:5000/skills" class="stat-card" onclick="return true;">
-                    <div class="stat-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="stat-number">15+</div>
-                    <div class="stat-label">Technologies</div>
-                </a>
-                <a href="http://localhost:5000/projects" class="stat-card" onclick="return true;">
-                    <div class="stat-icon">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <div class="stat-number">20+</div>
-                    <div class="stat-label">Projects</div>
-                </a>
-                <a href="https://github.com/derravi" class="stat-card" onclick="return true;">
-                    <div class="stat-icon">
-                        <i class="fas fa-code-branch"></i>
-                    </div>
-                    <div class="stat-number">70+</div>
-                    <div class="stat-label">Git Repo</div>
-                </a>
+    <div class="stats-row">
+
+        <!-- Internships - Same Tab -->
+        <a href="http://localhost:5000/experience"
+           class="stat-card"
+           onclick="return true;">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-alt"></i>
             </div>
-        </div>
+            <div class="stat-number">4</div>
+            <div class="stat-label">Internships</div>
+        </a>
+
+        <!-- Months Experience - Same Tab -->
+        <a href="http://localhost:5000/experience"
+           class="stat-card"
+           onclick="return true;">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-number">9+</div>
+            <div class="stat-label">Months Experience</div>
+        </a>
+
+        <!-- Technologies - New Tab -->
+        <a href="http://localhost:5000/skills"
+           class="stat-card"
+           onclick="return true;"
+           rel="noopener noreferrer">
+            <div class="stat-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Technologies</div>
+        </a>
+
+        <!-- Projects - New Tab -->
+        <a href="http://localhost:5000/projects"
+           class="stat-card"
+           onclick="return true;"
+           rel="noopener noreferrer">
+            <div class="stat-icon">
+                <i class="fas fa-project-diagram"></i>
+            </div>
+            <div class="stat-number">20+</div>
+            <div class="stat-label">Projects</div>
+        </a>
+
+        <!-- Git Repo - New Tab -->
+        <a href="https://github.com/derravi"
+           class="stat-card"
+           onclick="return true;"
+           target="_blank"
+           rel="noopener noreferrer">
+            <div class="stat-icon">
+                <i class="fas fa-code-branch"></i>
+            </div>
+            <div class="stat-number">70+</div>
+            <div class="stat-label">Git Repo</div>
+        </a>
+
+    </div>
+</div>
     </div>
 </section>
 {% endblock %}

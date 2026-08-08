@@ -298,15 +298,15 @@
     .top-header {
         position: fixed;
         top: 0;
-        left: var(--sidebar-width);
+        left: 250px;
         right: 0;
-        height: 80px;
+        height: 75px;
         background: linear-gradient(90deg, 
-            rgba(10, 10, 26, 0.85) 0%, 
-            rgba(5, 5, 16, 0.92) 100%);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(0, 243, 255, 0.25);
+            rgba(10, 10, 26, 0.98) 0%, 
+            rgba(5, 5, 16, 0.98) 100%);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-bottom: 1px solid rgba(0, 243, 255, 0.3);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -595,7 +595,7 @@
     /* Page Content */
     .page-content {
         padding: 0px;
-        margin-top: 90px;
+        margin-top: 80px;
         min-height: calc(100vh - 80px);
     }
 
@@ -1233,9 +1233,9 @@
     }
 
     /* Footer adjustments */
-    .footer-futuristic {
-        margin-top: 60px;
-    }
+    /* NOTE: footer.html defines the authoritative .footer-futuristic rules
+       (background, border-top, margin-top). Keeping a single source of
+       truth here avoids the sidebar/footer seam mismatching on desktop. */
 
     /* Ensure no overflow issues */
     html, body {

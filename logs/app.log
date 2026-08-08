@@ -1,1 +1,3 @@
 2026-08-07 22:24:33,129 INFO [flask_app] 404: /.well-known/appspecific/com.chrome.devtools.json
+2026-08-08 13:08:43,677 INFO [flask_app] 404: /favicon.ico
+2026-08-08 13:23:24,745 INFO [flask_app] 404: /favicon.ico
