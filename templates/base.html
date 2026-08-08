@@ -67,6 +67,9 @@
     <!-- Mobile & Tablet Responsive Styles (Mobile First Approach) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-responsive.css') }}">
 
+    <!-- Custom neon scrollbar (desktop + mobile) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-scrollbar.css') }}">
+
     {% block extra_css %}{% endblock %}
     
     <style>
@@ -79,16 +82,6 @@
         --accent: #ff00c8;
         --sidebar-width: 300px;
         --sidebar-collapsed: 80px;
-    }
-
-    /* Remove all scrollbars */
-    ::-webkit-scrollbar {
-        display: none;
-    }
-
-    * {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
     }
 
     html, body {
@@ -200,10 +193,6 @@
         height: calc(100vh - 160px);
         overflow-y: auto;
         overflow-x: hidden;
-    }
-
-    .sidebar-nav::-webkit-scrollbar {
-        display: none;
     }
 
     .nav-item {
@@ -1970,6 +1959,7 @@
 
     <!-- Enhancement systems: theme toggle, filters, lightbox, etc. -->
     <script src="{{ url_for('static', filename='js/enhancements.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mobile-scrollbar.js') }}"></script>
 
     {% block extra_js %}{% endblock %}
 </body>

@@ -1,0 +1,241 @@
+/* ============================================================
+   CUSTOM SITE SCROLLBAR
+   A neon, glowing scrollbar that matches the site's cyan / purple
+   / magenta theme (--primary / --secondary / --accent).
+   Works on the main page (right edge) and inside any scrollable
+   panel (sidebar nav, mobile drawer, modals, code blocks, etc).
+   ============================================================ */
+
+/* ---------- Base (desktop / Chromium / Edge / Safari / Opera) ---------- */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: linear-gradient(180deg, var(--darker, #050510), var(--dark, #0a0a1a));
+    border-left: 1px solid rgba(0, 243, 255, 0.08);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary, #00f3ff), var(--secondary, #7b00ff) 55%, var(--accent, #ff00c8));
+    border-radius: 999px;
+    border: 2px solid var(--darker, #050510);
+    background-clip: padding-box;
+    box-shadow: 0 0 6px rgba(0, 243, 255, 0.55), 0 0 12px rgba(123, 0, 255, 0.35);
+    transition: box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    filter: brightness(1.25);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.85), 0 0 20px rgba(255, 0, 200, 0.55);
+}
+
+::-webkit-scrollbar-thumb:active {
+    filter: brightness(1.4);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--darker, #050510);
+}
+
+/* ---------- Firefox ---------- */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary, #7b00ff) var(--darker, #050510);
+}
+
+/* Keep the page from jumping horizontally when content height changes */
+html {
+    scrollbar-gutter: stable;
+}
+
+/* ---------- Sidebar nav / mobile drawer: slimmer glowing scrollbar ---------- */
+.sidebar-nav,
+.mobile-sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary, #00f3ff) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar,
+.mobile-sidebar::-webkit-scrollbar {
+    display: block;
+    width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track,
+.mobile-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb,
+.mobile-sidebar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary, #00f3ff), var(--accent, #ff00c8));
+    border-radius: 999px;
+    border: none;
+    box-shadow: 0 0 6px rgba(0, 243, 255, 0.6);
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover,
+.mobile-sidebar::-webkit-scrollbar-thumb:hover {
+    box-shadow: 0 0 10px rgba(255, 0, 200, 0.8);
+}
+
+/* ---------- Generic helper for any other internal scroll panel ---------- */
+.styled-scrollbar,
+textarea,
+pre,
+.modal-body,
+.admin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary, #00f3ff) var(--dark, #0a0a1a);
+}
+
+.styled-scrollbar::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+pre::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar,
+.admin-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb,
+pre::-webkit-scrollbar-thumb,
+.modal-body::-webkit-scrollbar-thumb,
+.admin-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary, #00f3ff), var(--secondary, #7b00ff));
+    border-radius: 999px;
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+/* ---------- Mobile ----------
+   Slimmer + slightly softer glow so it doesn't overpower small
+   screens; still visible and styled on browsers that render an
+   in-flow (non-overlay) scrollbar, e.g. Android Chrome. */
+@media (max-width: 767px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border: 1px solid var(--darker, #050510);
+        box-shadow: 0 0 4px rgba(0, 243, 255, 0.6);
+    }
+
+    html {
+        scrollbar-width: thin;
+    }
+}
+
+/* ---------- Reduced motion: keep glow but drop hover animation cost ---------- */
+@media (prefers-reduced-motion: reduce) {
+    ::-webkit-scrollbar-thumb {
+        transition: none;
+    }
+}
+
+/* ============================================================
+   CUSTOM DRAGGABLE MOBILE SCROLLBAR (JS-driven)
+   Added by static/js/mobile-scrollbar.js. The browser's native
+   scrollbar is not touch-draggable on most mobile browsers, so on
+   touch + narrow screens we swap it for this custom pill thumb.
+   The <html> element only gets `.cms-enabled` when JS determines
+   it's actually a touch device, so nothing here affects desktop.
+   ============================================================ */
+html.cms-enabled {
+    /* free up the visual space the native mobile scrollbar used */
+    scrollbar-width: none;
+}
+
+html.cms-enabled::-webkit-scrollbar,
+html.cms-enabled body::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.cms-wrap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 2900;
+    pointer-events: none;
+    display: none;
+}
+
+html.cms-enabled .cms-wrap {
+    display: block;
+}
+
+.cms-wrap.cms-hidden {
+    display: none;
+}
+
+/* decorative track line - shows the full scrollable range */
+.cms-track {
+    position: absolute;
+    top: 72px;
+    right: 15px;
+    bottom: 96px;
+    width: 3px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(0, 243, 255, 0.08), rgba(123, 0, 255, 0.12), rgba(255, 0, 200, 0.08));
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+/* small round drag handle/button that rides along the track line */
+.cms-thumb {
+    position: absolute;
+    right: 4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    pointer-events: auto;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    background: radial-gradient(circle at 35% 30%, #ffffff 0%, var(--primary, #00f3ff) 35%, var(--secondary, #7b00ff) 75%, var(--accent, #ff00c8) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 8px rgba(0, 243, 255, 0.85), 0 0 18px rgba(255, 0, 200, 0.55), 0 2px 6px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s ease, filter 0.2s ease, transform 0.08s ease;
+}
+
+/* grip icon (three short dashes) so it visually reads as a draggable handle */
+.cms-thumb::before {
+    content: '';
+    width: 10px;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(10, 10, 26, 0.75);
+    box-shadow: 0 4px 0 rgba(10, 10, 26, 0.75), 0 -4px 0 rgba(10, 10, 26, 0.75);
+}
+
+.cms-wrap.cms-dragging .cms-thumb,
+.cms-thumb:active {
+    filter: brightness(1.25);
+    transform: scale(1.25);
+    box-shadow: 0 0 16px rgba(0, 243, 255, 1), 0 0 30px rgba(255, 0, 200, 0.75), 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+@media (min-width: 768px) {
+    .cms-wrap {
+        display: none !important;
+    }
+}
